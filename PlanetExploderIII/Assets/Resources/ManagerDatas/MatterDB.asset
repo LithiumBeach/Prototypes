@@ -1,0 +1,596 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 561f9b3f2ba9f954ea1cab85723523b5, type: 3}
+  m_Name: MatterDB
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: m_CompositionMatrix
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[pe.EComposition, Assembly-CSharp],[pe.CompositionMatrix,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EqualityComparer`1+DefaultComparer[[pe.EComposition,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 14
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 7
+      Data: 2|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 3|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 0
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 4|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 5|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 0.25
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 16
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 6|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 7|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 0.5
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 8
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 8|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 9|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 1.1
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 7
+      Data: 10|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 11|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 2
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 0.5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 5
+    - Name: 
+      Entry: 7
+      Data: 12|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 13|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 1
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 6
+    - Name: 
+      Entry: 7
+      Data: 14|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 15|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 0.9
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 1.1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 7
+    - Name: 
+      Entry: 7
+      Data: 16|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 17|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 2
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 8
+    - Name: 
+      Entry: 7
+      Data: 18|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 19|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 1
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 0.25
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 9
+    - Name: 
+      Entry: 7
+      Data: 20|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 21|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 1.25
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 1.5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 10
+    - Name: 
+      Entry: 7
+      Data: 22|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 23|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 2
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 11
+    - Name: 
+      Entry: 7
+      Data: 24|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 25|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 2
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 12
+    - Name: 
+      Entry: 7
+      Data: 26|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 27|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 1
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 0.01
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 13
+    - Name: 
+      Entry: 7
+      Data: 28|pe.CompositionMatrix, Assembly-CSharp
+    - Name: matter
+      Entry: 7
+      Data: 29|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 1
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 1.15
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: material
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: StateMatrix
+      Entry: 7
+      Data: 30|System.Collections.Generic.Dictionary`2[[pe.EMatterState, Assembly-CSharp],[pe.MatterMatrix,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 31|System.Collections.Generic.EqualityComparer`1+DefaultComparer[[pe.EMatterState,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 5
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 7
+      Data: 32|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 0
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 33|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 1
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 34|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 1
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 35|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 0.9
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 1.2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: 
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 7
+      Data: 36|pe.MatterMatrix, Assembly-CSharp
+    - Name: MassMultiplier
+      Entry: 4
+      Data: 100
+    - Name: EnergyMultiplier
+      Entry: 4
+      Data: 100
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  CoreMatrix:
+    MassMultiplier: 2
+    EnergyMultiplier: 4
+  SurfaceMatrix:
+    MassMultiplier: 1
+    EnergyMultiplier: 1
+  AtmosphereMatrix:
+    MassMultiplier: 0.1
+    EnergyMultiplier: 1

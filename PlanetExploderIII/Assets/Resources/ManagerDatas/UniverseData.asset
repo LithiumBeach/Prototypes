@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d427500e6b183ac42a602ea28865af4f, type: 3}
+  m_Name: UniverseData
+  m_EditorClassIdentifier: 
+  Galaxies:
+  - m_MinMaxDistanceBetweenSolarSystems: {x: 50, y: 100}
+    m_GalaxyInfo:
+      Seed: 246043879
+      m_GalaxyName: Galaxy1
+      m_SolarSystemInfos:
+      - Seed: -685483347
+        m_Orbital: -1
+        m_NumPlanets: 2
+        m_MinMaxPlanetBaseMass: {x: 0.75, y: 1.25}
+        m_MinMaxPlanetBaseEnergy: {x: 0.75, y: 1.25}
+      - Seed: 1159560928
+        m_Orbital: -1
+        m_NumPlanets: 3
+        m_MinMaxPlanetBaseMass: {x: 0.75, y: 1.25}
+        m_MinMaxPlanetBaseEnergy: {x: 0.75, y: 1.25}
+      - Seed: 44130456
+        m_Orbital: -1
+        m_NumPlanets: 6
+        m_MinMaxPlanetBaseMass: {x: 0.75, y: 1.25}
+        m_MinMaxPlanetBaseEnergy: {x: 0.75, y: 1.25}
+    m_Cores: 00000000080000000c000000
+    m_Surfaces: 080000000c000000
+    m_Atmospheres: 00000000
+  - m_MinMaxDistanceBetweenSolarSystems: {x: 50, y: 100}
+    m_GalaxyInfo:
+      Seed: 520942574
+      m_GalaxyName: Galaxy2
+      m_SolarSystemInfos:
+      - Seed: 1660096864
+        m_Orbital: -1
+        m_NumPlanets: 2
+        m_MinMaxPlanetBaseMass: {x: 0.75, y: 1.25}
+        m_MinMaxPlanetBaseEnergy: {x: 0.75, y: 1.25}
+      - Seed: -511181834
+        m_Orbital: -1
+        m_NumPlanets: 3
+        m_MinMaxPlanetBaseMass: {x: 0.75, y: 1.25}
+        m_MinMaxPlanetBaseEnergy: {x: 0.75, y: 1.25}
+      - Seed: 2097080449
+        m_Orbital: -1
+        m_NumPlanets: 5
+        m_MinMaxPlanetBaseMass: {x: 0.75, y: 1.25}
+        m_MinMaxPlanetBaseEnergy: {x: 0.75, y: 1.25}
+      - Seed: -889106668
+        m_Orbital: -1
+        m_NumPlanets: 3
+        m_MinMaxPlanetBaseMass: {x: 0.75, y: 1.25}
+        m_MinMaxPlanetBaseEnergy: {x: 0.75, y: 1.25}
+    m_Cores: 00000000080000000c00000003000000
+    m_Surfaces: 08000000060000000c000000
+    m_Atmospheres: 0400000000000000

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f517bc4731a11744087493990b8e5985, type: 3}
+  m_Name: OxygenSurface
+  m_EditorClassIdentifier: 
+  m_SurfaceComposition: 5
+  m_CanSpawnLevels: 0000
+  MinMass: 200
+  MaxMass: 2200
+  CompatibleAtmosphereCompositions: 01000000020000000400000005000000

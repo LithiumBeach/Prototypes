@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59ca700986b4dfb47870e3437bc6ea83, type: 3}
+  m_Name: _Database
+  m_EditorClassIdentifier: 
+  AtmosphereDBList:
+  - composition: 3
+    AtmosphereData: {fileID: 11400000, guid: 6d5c3cf30b000694fa59e5b85393fd67, type: 2}
+  - composition: 7
+    AtmosphereData: {fileID: 11400000, guid: 663a7e48e4cdfd34c9ca23bbfd8d2ca0, type: 2}
+  - composition: 2
+    AtmosphereData: {fileID: 11400000, guid: 573e49e4ce9ba0c48bd0ef553bda2368, type: 2}
+  - composition: 1
+    AtmosphereData: {fileID: 11400000, guid: 6b3b413d1dd48e346b2e0e05bfa21473, type: 2}
+  - composition: 9
+    AtmosphereData: {fileID: 11400000, guid: d00c3ba1050dacd40a6689f895608f04, type: 2}
+  - composition: 10
+    AtmosphereData: {fileID: 11400000, guid: c441d2141a942a646b5f53cd4cf842de, type: 2}
+  - composition: 4
+    AtmosphereData: {fileID: 11400000, guid: ecf607ebd6950484a970b58af682bc11, type: 2}
+  - composition: 0
+    AtmosphereData: {fileID: 11400000, guid: ba8d04435f77795449e2a8d2b5c1c682, type: 2}
+  - composition: 11
+    AtmosphereData: {fileID: 11400000, guid: 8f517d208a265b444b160a7fa99ee1f1, type: 2}
+  - composition: 5
+    AtmosphereData: {fileID: 11400000, guid: cf3b092d231b3aa4b807220a8d4f266a, type: 2}
+  - composition: 8
+    AtmosphereData: {fileID: 11400000, guid: 7881c530046659947bc16827440dcb81, type: 2}
+  - composition: 6
+    AtmosphereData: {fileID: 11400000, guid: 64583acf022429f4bb3b8ec30684a06d, type: 2}
+  - composition: 12
+    AtmosphereData: {fileID: 11400000, guid: f4981660d2b79b14f8b4912397e54871, type: 2}
+  - composition: 13
+    AtmosphereData: {fileID: 11400000, guid: 95e5e46802921794eac2c6c5f9adede9, type: 2}
