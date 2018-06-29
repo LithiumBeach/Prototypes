@@ -55,6 +55,8 @@ namespace dd
             m_OutPointStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right.png") as Texture2D;
             m_OutPointStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right on.png") as Texture2D;
             m_OutPointStyle.border = new RectOffset(4, 4, 12, 12);
+
+            DialogDBSerializer.LoadDialogLines(SystemLanguage.English);
         }
 
         private void OnGUI()
@@ -323,5 +325,7 @@ namespace dd
 
             m_Nodes.Remove(node);
         }
+
+
     }
 }
