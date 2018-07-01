@@ -23,6 +23,8 @@ namespace Localization
             LocalizationDataManager.InitializeIDs();
 
             InitializeColumns();
+
+            //TODO: fix this bug..
             LoadFromJson();
             LoadFromJson();
         }
@@ -44,9 +46,6 @@ namespace Localization
             MainDataGridView.RowsAdded += OnAddRow;
             //Listen for right before a row is deleted (while we still have that row's data)
             MainDataGridView.UserDeletingRow += OnBeforeDeleteRow;
-
-            //set first row's id to 1
-            //OnAddRow(null, new DataGridViewRowsAddedEventArgs(0, 0));
         }
 
         //on a multi-row delete, this is called once for each row.
@@ -57,9 +56,12 @@ namespace Localization
 
         private void OnAddRow(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            int newID = LocalizationDataManager.GetNextUniqueID();
-            LocalizationDataManager.s_Ids.Add(newID);
-            MainDataGridView.Rows[e.RowIndex].SetValues(new object[] { newID });
+            if (!b_IsLoadingFromJson)
+            {
+                int newID = LocalizationDataManager.GetNextUniqueID();
+                LocalizationDataManager.s_Ids.Add(newID);
+                MainDataGridView.Rows[e.RowIndex].SetValues(new object[] { newID }); 
+            }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -92,8 +94,10 @@ namespace Localization
             LoadFromJson();
         }
 
+        private bool b_IsLoadingFromJson = false;
         private void LoadFromJson()
         {
+            b_IsLoadingFromJson = true;
             List<List<LocalizationData>> datas = LocalizationDataManager.ConvertFromData(MainDataGridView);
             for (int i = 0; i < datas.Count; i++)
             {
@@ -101,17 +105,20 @@ namespace Localization
                 {
                     if (MainDataGridView.Rows.Count < j+1)
                     {
-                        MainDataGridView.RowCount++;
+                        MainDataGridView.Rows.Add();
                     }
                     MainDataGridView.Rows[j].Cells[i + 1].Value = datas[i][j].m_Text;
                     MainDataGridView.Rows[j].Cells[0].Value = datas[i][j].m_ID;
 
+                    //update bank of used ids.
                     if (!LocalizationDataManager.s_Ids.Contains(datas[i][j].m_ID))
                     {
                         LocalizationDataManager.s_Ids.Add(datas[i][j].m_ID);
                     }
+
                 }
             }
+            b_IsLoadingFromJson = false;
         }
     }
 }
