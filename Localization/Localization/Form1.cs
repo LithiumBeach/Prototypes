@@ -19,7 +19,10 @@ namespace Localization
         public Form1()
         {
             InitializeComponent();
+        }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
             LocalizationDataManager.InitializeIDs();
 
             InitializeColumns();
@@ -32,6 +35,8 @@ namespace Localization
         private void InitializeColumns()
         {
             MainDataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            MainDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            MainDataGridView.AllowUserToAddRows = true;
 
             //populate columns with languages defined in LocalizationDataManager.s_Cultures
             //TODO: user-inputted s_Cultures.
