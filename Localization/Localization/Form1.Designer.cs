@@ -32,14 +32,11 @@ namespace Localization
         private void InitializeComponent()
         {
             this.MainDataGridView = new System.Windows.Forms.DataGridView();
-            this.IDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Language1Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FrenchColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SpanishColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.IDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).BeginInit();
             this.MainMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -49,35 +46,11 @@ namespace Localization
             this.MainDataGridView.AllowDrop = true;
             this.MainDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.MainDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.IDColumn,
-            this.Language1Column,
-            this.FrenchColumn,
-            this.SpanishColumn});
+            this.IDColumn});
             this.MainDataGridView.Location = new System.Drawing.Point(12, 49);
             this.MainDataGridView.Name = "MainDataGridView";
             this.MainDataGridView.Size = new System.Drawing.Size(873, 520);
             this.MainDataGridView.TabIndex = 0;
-            // 
-            // IDColumn
-            // 
-            this.IDColumn.HeaderText = "ID";
-            this.IDColumn.Name = "IDColumn";
-            this.IDColumn.ReadOnly = true;
-            // 
-            // Language1Column
-            // 
-            this.Language1Column.HeaderText = "English";
-            this.Language1Column.Name = "Language1Column";
-            // 
-            // FrenchColumn
-            // 
-            this.FrenchColumn.HeaderText = "French";
-            this.FrenchColumn.Name = "FrenchColumn";
-            // 
-            // SpanishColumn
-            // 
-            this.SpanishColumn.HeaderText = "Spanish";
-            this.SpanishColumn.Name = "SpanishColumn";
             // 
             // MainMenuStrip
             // 
@@ -114,6 +87,12 @@ namespace Localization
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
+            // IDColumn
+            // 
+            this.IDColumn.HeaderText = "ID";
+            this.IDColumn.Name = "IDColumn";
+            this.IDColumn.ReadOnly = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -134,14 +113,11 @@ namespace Localization
         #endregion
 
         private System.Windows.Forms.DataGridView MainDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IDColumn;
         private System.Windows.Forms.MenuStrip MainMenuStrip;
-        private DataGridViewTextBoxColumn Language1Column;
-        private DataGridViewTextBoxColumn FrenchColumn;
-        private DataGridViewTextBoxColumn SpanishColumn;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem saveToolStripMenuItem;
         private ToolStripMenuItem loadToolStripMenuItem;
+        private DataGridViewTextBoxColumn IDColumn;
     }
 }
 
