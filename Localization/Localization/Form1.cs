@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -73,18 +74,38 @@ namespace Localization
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SaveAllLanguages(LocalizationDataManager.s_CurrentSaveDirectory, false);
+        }
+
+        private void SaveAllLanguages(string _pathPrefix, bool _confirmOverwritePopup)
+        {
             //first list is per language, nested list is all the datas.
             List<List<LocalizationData>> datas = LocalizationDataManager.ConvertToData(MainDataGridView);
 
             for (int languageIndex = 0; languageIndex < LocalizationDataManager.s_Cultures.Length; languageIndex++)
             {
-                string path = "..\\" +
+                string path = _pathPrefix +
                               LocalizationDataManager.s_FilenamePrefix +
                               LocalizationDataManager.GetCultureNameAtIndex(languageIndex) +
                               LocalizationDataManager.s_FilenameExtension;
                 if (File.Exists(path))
                 {
-                    File.Delete(path);
+                    if (_confirmOverwritePopup)
+                    {
+                        DialogResult r = MessageBox.Show("Overwrite existing files?", "", MessageBoxButtons.OKCancel);
+                        if (r == DialogResult.Yes)
+                        {
+                            File.Delete(path);
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        File.Delete(path);
+                    }
                 }
 
                 //https://stackoverflow.com/questions/16921652/how-to-write-a-json-file-in-c
@@ -94,6 +115,9 @@ namespace Localization
                     serializer.Serialize(file, datas[languageIndex]);
                 }
             }
+
+            //udpate current save directory to this if everything went well
+            LocalizationDataManager.s_CurrentSaveDirectory = _pathPrefix;
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -126,6 +150,31 @@ namespace Localization
                 }
             }
             b_IsLoadingFromJson = false;
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CommonFileDialog.IsPlatformSupported)
+            {
+                var folderSelectorDialog = new CommonOpenFileDialog();
+                folderSelectorDialog.EnsureReadOnly = true;
+                folderSelectorDialog.IsFolderPicker = true;
+                folderSelectorDialog.AllowNonFileSystemItems = false;
+                folderSelectorDialog.Multiselect = false;
+                folderSelectorDialog.EnsurePathExists = true;
+                folderSelectorDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Recent);
+                folderSelectorDialog.Title = "Project Location";
+                //code hangs here
+                CommonFileDialogResult result = folderSelectorDialog.ShowDialog();
+                //resumes here
+                if (result == CommonFileDialogResult.Ok)
+                {
+                    string selectedPath = folderSelectorDialog.FileName;
+
+                    //Save Here!
+                    SaveAllLanguages(selectedPath+"\\", true);
+                }
+            }
         }
     }
 }

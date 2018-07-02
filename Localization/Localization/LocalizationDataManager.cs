@@ -15,6 +15,8 @@ namespace Localization
         internal static string s_InvalidID = "[INVALID]";
         internal static List<int> s_Ids;
 
+        internal static string s_CurrentSaveDirectory = "..\\";
+
         //for all culture strings, see: https://msdn.microsoft.com/en-us/library/cc233982.aspx
         //TODO: display this link in add language prompt.
         internal static CultureInfo[] s_Cultures =

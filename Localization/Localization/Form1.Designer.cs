@@ -31,13 +31,14 @@ namespace Localization
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.MainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainDataGridView = new System.Windows.Forms.DataGridView();
             this.IDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).BeginInit();
             this.SuspendLayout();
@@ -56,6 +57,7 @@ namespace Localization
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
             this.loadToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -92,8 +94,8 @@ namespace Localization
             this.MainDataGridView.Location = new System.Drawing.Point(12, 27);
             this.MainDataGridView.Name = "MainDataGridView";
             this.MainDataGridView.RowHeadersWidth = 25;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MainDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MainDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.MainDataGridView.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             this.MainDataGridView.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Gentium Book Basic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainDataGridView.RowTemplate.Height = 100;
@@ -105,6 +107,15 @@ namespace Localization
             this.IDColumn.HeaderText = "ID";
             this.IDColumn.Name = "IDColumn";
             this.IDColumn.ReadOnly = true;
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -132,6 +143,7 @@ namespace Localization
         private ToolStripMenuItem saveToolStripMenuItem;
         private ToolStripMenuItem loadToolStripMenuItem;
         private DataGridViewTextBoxColumn IDColumn;
+        private ToolStripMenuItem saveAsToolStripMenuItem;
     }
 }
 
