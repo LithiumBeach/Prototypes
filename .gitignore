@@ -4,4 +4,5 @@
 *.suo
 *.sln
 *.csproj
-/Localization/Localization/bin/Debug
+*/bin/Debug
+*/obj/Debug

@@ -79,13 +79,13 @@ namespace Localization
             return l;
         }
 
-        internal static List<List<LocalizationData>> ConvertFromData(DataGridView mainDataGridView)
+        internal static List<List<LocalizationData>> ConvertFromData(string _pathPrefix, DataGridView mainDataGridView)
         {
             List<List<LocalizationData>> datas = new List<List<LocalizationData>>();
 
             for (int languageIndex = 0; languageIndex < LocalizationDataManager.s_Cultures.Length; languageIndex++)
             {
-                string path = "..\\" +
+                string path = _pathPrefix +
                               s_FilenamePrefix +
                               GetCultureNameAtIndex(languageIndex) +
                               s_FilenameExtension;

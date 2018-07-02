@@ -26,11 +26,23 @@ namespace Localization
         {
             LocalizationDataManager.InitializeIDs();
 
+            MainDataGridView.ClearSelection();
+
             InitializeColumns();
 
-            //TODO: fix this bug..
-            LoadFromJson();
-            LoadFromJson();
+            if (LoadFromJson(LocalizationDataManager.s_CurrentSaveDirectory))
+            {
+                //TODO: fix this: shouldn't need to call this twice..
+                LoadFromJson(LocalizationDataManager.s_CurrentSaveDirectory);
+            }
+            else
+            {
+                //this should be 0, but we'll do it the standard way anyway
+                int newID = LocalizationDataManager.GetNextUniqueID();
+                LocalizationDataManager.s_Ids.Add(newID);
+                MainDataGridView.Rows[0].SetValues(new object[] { newID });
+            }
+
         }
 
         private void InitializeColumns()
@@ -122,14 +134,19 @@ namespace Localization
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadFromJson();
+            string path = OpenCommonFileDialog();
+            if (path != "")
+            {
+                LoadFromJson(path);
+            }
         }
 
         private bool b_IsLoadingFromJson = false;
-        private void LoadFromJson()
+        private bool LoadFromJson(string _pathPrefix)
         {
             b_IsLoadingFromJson = true;
-            List<List<LocalizationData>> datas = LocalizationDataManager.ConvertFromData(MainDataGridView);
+            List<List<LocalizationData>> datas = LocalizationDataManager.ConvertFromData(_pathPrefix, MainDataGridView);
+            MainDataGridView.RowCount = 1;
             for (int i = 0; i < datas.Count; i++)
             {
                 for (int j = 0; j < datas[i].Count; j++)
@@ -150,9 +167,22 @@ namespace Localization
                 }
             }
             b_IsLoadingFromJson = false;
+
+            //no data if failed
+            return datas.Count > 0;
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string selectedPath = OpenCommonFileDialog();
+            if (selectedPath != "")
+            {
+                //Save Here!
+                SaveAllLanguages(selectedPath + "\\", true);
+            }
+        }
+
+        private string OpenCommonFileDialog()
         {
             if (CommonFileDialog.IsPlatformSupported)
             {
@@ -170,11 +200,10 @@ namespace Localization
                 if (result == CommonFileDialogResult.Ok)
                 {
                     string selectedPath = folderSelectorDialog.FileName;
-
-                    //Save Here!
-                    SaveAllLanguages(selectedPath+"\\", true);
+                    return selectedPath + "\\";
                 }
             }
+            return "";
         }
     }
 }
