@@ -37,6 +37,7 @@ namespace Localization
         {
             //stub
             s_Ids = new List<int>();
+            s_Ids.Clear();
         }
 
         //find the next invalid id.

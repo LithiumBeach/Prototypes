@@ -30,14 +30,10 @@ namespace Localization
 
             InitializeColumns();
 
-            if (LoadFromJson(LocalizationDataManager.s_CurrentSaveDirectory))
+            if (!LoadFromJson(LocalizationDataManager.s_CurrentSaveDirectory))
             {
-                //TODO: fix this: shouldn't need to call this twice..
-                LoadFromJson(LocalizationDataManager.s_CurrentSaveDirectory);
-            }
-            else
-            {
-                //this should be 0, but we'll do it the standard way anyway
+                LocalizationDataManager.InitializeIDs();
+                //make one default row.
                 int newID = LocalizationDataManager.GetNextUniqueID();
                 LocalizationDataManager.s_Ids.Add(newID);
                 MainDataGridView.Rows[0].SetValues(new object[] { newID });
@@ -58,7 +54,7 @@ namespace Localization
             for (int i = 0; i < LocalizationDataManager.s_Cultures.Length; i++)
             {
                 MainDataGridView.ColumnCount++;
-                MainDataGridView.Columns[i+1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                MainDataGridView.Columns[i + 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 MainDataGridView.Columns[i + 1].HeaderCell.Value = LocalizationDataManager.GetCultureNameAtIndex(i);
             }
 
@@ -80,7 +76,7 @@ namespace Localization
             {
                 int newID = LocalizationDataManager.GetNextUniqueID();
                 LocalizationDataManager.s_Ids.Add(newID);
-                MainDataGridView.Rows[e.RowIndex].SetValues(new object[] { newID }); 
+                MainDataGridView.Rows[e.RowIndex].SetValues(new object[] { newID });
             }
         }
 
@@ -138,7 +134,6 @@ namespace Localization
             if (path != "")
             {
                 LoadFromJson(path);
-                LoadFromJson(path);
             }
         }
 
@@ -148,15 +143,19 @@ namespace Localization
             LocalizationDataManager.InitializeIDs();
             b_IsLoadingFromJson = true;
             List<List<LocalizationData>> datas = LocalizationDataManager.ConvertFromData(_pathPrefix, MainDataGridView);
-            MainDataGridView.RowCount = 1;
+
+            //determine the row count BEFORE adding any data.
+            int numRows = 0;
+            for (int i = 0; i < datas.Count; i++)
+            {
+                numRows = Math.Max(numRows, datas[i].Count);
+            }
+            MainDataGridView.RowCount = numRows;
+
             for (int i = 0; i < datas.Count; i++)
             {
                 for (int j = 0; j < datas[i].Count; j++)
                 {
-                    if (MainDataGridView.Rows.Count < j+1)
-                    {
-                        MainDataGridView.Rows.Add();
-                    }
                     MainDataGridView.Rows[j].Cells[i + 1].Value = datas[i][j].m_Text;
                     MainDataGridView.Rows[j].Cells[0].Value = datas[i][j].m_ID;
 
