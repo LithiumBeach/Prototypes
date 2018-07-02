@@ -83,13 +83,13 @@ namespace Localization
             this.MainDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.MainDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.MainDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.MainDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.MainDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.MainDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.IDColumn});
             this.MainDataGridView.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.MainDataGridView.Location = new System.Drawing.Point(0, 24);
+            this.MainDataGridView.Location = new System.Drawing.Point(12, 27);
             this.MainDataGridView.Name = "MainDataGridView";
             this.MainDataGridView.RowHeadersWidth = 25;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -97,7 +97,7 @@ namespace Localization
             this.MainDataGridView.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             this.MainDataGridView.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Gentium Book Basic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainDataGridView.RowTemplate.Height = 100;
-            this.MainDataGridView.Size = new System.Drawing.Size(1264, 900);
+            this.MainDataGridView.Size = new System.Drawing.Size(1240, 822);
             this.MainDataGridView.TabIndex = 0;
             // 
             // IDColumn
@@ -105,7 +105,6 @@ namespace Localization
             this.IDColumn.HeaderText = "ID";
             this.IDColumn.Name = "IDColumn";
             this.IDColumn.ReadOnly = true;
-            this.IDColumn.Width = 43;
             // 
             // Form1
             // 

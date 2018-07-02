@@ -37,6 +37,7 @@ namespace Localization
             MainDataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             MainDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             MainDataGridView.AllowUserToAddRows = true;
+            MainDataGridView.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
             //populate columns with languages defined in LocalizationDataManager.s_Cultures
             //TODO: user-inputted s_Cultures.
@@ -44,6 +45,7 @@ namespace Localization
             for (int i = 0; i < LocalizationDataManager.s_Cultures.Length; i++)
             {
                 MainDataGridView.ColumnCount++;
+                MainDataGridView.Columns[i+1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 MainDataGridView.Columns[i + 1].HeaderCell.Value = LocalizationDataManager.GetCultureNameAtIndex(i);
             }
 
