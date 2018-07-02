@@ -128,7 +128,7 @@ namespace Localization
                 }
             }
 
-            //udpate current save directory to this if everything went well
+            //update current save directory to this if everything went well
             LocalizationDataManager.s_CurrentSaveDirectory = _pathPrefix;
         }
 
@@ -138,12 +138,14 @@ namespace Localization
             if (path != "")
             {
                 LoadFromJson(path);
+                LoadFromJson(path);
             }
         }
 
         private bool b_IsLoadingFromJson = false;
         private bool LoadFromJson(string _pathPrefix)
         {
+            LocalizationDataManager.InitializeIDs();
             b_IsLoadingFromJson = true;
             List<List<LocalizationData>> datas = LocalizationDataManager.ConvertFromData(_pathPrefix, MainDataGridView);
             MainDataGridView.RowCount = 1;
