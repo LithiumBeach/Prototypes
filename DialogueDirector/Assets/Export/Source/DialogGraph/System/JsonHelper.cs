@@ -1,38 +1,17 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace dd
 {
-    //taken from:
-    //https://stackoverflow.com/questions/36239705/serialize-and-deserialize-json-and-json-array-in-unity
-    //serialize/deserialize array<T>
     public static class JsonHelper
     {
-        public static T[] FromJson<T>(string json)
+        //Json.NET (netwonsoft) analog in unity. it's on the asset store.
+        //https://assetstore.unity.com/packages/tools/input-management/json-net-for-unity-11347
+        //
+        //Note: may have to remove this and make something 'good enough'
+        internal static DialogData[] FromJsonDialogData(string json)
         {
-            Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
-            return wrapper != null ? wrapper.Items : null;
-        }
-
-        public static string ToJson<T>(T[] array)
-        {
-            Wrapper<T> wrapper = new Wrapper<T>();
-            wrapper.Items = array;
-            return JsonUtility.ToJson(wrapper);
-        }
-
-        public static string ToJson<T>(T[] array, bool prettyPrint)
-        {
-            Wrapper<T> wrapper = new Wrapper<T>();
-            wrapper.Items = array;
-            return JsonUtility.ToJson(wrapper, prettyPrint);
-        }
-
-        [System.Serializable]
-        private class Wrapper<T>
-        {
-            public T[] Items;
+            return JsonConvert.DeserializeObject<List<DialogData>>(json).ToArray();
         }
     }
 }

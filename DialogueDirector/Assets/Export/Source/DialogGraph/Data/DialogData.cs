@@ -16,16 +16,16 @@ namespace dd
     {
         public static readonly string c_InvalidTextString = "NOT LOCALIZED!";
 
-        public DialogData() { m_LocalizationID = -1; m_Text = c_InvalidTextString; }
-        public DialogData(int id, string text){ m_LocalizationID = id;  m_Text = text; }
+        public DialogData() { m_ID = -1; m_Text = c_InvalidTextString; }
+        public DialogData(int id, string text){ m_ID = id;  m_Text = text; }
 
         [OnValueChanged("HandleLocalizationIDChange")]
-        public int m_LocalizationID;
+        public int m_ID;
         public string m_Text;
 
         private void HandleLocalizationIDChange()
         {
-            m_Text = DialogDBSerializer.GetTextFromID(m_LocalizationID);
+            m_Text = DialogDBSerializer.GetTextFromID(m_ID);
         }
     }
 }
