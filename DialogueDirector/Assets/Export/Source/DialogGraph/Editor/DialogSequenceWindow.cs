@@ -15,12 +15,12 @@ namespace dd
         private List<DialogConnection> m_Connections;
 
         private GUIStyle m_NodeStyle;
-        private GUIStyle m_InPointStyle;
-        private GUIStyle m_OutPointStyle;
+        private GUIStyle m_FromPointStyle;
+        private GUIStyle m_ToPointStyle;
         private GUIStyle m_SelectedNodeStyle;
 
-        private DialogConnectionPoint m_SelectedInPoint;
-        private DialogConnectionPoint m_SelectedOutPoint;
+        private DialogConnectionPoint m_SelectedFromPoint;
+        private DialogConnectionPoint m_SelectedToPoint;
 
         private Vector2 m_Offset;//total offset from dragging
         private Vector2 m_Drag;//resets every frame: drag delta for current frame
@@ -45,16 +45,24 @@ namespace dd
             m_Nodes = new List<DialogNode>();
             m_Connections = new List<DialogConnection>();
 
+            //clear connection selection
+            m_SelectedFromPoint = null;
+            m_SelectedToPoint = null;
+
             if (data.m_Nodes != null)
             {
+                //for each node
                 for (int i = 0; i < data.m_Nodes.Count; i++)
                 {
+                    //create visual node from data
                     DialogNode newNode = OnClickAddNode(data.m_Nodes[i].m_Position);
                     newNode.m_IDText = data.m_Nodes[i].m_LocalizationID.ToString();
                     newNode.m_NodeID = data.m_Nodes[i].m_NodeID;
                 }
+                //this loop must occur after all nodes have been initialized
                 for (int i = 0; i < data.m_Nodes.Count; i++)
                 {
+                    //create TO connection if applicable
                     if (data.m_Nodes[i].m_ToNodeID != 0)
                     {
                         CreateConnection(data.m_Nodes[i].m_NodeID, data.m_Nodes[i].m_ToNodeID);
@@ -83,9 +91,9 @@ namespace dd
             for (int connectionIndex = 0; connectionIndex < m_Connections.Count; connectionIndex++)
             {
                 //find the node data with the same ID as this connection's OUT node.
-                DialogNodeData connectionOutNodeData = m_Data.m_Nodes.Find((item) => item.m_NodeID == m_Connections[connectionIndex].m_OutPoint.m_Node.m_NodeID);
+                DialogNodeData connectionFromNodeData = m_Data.m_Nodes.Find((item) => item.m_NodeID == m_Connections[connectionIndex].m_FromPoint.m_Node.m_NodeID);
 
-                connectionOutNodeData.m_ToNodeID = m_Connections[connectionIndex].m_InPoint.m_Node.m_NodeID;
+                connectionFromNodeData.m_ToNodeID = m_Connections[connectionIndex].m_ToPoint.m_Node.m_NodeID;
             }
         }
 
@@ -101,15 +109,15 @@ namespace dd
             m_SelectedNodeStyle.border = new RectOffset(12, 12, 12, 12);
             m_SelectedNodeStyle.alignment = TextAnchor.UpperCenter;
 
-            m_InPointStyle = new GUIStyle();
-            m_InPointStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left.png") as Texture2D;
-            m_InPointStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left on.png") as Texture2D;
-            m_InPointStyle.border = new RectOffset(4, 4, 12, 12);
+            m_ToPointStyle = new GUIStyle();
+            m_ToPointStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left.png") as Texture2D;
+            m_ToPointStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left on.png") as Texture2D;
+            m_ToPointStyle.border = new RectOffset(4, 4, 12, 12);
 
-            m_OutPointStyle = new GUIStyle();
-            m_OutPointStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right.png") as Texture2D;
-            m_OutPointStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right on.png") as Texture2D;
-            m_OutPointStyle.border = new RectOffset(4, 4, 12, 12);
+            m_FromPointStyle = new GUIStyle();
+            m_FromPointStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right.png") as Texture2D;
+            m_FromPointStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right on.png") as Texture2D;
+            m_FromPointStyle.border = new RectOffset(4, 4, 12, 12);
 
             //TODO: don't load this every time
             DialogDBSerializer.LoadDialogLines(CultureInfo.GetCultureInfo("en"));
@@ -244,7 +252,7 @@ namespace dd
                 m_Nodes = new List<DialogNode>();
             }
 
-            DialogNode node = new DialogNode(mousePosition, m_NodeStyle, m_SelectedNodeStyle, m_InPointStyle, m_OutPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
+            DialogNode node = new DialogNode(mousePosition, m_NodeStyle, m_SelectedNodeStyle, m_ToPointStyle, m_FromPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
             node.m_NodeID = m_Data.GetUniqueNodeID();
             m_Nodes.Add(node);
             return node;
@@ -252,17 +260,17 @@ namespace dd
 
         private void OnClickInPoint(DialogConnectionPoint inPoint)
         {
-            m_SelectedInPoint = inPoint;
+            m_SelectedToPoint = inPoint;
 
-            if (m_SelectedOutPoint != null)
+            if (m_SelectedFromPoint != null)
             {
-                if (m_SelectedOutPoint.m_Node != m_SelectedInPoint.m_Node)
+                if (m_SelectedFromPoint.m_Node != m_SelectedToPoint.m_Node)
                 {
                     //check all existing connections, don't add a duplicate.
                     for (int i = 0; i < (m_Connections != null ? m_Connections.Count : 0); i++)
                     {
-                        if ((m_Connections[i].m_InPoint == inPoint && m_Connections[i].m_OutPoint == m_SelectedOutPoint) ||
-                            (m_Connections[i].m_InPoint == m_SelectedOutPoint && m_Connections[i].m_OutPoint == inPoint))
+                        if ((m_Connections[i].m_ToPoint == inPoint && m_Connections[i].m_FromPoint == m_SelectedFromPoint) ||
+                            (m_Connections[i].m_ToPoint == m_SelectedFromPoint && m_Connections[i].m_FromPoint == inPoint))
                         {
                             ClearConnectionSelection();
                             return;
@@ -280,17 +288,17 @@ namespace dd
 
         private void OnClickOutPoint(DialogConnectionPoint outPoint)
         {
-            m_SelectedOutPoint = outPoint;
+            m_SelectedFromPoint = outPoint;
 
-            if (m_SelectedInPoint != null)
+            if (m_SelectedToPoint != null)
             {
-                if (m_SelectedOutPoint.m_Node != m_SelectedInPoint.m_Node)
+                if (m_SelectedFromPoint.m_Node != m_SelectedToPoint.m_Node)
                 {
                     //check all existing connections, don't add a duplicate.
                     for (int i = 0; i < (m_Connections != null ? m_Connections.Count : 0); i++)
                     {
-                        if ((m_Connections[i].m_InPoint == outPoint && m_Connections[i].m_OutPoint == m_SelectedInPoint) ||
-                            (m_Connections[i].m_InPoint == m_SelectedInPoint && m_Connections[i].m_OutPoint == outPoint))
+                        if ((m_Connections[i].m_ToPoint == outPoint && m_Connections[i].m_FromPoint == m_SelectedToPoint) ||
+                            (m_Connections[i].m_ToPoint == m_SelectedToPoint && m_Connections[i].m_FromPoint == outPoint))
                         {
                             ClearConnectionSelection();
                             return;
@@ -318,34 +326,34 @@ namespace dd
                 m_Connections = new List<DialogConnection>();
             }
 
-            DialogConnection existingDC = m_Connections.Find((item) => item.m_OutPoint.m_Node.m_NodeID == m_SelectedOutPoint.m_Node.m_NodeID);
+            DialogConnection existingDC = m_Connections.Find((item) => item.m_FromPoint.m_Node.m_NodeID == m_SelectedFromPoint.m_Node.m_NodeID);
             if (existingDC != null)
             {
                 m_Connections.Remove(existingDC);
             }
-            m_Connections.Add(new DialogConnection(m_SelectedInPoint, m_SelectedOutPoint, OnClickRemoveConnection));
+            m_Connections.Add(new DialogConnection(m_SelectedFromPoint, m_SelectedToPoint, OnClickRemoveConnection));
         }
-        private void CreateConnection(int outID, int inID)
+        private void CreateConnection(int fromID, int toID)
         {
             if (m_Connections == null)
             {
                 m_Connections = new List<DialogConnection>();
             }
 
-            DialogConnectionPoint outPoint = m_Nodes.Find((item) => item.m_NodeID == outID).m_OutPoint;
-            DialogConnectionPoint inPoint = m_Nodes.Find((item) => item.m_NodeID == inID).m_InPoint;
+            DialogConnectionPoint outPoint = m_Nodes.Find((item) => item.m_NodeID == fromID).m_OutPoint;
+            DialogConnectionPoint inPoint = m_Nodes.Find((item) => item.m_NodeID == toID).m_InPoint;
 
-            m_Connections.Add(new DialogConnection(inPoint, outPoint, OnClickRemoveConnection));
+            m_Connections.Add(new DialogConnection(outPoint, inPoint, OnClickRemoveConnection));
         }
 
         private void DrawConnectionLine(Event e)
         {
-            if (m_SelectedInPoint != null && m_SelectedOutPoint == null)
+            if (m_SelectedToPoint != null && m_SelectedFromPoint == null)
             {
                 Handles.DrawBezier(
-                    m_SelectedInPoint.m_Rect.center,
+                    m_SelectedToPoint.m_Rect.center,
                     e.mousePosition,
-                    m_SelectedInPoint.m_Rect.center + Vector2.left * 50f,
+                    m_SelectedToPoint.m_Rect.center + Vector2.left * 500f,
                     e.mousePosition - Vector2.left * 50f,
                     Color.white,
                     null,
@@ -355,12 +363,12 @@ namespace dd
                 GUI.changed = true;
             }
 
-            if (m_SelectedOutPoint != null && m_SelectedInPoint == null)
+            if (m_SelectedFromPoint != null && m_SelectedToPoint == null)
             {
                 Handles.DrawBezier(
-                    m_SelectedOutPoint.m_Rect.center,
+                    m_SelectedFromPoint.m_Rect.center,
                     e.mousePosition,
-                    m_SelectedOutPoint.m_Rect.center - Vector2.left * 50f,
+                    m_SelectedFromPoint.m_Rect.center - Vector2.left * 50f,
                     e.mousePosition + Vector2.left * 50f,
                     Color.white,
                     null,
@@ -373,8 +381,8 @@ namespace dd
 
         private void ClearConnectionSelection()
         {
-            m_SelectedInPoint = null;
-            m_SelectedOutPoint = null;
+            m_SelectedToPoint = null;
+            m_SelectedFromPoint = null;
         }
 
         private void OnClickRemoveNode(DialogNode node)
@@ -385,7 +393,7 @@ namespace dd
 
                 for (int i = 0; i < m_Connections.Count; i++)
                 {
-                    if (m_Connections[i].m_InPoint == node.m_InPoint || m_Connections[i].m_OutPoint == node.m_OutPoint)
+                    if (m_Connections[i].m_ToPoint == node.m_InPoint || m_Connections[i].m_FromPoint == node.m_OutPoint)
                     {
                         connectionsToRemove.Add(m_Connections[i]);
                     }

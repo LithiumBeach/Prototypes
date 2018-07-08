@@ -41,7 +41,7 @@ namespace dd
                 m_Rand = new System.Random();
             }
 
-            int newID = 0; //0 is reserved for none (ie. no out connection)
+            int newID = 0; //0 is reserved for none
             if (m_Nodes == null)
             {
                 Clear();

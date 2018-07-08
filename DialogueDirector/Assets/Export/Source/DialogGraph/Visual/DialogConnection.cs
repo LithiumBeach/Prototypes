@@ -8,34 +8,34 @@ namespace dd
 {
     public class DialogConnection
     {
-        public DialogConnectionPoint m_InPoint;
-        public DialogConnectionPoint m_OutPoint;
+        public DialogConnectionPoint m_ToPoint;
+        public DialogConnectionPoint m_FromPoint;
         public Action<DialogConnection> OnClickRemoveConnection;
 
-        public DialogConnection(DialogConnectionPoint inPoint, DialogConnectionPoint outPoint, Action<DialogConnection> _OnClickRemoveConnection)
+        public DialogConnection(DialogConnectionPoint fromPoint, DialogConnectionPoint toPoint, Action<DialogConnection> _OnClickRemoveConnection)
         {
-            m_InPoint = inPoint;
-            m_OutPoint = outPoint;
+            m_ToPoint = toPoint;
+            m_FromPoint = fromPoint;
             OnClickRemoveConnection = _OnClickRemoveConnection;
         }
 
         public void Draw()
         {
             Handles.DrawBezier(
-                m_InPoint.m_Rect.center,
-                m_OutPoint.m_Rect.center,
-                m_InPoint.m_Rect.center + Vector2.left * 50f,
-                m_OutPoint.m_Rect.center - Vector2.left * 50f,
+                m_ToPoint.m_Rect.center,
+                m_FromPoint.m_Rect.center,
+                m_ToPoint.m_Rect.center + Vector2.left * 50f,
+                m_FromPoint.m_Rect.center - Vector2.left * 50f,
                 Color.white,
                 null,
                 2f
             );
 
             Vector3[] curvePoints = Handles.MakeBezierPoints(
-                m_InPoint.m_Rect.center,
-                m_OutPoint.m_Rect.center,
-                m_InPoint.m_Rect.center + Vector2.left * 50f,
-                m_OutPoint.m_Rect.center - Vector2.left * 50f, 15);
+                m_ToPoint.m_Rect.center,
+                m_FromPoint.m_Rect.center,
+                m_ToPoint.m_Rect.center + Vector2.left * 50f,
+                m_FromPoint.m_Rect.center - Vector2.left * 50f, 15);
 
             #region Draw Arrow on Line
             Vector3 arrowCenterPoint = curvePoints[5];
@@ -48,7 +48,7 @@ namespace dd
             #endregion
 
             //delete on click
-            if (Handles.Button((m_InPoint.m_Rect.center + m_OutPoint.m_Rect.center) * 0.5f, Quaternion.identity, 4, 12, Handles.RectangleHandleCap))
+            if (Handles.Button((m_ToPoint.m_Rect.center + m_FromPoint.m_Rect.center) * 0.5f, Quaternion.identity, 4, 12, Handles.RectangleHandleCap))
             {
                 if (OnClickRemoveConnection != null)
                 {
