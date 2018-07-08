@@ -6,3 +6,4 @@
 *.csproj
 */bin/Debug
 */obj/Debug
+*/Library
