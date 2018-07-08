@@ -35,6 +35,8 @@ namespace dd
         public string m_IDText = "";
         public string m_LocalizedText = "";
 
+        public int m_NodeID = -1;
+
         public DialogNode(Vector2 position, GUIStyle nodeStyle, GUIStyle selectedNodeStyle, GUIStyle inPointStyle, GUIStyle outPointStyle,
             Action<DialogConnectionPoint> OnClickInPoint, Action<DialogConnectionPoint> OnClickOutPoint, Action<DialogNode> OnClickRemoveNode)
         {
@@ -56,7 +58,6 @@ namespace dd
             float idRectHeight = 32;
             m_IDRect = new Rect(position.x - idRectWidth * .5f, position.y - height * .5f + 20, idRectWidth, idRectHeight);
 
-
             //Speech Rect
             float speechWidth = 180;
             float speechHeight = 150;
@@ -64,6 +65,9 @@ namespace dd
 
             //Actions
             OnRemoveNode = OnClickRemoveNode;
+
+            //default values
+            m_IDText = "-1";
         }
 
         public void Move(Vector2 delta)

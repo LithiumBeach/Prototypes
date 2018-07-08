@@ -25,14 +25,71 @@ namespace dd
         private Vector2 m_Offset;//total offset from dragging
         private Vector2 m_Drag;//resets every frame: drag delta for current frame
 
+        private DialogGraphData m_Data;
+
         [MenuItem("Window/Dialog Director")]
-        private static void OpenWindow()
+        public static void OpenWindow()
         {
             //get type of Scene View
             Type t = Type.GetType("UnityEditor.SceneView,UnityEditor.dll");
             //by default, dock next to scene view.
             EditorWindow window = GetWindow<DialogSequenceWindow>(new Type[] { t });
             window.titleContent = new GUIContent("Dialog Director");
+        }
+
+        public void Initialize(DialogGraphData data)
+        {
+            m_Data = data;
+
+            //clear lists.
+            m_Nodes = new List<DialogNode>();
+            m_Connections = new List<DialogConnection>();
+
+            if (data.m_Nodes != null)
+            {
+                for (int i = 0; i < data.m_Nodes.Count; i++)
+                {
+                    DialogNode newNode = OnClickAddNode(data.m_Nodes[i].m_Position);
+                    newNode.m_IDText = data.m_Nodes[i].m_LocalizationID.ToString();
+                    newNode.m_NodeID = data.m_Nodes[i].m_NodeID;
+                }
+                for (int i = 0; i < data.m_Nodes.Count; i++)
+                {
+                    if (data.m_Nodes[i].m_ToNodeID != 0)
+                    {
+                        if (m_Connections.Find((item) => item.m_InPoint.m_Node.m_NodeID == data.m_Nodes[i].m_NodeID && item.m_OutPoint.m_Node.m_NodeID == data.m_Nodes[i].m_ToNodeID) == null)
+                        {
+                            CreateConnection(data.m_Nodes[i].m_NodeID, data.m_Nodes[i].m_ToNodeID);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void OnUnitySave()
+        {
+            Debug.Assert(m_Data != null);
+
+            m_Data.Clear();
+            for (int nodeIndex = 0; nodeIndex < m_Nodes.Count; nodeIndex++)
+            {
+                int iterID = -1;
+                if (!int.TryParse(m_Nodes[nodeIndex].m_IDText, out iterID))
+                {
+                    iterID = -1;
+                }
+                DialogNodeData dnd = new DialogNodeData(m_Nodes[nodeIndex].m_NodeID, iterID, m_Nodes[nodeIndex].m_Rect.position);
+
+                m_Data.m_Nodes.Add(dnd);
+            }
+
+            for (int connectionIndex = 0; connectionIndex < m_Connections.Count; connectionIndex++)
+            {
+                //find the node data with the same ID as this connection's IN node.
+                DialogNodeData connectionInNodeData = m_Data.m_Nodes.Find((item) => item.m_NodeID == m_Connections[connectionIndex].m_InPoint.m_Node.m_NodeID);
+
+                connectionInNodeData.m_ToNodeID = m_Connections[connectionIndex].m_OutPoint.m_Node.m_NodeID;
+            }
         }
 
         private void OnEnable()
@@ -57,7 +114,7 @@ namespace dd
             m_OutPointStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right on.png") as Texture2D;
             m_OutPointStyle.border = new RectOffset(4, 4, 12, 12);
 
-            //TODO: not this lmao try again.
+            //TODO: don't load this every time
             DialogDBSerializer.LoadDialogLines(CultureInfo.GetCultureInfo("en"));
         }
 
@@ -183,14 +240,17 @@ namespace dd
             GUI.changed = true;
         }
 
-        private void OnClickAddNode(Vector2 mousePosition)
+        private DialogNode OnClickAddNode(Vector2 mousePosition)
         {
             if (m_Nodes == null)
             {
                 m_Nodes = new List<DialogNode>();
             }
 
-            m_Nodes.Add(new DialogNode(mousePosition, m_NodeStyle, m_SelectedNodeStyle, m_InPointStyle, m_OutPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode));
+            DialogNode node = new DialogNode(mousePosition, m_NodeStyle, m_SelectedNodeStyle, m_InPointStyle, m_OutPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
+            node.m_NodeID = m_Data.GetUniqueNodeID();
+            m_Nodes.Add(node);
+            return node;
         }
 
         private void OnClickInPoint(DialogConnectionPoint inPoint)
@@ -261,7 +321,24 @@ namespace dd
                 m_Connections = new List<DialogConnection>();
             }
 
+            DialogConnection existingDC = m_Connections.Find((item) => item.m_OutPoint.m_Node.m_NodeID == m_SelectedOutPoint.m_Node.m_NodeID);
+            if (existingDC != null)
+            {
+                m_Connections.Remove(existingDC);
+            }
             m_Connections.Add(new DialogConnection(m_SelectedInPoint, m_SelectedOutPoint, OnClickRemoveConnection));
+        }
+        private void CreateConnection(int inID, int outID)
+        {
+            if (m_Connections == null)
+            {
+                m_Connections = new List<DialogConnection>();
+            }
+
+            DialogConnectionPoint inPoint = m_Nodes.Find((item) => item.m_NodeID == inID).m_InPoint;
+            DialogConnectionPoint outPoint = m_Nodes.Find((item) => item.m_NodeID == outID).m_OutPoint;
+
+            m_Connections.Add(new DialogConnection(inPoint, outPoint, OnClickRemoveConnection));
         }
 
         private void DrawConnectionLine(Event e)

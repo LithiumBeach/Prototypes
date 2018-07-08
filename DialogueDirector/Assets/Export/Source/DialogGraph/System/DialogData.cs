@@ -10,6 +10,7 @@ namespace dd
     /// all IDs must be UNIQUE and HUMAN-READABLE/WRITABLE
     /// no hash functions allowed
     /// ALL NEGATIVE IDs are RESERVED as INVALID
+    /// for serialization with json.
     /// </summary>
     [System.Serializable]
     public class DialogData
