@@ -125,9 +125,28 @@ namespace dd
 
         private void OnGUI()
         {
+            #region Handle Invalid Data
+            //don't give a dialog graph unless you have data loaded. Prompt to load data.
+            if (m_Data == null)
+            {
+                m_Data = (DialogGraphData)EditorGUI.ObjectField(new Rect(this.position.width * .5f - 250, this.position.height * .5f - 10, 500, 20), "Select Graph to Load", m_Data, typeof(DialogGraphData), false);
+                if (m_Data != null)
+                {
+                    Initialize(m_Data);
+                }
+                return;
+            }
+            //if you have data loaded, but it hasn't been initialized yet.
+            else if (m_Data.m_Nodes != null && m_Data.m_Nodes.Count > 0 && (m_Nodes == null || m_Nodes.Count == 0))
+            {
+                Initialize(m_Data);
+                return;
+            }
+            #endregion
+
             DrawGrid(20f, 0.2f, Color.gray);
             DrawGrid(100, 0.4f, Color.gray);
-
+            //
             DrawNodes();
             DrawConnections();
 

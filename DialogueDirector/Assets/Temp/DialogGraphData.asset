@@ -11,4 +11,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b16fc3f4af182b41b735037c1c7a669, type: 3}
   m_Name: DialogGraphData
   m_EditorClassIdentifier: 
-  m_Nodes: []
+  m_Nodes:
+  - m_NodeID: 930427927
+    m_LocalizationID: 3
+    m_Position: {x: 61, y: 239}
+    m_ToNodeID: 1922242120
+  - m_NodeID: 1922242120
+    m_LocalizationID: 2
+    m_Position: {x: 432, y: 259}
+    m_ToNodeID: 545124464
+  - m_NodeID: 545124464
+    m_LocalizationID: 5
+    m_Position: {x: 643, y: 55}
+    m_ToNodeID: 1922242120
+  - m_NodeID: 347445116
+    m_LocalizationID: 1
+    m_Position: {x: 700, y: 295}
+    m_ToNodeID: 545124464
+  - m_NodeID: 1958204741
+    m_LocalizationID: 4
+    m_Position: {x: 266, y: -2}
+    m_ToNodeID: 930427927
