@@ -115,6 +115,14 @@ namespace dd
 
             m_LocalizedText = DialogDBSerializer.GetTextFromID(id);
             GUI.Label(m_LocalizedTextDisplayRect, m_LocalizedText, m_DisabledTextBoxGuiStyle);
+
+            #region temporarily display node's id for debugging
+            string temp = m_NodeID.ToString();
+            Rect tmpRect = new Rect(m_IDRect);
+            tmpRect.height *= .45f;
+            tmpRect.position -= new Vector2(0, tmpRect.height * 2);
+            GUI.Label(new Rect(tmpRect), temp, m_DisabledTextBoxGuiStyle);
+            #endregion
         }
 
         /// <returns>needs repaint?</returns>

@@ -57,10 +57,7 @@ namespace dd
                 {
                     if (data.m_Nodes[i].m_ToNodeID != 0)
                     {
-                        if (m_Connections.Find((item) => item.m_InPoint.m_Node.m_NodeID == data.m_Nodes[i].m_NodeID && item.m_OutPoint.m_Node.m_NodeID == data.m_Nodes[i].m_ToNodeID) == null)
-                        {
-                            CreateConnection(data.m_Nodes[i].m_NodeID, data.m_Nodes[i].m_ToNodeID);
-                        }
+                        CreateConnection(data.m_Nodes[i].m_NodeID, data.m_Nodes[i].m_ToNodeID);
                     }
                 }
             }
@@ -85,10 +82,10 @@ namespace dd
 
             for (int connectionIndex = 0; connectionIndex < m_Connections.Count; connectionIndex++)
             {
-                //find the node data with the same ID as this connection's IN node.
-                DialogNodeData connectionInNodeData = m_Data.m_Nodes.Find((item) => item.m_NodeID == m_Connections[connectionIndex].m_InPoint.m_Node.m_NodeID);
+                //find the node data with the same ID as this connection's OUT node.
+                DialogNodeData connectionOutNodeData = m_Data.m_Nodes.Find((item) => item.m_NodeID == m_Connections[connectionIndex].m_OutPoint.m_Node.m_NodeID);
 
-                connectionInNodeData.m_ToNodeID = m_Connections[connectionIndex].m_OutPoint.m_Node.m_NodeID;
+                connectionOutNodeData.m_ToNodeID = m_Connections[connectionIndex].m_InPoint.m_Node.m_NodeID;
             }
         }
 
@@ -328,15 +325,15 @@ namespace dd
             }
             m_Connections.Add(new DialogConnection(m_SelectedInPoint, m_SelectedOutPoint, OnClickRemoveConnection));
         }
-        private void CreateConnection(int inID, int outID)
+        private void CreateConnection(int outID, int inID)
         {
             if (m_Connections == null)
             {
                 m_Connections = new List<DialogConnection>();
             }
 
-            DialogConnectionPoint inPoint = m_Nodes.Find((item) => item.m_NodeID == inID).m_InPoint;
             DialogConnectionPoint outPoint = m_Nodes.Find((item) => item.m_NodeID == outID).m_OutPoint;
+            DialogConnectionPoint inPoint = m_Nodes.Find((item) => item.m_NodeID == inID).m_InPoint;
 
             m_Connections.Add(new DialogConnection(inPoint, outPoint, OnClickRemoveConnection));
         }
