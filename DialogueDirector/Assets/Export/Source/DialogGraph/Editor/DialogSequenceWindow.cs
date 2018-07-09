@@ -69,6 +69,9 @@ namespace dd
                     }
                 }
             }
+
+            m_Offset = Vector2.zero;
+            m_Drag = Vector2.zero;
         }
 
         public void OnUnitySave()
@@ -83,7 +86,7 @@ namespace dd
                 {
                     iterID = -1;
                 }
-                DialogNodeData dnd = new DialogNodeData(m_Nodes[nodeIndex].m_NodeID, iterID, m_Nodes[nodeIndex].m_Rect.position);
+                DialogNodeData dnd = new DialogNodeData(m_Nodes[nodeIndex].m_NodeID, iterID, m_Nodes[nodeIndex].GetPositionForSave() - m_Offset);
 
                 m_Data.m_Nodes.Add(dnd);
             }
@@ -121,6 +124,9 @@ namespace dd
 
             //TODO: don't load this every time
             DialogDBSerializer.LoadDialogLines(CultureInfo.GetCultureInfo("en"));
+
+            m_Offset = Vector2.zero;
+            m_Drag = Vector2.zero;
         }
 
         private void OnGUI()
@@ -146,7 +152,7 @@ namespace dd
 
             DrawGrid(20f, 0.2f, Color.gray);
             DrawGrid(100, 0.4f, Color.gray);
-            //
+
             DrawNodes();
             DrawConnections();
 
@@ -211,6 +217,11 @@ namespace dd
             switch (e.type)
             {
                 case EventType.MouseDown:
+                    //if we are creating a connection, and we click on not a pin, cancel the new connection.
+                    if ((m_SelectedFromPoint == null || m_SelectedToPoint == null) && (m_SelectedFromPoint != null || m_SelectedToPoint != null))
+                    {
+                        ClearConnectionSelection();
+                    }
                     if (e.button == 1)//Right Mouse Button
                     {
                         ProcessContextMenu(e.mousePosition);
@@ -274,11 +285,32 @@ namespace dd
             DialogNode node = new DialogNode(mousePosition, m_NodeStyle, m_SelectedNodeStyle, m_ToPointStyle, m_FromPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
             node.m_NodeID = m_Data.GetUniqueNodeID();
             m_Nodes.Add(node);
+            GUI.changed = true;
+            Repaint();
             return node;
         }
 
         private void OnClickInPoint(DialogConnectionPoint inPoint)
         {
+            //if CTRL is pressed when clicked, remove all connections with this in point.
+            if (Event.current.control)
+            {
+                ClearConnectionSelection();
+                List<DialogConnection> toRemove = new List<DialogConnection>();
+                for (int i = 0; i < m_Connections.Count; i++)
+                {
+                    if (m_Connections[i].m_ToPoint == inPoint)
+                    {
+                        toRemove.Add(m_Connections[i]);
+                    }
+                }
+                for (int i = 0; i < toRemove.Count; i++)
+                {
+                    m_Connections.Remove(toRemove[i]);
+                }
+                return;
+            }
+
             m_SelectedToPoint = inPoint;
 
             if (m_SelectedFromPoint != null)
@@ -307,8 +339,31 @@ namespace dd
 
         private void OnClickOutPoint(DialogConnectionPoint outPoint)
         {
-            m_SelectedFromPoint = outPoint;
+            //if CTRL is pressed when clicked, remove all connections with this out point.
+            if (Event.current.control)
+            {
+                ClearConnectionSelection();
+                List<DialogConnection> toRemove = new List<DialogConnection>();
+                for (int i = 0; i < m_Connections.Count; i++)
+                {
+                    if (m_Connections[i].m_FromPoint == outPoint)
+                    {
+                        toRemove.Add(m_Connections[i]);
+                    }
+                }
+                for (int i = 0; i < toRemove.Count; i++)
+                {
+                    m_Connections.Remove(toRemove[i]);
+                }
+                return;
+            }
 
+            m_SelectedFromPoint = outPoint;
+            if (Event.current.control)
+            {
+                ClearConnectionSelection();
+                return;
+            }
             if (m_SelectedToPoint != null)
             {
                 if (m_SelectedFromPoint.m_Node != m_SelectedToPoint.m_Node)
@@ -372,7 +427,7 @@ namespace dd
                 Handles.DrawBezier(
                     m_SelectedToPoint.m_Rect.center,
                     e.mousePosition,
-                    m_SelectedToPoint.m_Rect.center + Vector2.left * 500f,
+                    m_SelectedToPoint.m_Rect.center + Vector2.left * 50f,
                     e.mousePosition - Vector2.left * 50f,
                     Color.white,
                     null,

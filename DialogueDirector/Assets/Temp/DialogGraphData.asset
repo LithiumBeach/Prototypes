@@ -14,21 +14,25 @@ MonoBehaviour:
   m_Nodes:
   - m_NodeID: 930427927
     m_LocalizationID: 3
-    m_Position: {x: 61, y: 239}
+    m_Position: {x: 621, y: 323}
     m_ToNodeID: 1922242120
   - m_NodeID: 1922242120
     m_LocalizationID: 2
-    m_Position: {x: 432, y: 259}
+    m_Position: {x: 873, y: 257}
     m_ToNodeID: 545124464
   - m_NodeID: 545124464
     m_LocalizationID: 5
-    m_Position: {x: 643, y: 55}
+    m_Position: {x: 626, y: 71}
     m_ToNodeID: 1922242120
   - m_NodeID: 347445116
     m_LocalizationID: 1
-    m_Position: {x: 700, y: 295}
+    m_Position: {x: 379, y: 324}
     m_ToNodeID: 545124464
   - m_NodeID: 1958204741
     m_LocalizationID: 4
-    m_Position: {x: 266, y: -2}
+    m_Position: {x: 419, y: 79}
     m_ToNodeID: 930427927
+  - m_NodeID: 958979130
+    m_LocalizationID: -1
+    m_Position: {x: 1669, y: -490}
+    m_ToNodeID: 0
