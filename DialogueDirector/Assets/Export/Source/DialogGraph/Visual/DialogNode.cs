@@ -142,15 +142,28 @@ namespace dd
             #endregion
         }
 
-        private bool openContextMenuNextFrame = false;
+        private static int s_OpenContextMenuNextFrameID = -1;
         /// <returns>needs repaint?</returns>
         public bool ProcessEvents(Event e)
         {
-            if (openContextMenuNextFrame)
+            #region Handle Context Menu Opening
+            if (s_OpenContextMenuNextFrameID != -1)
             {
-                openContextMenuNextFrame = false;
-                ProcessContextMenu();
+                if (s_OpenContextMenuNextFrameID == m_NodeID)
+                {
+                    ProcessContextMenu();
+                    s_OpenContextMenuNextFrameID = -1;
+                }
+                else
+                {
+                    m_IsSelected = false;
+                    m_Style = m_DefaultNodeStyle;
+
+                    GUI.changed = true;
+                    return true;
+                }
             }
+            #endregion
 
             bool mouseInNode = m_Rect.Contains(e.mousePosition);
             //mouseInNode && is a minor optimization
@@ -194,9 +207,8 @@ namespace dd
                             m_Style = m_SelectedNodeStyle;
                             GUI.changed = true;
 
-                            openContextMenuNextFrame = true;
+                            s_OpenContextMenuNextFrameID = m_NodeID;
                             e.Use();
-                            //return true;
                         }
                         else
                         {
