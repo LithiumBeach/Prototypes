@@ -239,7 +239,7 @@ namespace dd
             {
                 case EventType.MouseDown:
                     //if we are creating a connection, and we click on not a pin, cancel the new connection.
-                    if ((m_SelectedFromPoint == null || m_SelectedToPoint == null) && (m_SelectedFromPoint != null || m_SelectedToPoint != null))
+                    if (e.button != 2 && (m_SelectedFromPoint == null || m_SelectedToPoint == null) && (m_SelectedFromPoint != null || m_SelectedToPoint != null))
                     {
                         ClearConnectionSelection();
                     }
