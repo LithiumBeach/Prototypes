@@ -27,6 +27,13 @@ namespace dd
 
         private DialogGraphData m_Data;
 
+        //zoom
+        private float m_Zoom = 1.0f;//current zoom level
+        private readonly float m_ZoomMin = 0.25f;
+        private readonly float m_ZoomMax = 3.0f;
+        private Rect m_ZoomRect;//clipping region of zoom rect
+        private Vector2 m_ZoomCoordsOrigin = Vector2.zero;
+
         [MenuItem("Window/Dialog Director")]
         public static void OpenWindow()
         {
@@ -72,6 +79,8 @@ namespace dd
 
             m_Offset = Vector2.zero;
             m_Drag = Vector2.zero;
+            m_ZoomCoordsOrigin = Vector2.zero;
+            m_Zoom = 1f;
         }
 
         public void OnUnitySave()
@@ -127,6 +136,8 @@ namespace dd
 
             m_Offset = Vector2.zero;
             m_Drag = Vector2.zero;
+            m_ZoomCoordsOrigin = Vector2.zero;
+            m_Zoom = 1f;
         }
 
         private void OnGUI()
@@ -150,6 +161,13 @@ namespace dd
             }
             #endregion
 
+            //for some god foresaken reason this editor window's rect is called 'position'
+            m_ZoomRect = new Rect(0, 0, this.position.width, this.position.height);
+            m_ZoomCoordsOrigin = this.position.center;
+
+            //BEGIN ZOOM AREA
+            EditorZoomArea.Begin(m_Zoom, m_ZoomRect);
+
             DrawGrid(20f, 0.2f, Color.gray);
             DrawGrid(100, 0.4f, Color.gray);
 
@@ -161,13 +179,16 @@ namespace dd
             ProcessNodeEvents(Event.current);
             ProcessEvents(Event.current);
 
+            EditorZoomArea.End();
+            //END ZOOM AREA
+
             if (GUI.changed) Repaint();
         }
 
         private void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor)
         {
-            int widthDivs = Mathf.CeilToInt(position.width / gridSpacing);
-            int heightDivs = Mathf.CeilToInt(position.height / gridSpacing);
+            int widthDivs =  Mathf.CeilToInt((position.width  * (1.0f/m_Zoom)) / gridSpacing);
+            int heightDivs = Mathf.CeilToInt((position.height * (1.0f/m_Zoom)) / gridSpacing);
 
             Handles.BeginGUI();
             Handles.color = new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
@@ -177,12 +198,12 @@ namespace dd
 
             for (int i = 0; i < widthDivs; i++)
             {
-                Handles.DrawLine(new Vector3(gridSpacing * i, -gridSpacing, 0) + newOffset, new Vector3(gridSpacing * i, position.height, 0f) + newOffset);
+                Handles.DrawLine(new Vector3(gridSpacing * i, -gridSpacing, 0) + newOffset, new Vector3(gridSpacing * i, position.height * (1f / m_Zoom), 0f) + newOffset);
             }
 
             for (int j = 0; j < heightDivs; j++)
             {
-                Handles.DrawLine(new Vector3(-gridSpacing, gridSpacing * j, 0) + newOffset, new Vector3(position.width, gridSpacing * j, 0f) + newOffset);
+                Handles.DrawLine(new Vector3(-gridSpacing, gridSpacing * j, 0) + newOffset, new Vector3(position.width * (1f / m_Zoom), gridSpacing * j, 0f) + newOffset);
             }
 
             Handles.color = Color.white;
@@ -233,7 +254,23 @@ namespace dd
                         OnDrag(e.delta);
                     }
                 break;
+                case EventType.ScrollWheel:
+                    Vector2 screenCoordsMousePos = e.mousePosition;
+                    Vector2 delta = e.delta;
+                    Vector2 zoomCoordsMousePos = ConvertScreenCoordsToZoomCoords(screenCoordsMousePos);
+                    float zoomDelta = -delta.y / 50.0f;
+                    float oldZoom = m_Zoom;
+                    m_Zoom += zoomDelta;
+                    m_Zoom = Mathf.Clamp(m_Zoom, m_ZoomMin, m_ZoomMax);
+                    m_ZoomCoordsOrigin += (zoomCoordsMousePos - m_ZoomCoordsOrigin) - (oldZoom / m_Zoom) * (zoomCoordsMousePos - m_ZoomCoordsOrigin);
+
+                    e.Use();
+                    break;
             }
+        }
+        private Vector2 ConvertScreenCoordsToZoomCoords(Vector2 screenCoords)
+        {
+            return (screenCoords - m_ZoomRect.TopLeft()) / m_Zoom + m_ZoomCoordsOrigin;
         }
 
         private void ProcessNodeEvents(Event e)
