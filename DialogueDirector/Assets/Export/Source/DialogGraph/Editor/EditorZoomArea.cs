@@ -5,7 +5,7 @@ namespace dd
 {
     public class EditorZoomArea
     {
-        private const float kEditorWindowTabHeight = 21.0f;
+        private const float kEditorWindowTabHeight = 19.0f;
         private static Matrix4x4 _prevGuiMatrix;
 
         public static Rect Begin(float zoomScale, Rect screenCoordsArea)

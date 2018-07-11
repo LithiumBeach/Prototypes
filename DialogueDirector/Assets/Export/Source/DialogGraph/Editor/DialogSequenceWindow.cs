@@ -162,11 +162,11 @@ namespace dd
             #endregion
 
             //for some god foresaken reason this editor window's rect is called 'position'
-            m_ZoomRect = new Rect(0, 0, this.position.width, this.position.height);
-            m_ZoomCoordsOrigin = this.position.center;
+            m_ZoomRect = new Rect(0f, 0f, this.position.width, this.position.height);
 
             //BEGIN ZOOM AREA
-            EditorZoomArea.Begin(m_Zoom, m_ZoomRect);
+            Rect scaledRect = EditorZoomArea.Begin(m_Zoom, m_ZoomRect);
+            //GUILayout.BeginArea(new Rect(-m_ZoomCoordsOrigin.x, -m_ZoomCoordsOrigin.y, (position.width), (position.height)));
 
             DrawGrid(20f, 0.2f, Color.gray);
             DrawGrid(100, 0.4f, Color.gray);
@@ -179,6 +179,7 @@ namespace dd
             ProcessNodeEvents(Event.current);
             ProcessEvents(Event.current);
 
+            //GUILayout.EndArea();
             EditorZoomArea.End();
             //END ZOOM AREA
 
@@ -187,8 +188,8 @@ namespace dd
 
         private void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor)
         {
-            int widthDivs =  Mathf.CeilToInt((position.width  * (1.0f/m_Zoom)) / gridSpacing);
-            int heightDivs = Mathf.CeilToInt((position.height * (1.0f/m_Zoom)) / gridSpacing);
+            int widthDivs = Mathf.CeilToInt((position.width * (1.0f / m_Zoom)) / gridSpacing);
+            int heightDivs = Mathf.CeilToInt((position.height * (1.0f / m_Zoom)) / gridSpacing);
 
             Handles.BeginGUI();
             Handles.color = new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
@@ -247,13 +248,13 @@ namespace dd
                     {
                         ProcessContextMenu(e.mousePosition);
                     }
-                break;
+                    break;
                 case EventType.MouseDrag:
                     if (e.button == 2)//middle mouse button
                     {
                         OnDrag(e.delta);
                     }
-                break;
+                    break;
                 case EventType.ScrollWheel:
                     Vector2 screenCoordsMousePos = e.mousePosition;
                     Vector2 delta = e.delta;
