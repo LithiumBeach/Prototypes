@@ -9,6 +9,10 @@ namespace dd
         {
             return new Vector2(rect.xMin, rect.yMin);
         }
+        public static Vector2 BottomRight(this Rect rect)
+        {
+            return new Vector2(rect.xMax, rect.yMax);
+        }
         public static Rect ScaleSizeBy(this Rect rect, float scale)
         {
             return rect.ScaleSizeBy(scale, rect.center);
@@ -26,6 +30,8 @@ namespace dd
             result.y += pivotPoint.y;
             return result;
         }
+
+
         public static Rect ScaleSizeBy(this Rect rect, Vector2 scale)
         {
             return rect.ScaleSizeBy(scale, rect.center);
