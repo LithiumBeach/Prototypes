@@ -15,8 +15,10 @@ namespace dd
         private List<DialogConnection> m_Connections;
 
         private GUIStyle m_NodeStyle;
-        private GUIStyle m_FromPointStyle;
-        private GUIStyle m_ToPointStyle;
+        private GUIStyle m_FromPointStyleNormal;
+        private GUIStyle m_FromPointStylePressed;
+        private GUIStyle m_ToPointStyleNormal;
+        private GUIStyle m_ToPointStylePressed;
         private GUIStyle m_SelectedNodeStyle;
 
         private DialogConnectionPoint m_SelectedFromPoint;
@@ -121,15 +123,22 @@ namespace dd
             m_SelectedNodeStyle.border = new RectOffset(12, 12, 12, 12);
             m_SelectedNodeStyle.alignment = TextAnchor.UpperCenter;
 
-            m_ToPointStyle = new GUIStyle();
-            m_ToPointStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left.png") as Texture2D;
-            m_ToPointStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left on.png") as Texture2D;
-            m_ToPointStyle.border = new RectOffset(4, 4, 12, 12);
+            m_ToPointStyleNormal = new GUIStyle();
+            m_ToPointStyleNormal.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left.png") as Texture2D;
+            //m_ToPointStyleNormal.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left on.png") as Texture2D;
+            m_ToPointStyleNormal.border = new RectOffset(4, 4, 12, 12);
+            m_ToPointStylePressed = new GUIStyle();
+            m_ToPointStylePressed.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left on.png") as Texture2D; ;
+            m_ToPointStylePressed.border = new RectOffset(4, 4, 12, 12);
 
-            m_FromPointStyle = new GUIStyle();
-            m_FromPointStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right.png") as Texture2D;
-            m_FromPointStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right on.png") as Texture2D;
-            m_FromPointStyle.border = new RectOffset(4, 4, 12, 12);
+
+            m_FromPointStyleNormal = new GUIStyle();
+            m_FromPointStyleNormal.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right.png") as Texture2D;
+            //m_FromPointStyleNormal.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right on.png") as Texture2D;
+            m_FromPointStyleNormal.border = new RectOffset(4, 4, 12, 12);
+            m_FromPointStylePressed = new GUIStyle();
+            m_FromPointStylePressed.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right on.png") as Texture2D;
+            m_FromPointStylePressed.border = new RectOffset(4, 4, 12, 12);
 
             //TODO: don't load this every time
             DialogDBSerializer.LoadDialogLines(CultureInfo.GetCultureInfo("en"));
@@ -249,6 +258,17 @@ namespace dd
                         ProcessContextMenu(e.mousePosition);
                     }
                     break;
+                case EventType.MouseUp:
+                    if (m_ClickDownConnectionPoint != null)
+                    {
+                        ClearConnectionSelection();
+                        m_ClickDownConnectionPoint.SetGUIStyleActive(false);
+                        m_ClickDownConnectionPoint = null;
+                    }
+                    else
+                    {
+                    }
+                    break;
                 case EventType.MouseDrag:
                     if (e.button == 2)//middle mouse button
                     {
@@ -320,7 +340,9 @@ namespace dd
                 m_Nodes = new List<DialogNode>();
             }
 
-            DialogNode node = new DialogNode(mousePosition, m_NodeStyle, m_SelectedNodeStyle, m_ToPointStyle, m_FromPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
+            DialogNode node = new DialogNode(mousePosition, m_NodeStyle, m_SelectedNodeStyle, m_ToPointStyleNormal, m_ToPointStylePressed, m_FromPointStyleNormal, m_FromPointStylePressed, 
+                                             OnClickDownInPoint, OnClickDownOutPoint, OnClickReleaseInPoint, OnClickReleaseOutPoint,
+                                             OnClickRemoveNode);
             node.m_NodeID = m_Data.GetUniqueNodeID();
             m_Nodes.Add(node);
             GUI.changed = true;
@@ -328,7 +350,46 @@ namespace dd
             return node;
         }
 
-        private void OnClickInPoint(DialogConnectionPoint inPoint)
+        private DialogConnectionPoint m_ClickDownConnectionPoint = null;
+        private void OnClickDownInPoint(DialogConnectionPoint inPin)
+        {
+            m_ClickDownConnectionPoint = inPin;
+            if (Event.current.control == false)
+            {
+                m_ClickDownConnectionPoint.SetGUIStyleActive(true); 
+            }
+            HandleConnectionActionInPoint(inPin);
+        }
+        private void OnClickDownOutPoint(DialogConnectionPoint outPin)
+        {
+            m_ClickDownConnectionPoint = outPin;
+            if (Event.current.control == false)
+            {
+                m_ClickDownConnectionPoint.SetGUIStyleActive(true); 
+            }
+            HandleConnectionOutPoint(outPin);
+        }
+
+        private void OnClickReleaseInPoint(DialogConnectionPoint inPin)
+        {
+            if (m_ClickDownConnectionPoint != inPin)
+            {
+                HandleConnectionActionInPoint(inPin);
+            }
+            //m_ClickDownConnectionPoint.SetGUIStyleActive(false);
+            m_ClickDownConnectionPoint = null;
+        }
+        private void OnClickReleaseOutPoint(DialogConnectionPoint outPin)
+        {
+            if (m_ClickDownConnectionPoint != outPin)
+            {
+                HandleConnectionOutPoint(outPin);
+            }
+            //m_ClickDownConnectionPoint.SetGUIStyleActive(false);
+            m_ClickDownConnectionPoint = null;
+        }
+
+        private void HandleConnectionActionInPoint(DialogConnectionPoint inPoint)
         {
             //if CTRL is pressed when clicked, remove all connections with this in point.
             if (Event.current.control)
@@ -344,8 +405,15 @@ namespace dd
                 }
                 for (int i = 0; i < toRemove.Count; i++)
                 {
+                    toRemove[i].m_FromPoint.SetGUIStyleActive(false);
+                    toRemove[i].m_ToPoint.SetGUIStyleActive(false);
                     m_Connections.Remove(toRemove[i]);
                 }
+                if (m_SelectedToPoint != null)
+                {
+                    m_SelectedToPoint.SetGUIStyleActive(false);
+                }
+                m_SelectedToPoint = null;
                 return;
             }
 
@@ -375,7 +443,7 @@ namespace dd
             }
         }
 
-        private void OnClickOutPoint(DialogConnectionPoint outPoint)
+        private void HandleConnectionOutPoint(DialogConnectionPoint outPoint)
         {
             //if CTRL is pressed when clicked, remove all connections with this out point.
             if (Event.current.control)
@@ -452,8 +520,8 @@ namespace dd
                 m_Connections = new List<DialogConnection>();
             }
 
-            DialogConnectionPoint outPoint = m_Nodes.Find((item) => item.m_NodeID == fromID).m_OutPoint;
-            DialogConnectionPoint inPoint = m_Nodes.Find((item) => item.m_NodeID == toID).m_InPoint;
+            DialogConnectionPoint outPoint = m_Nodes.Find((item) => item.m_NodeID == fromID).m_OutPin;
+            DialogConnectionPoint inPoint = m_Nodes.Find((item) => item.m_NodeID == toID).m_InPin;
 
             m_Connections.Add(new DialogConnection(outPoint, inPoint, OnClickRemoveConnection));
         }
@@ -493,7 +561,15 @@ namespace dd
 
         private void ClearConnectionSelection()
         {
+            if (m_SelectedToPoint != null)
+            {
+                m_SelectedToPoint.SetGUIStyleActive(false);
+            }
             m_SelectedToPoint = null;
+            if (m_SelectedFromPoint != null)
+            {
+                m_SelectedFromPoint.SetGUIStyleActive(false);
+            }
             m_SelectedFromPoint = null;
         }
 
@@ -505,7 +581,7 @@ namespace dd
 
                 for (int i = 0; i < m_Connections.Count; i++)
                 {
-                    if (m_Connections[i].m_ToPoint == node.m_InPoint || m_Connections[i].m_FromPoint == node.m_OutPoint)
+                    if (m_Connections[i].m_ToPoint == node.m_InPin || m_Connections[i].m_FromPoint == node.m_OutPin)
                     {
                         connectionsToRemove.Add(m_Connections[i]);
                     }

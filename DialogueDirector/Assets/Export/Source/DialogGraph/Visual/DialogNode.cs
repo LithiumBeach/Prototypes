@@ -20,14 +20,20 @@ namespace dd
         public GUIContent m_GuiContent;//for the whole node.
         public GUIStyle m_DisabledTextBoxGuiStyle = "TextField";
 
-        public DialogConnectionPoint m_InPoint;
-        public DialogConnectionPoint m_OutPoint;
+        public DialogConnectionPoint m_InPin;
+        public DialogConnectionPoint m_OutPin;
 
         //TODO: ISelectable
         public bool m_IsSelected;
 
         public Rect m_LocalizedTextDisplayRect;
         public Rect m_IDRect;
+
+        //misleading names, but calls back to existing function in DSWindow
+        public Action<DialogConnectionPoint> m_OnClickDownInPoint;
+        public Action<DialogConnectionPoint> m_OnClickDownOutPoint;
+        public Action<DialogConnectionPoint> m_OnClickReleaseInPoint;
+        public Action<DialogConnectionPoint> m_OnClickReleaseOutPoint;
 
         public Action<DialogNode> OnRemoveNode;
 
@@ -46,8 +52,9 @@ namespace dd
             return new Vector2(m_Rect.position.x + m_Width * .5f, m_Rect.position.y + m_Height * .5f);
         }
 
-        public DialogNode(Vector2 position, GUIStyle nodeStyle, GUIStyle selectedNodeStyle, GUIStyle inPointStyle, GUIStyle outPointStyle,
-            Action<DialogConnectionPoint> OnClickInPoint, Action<DialogConnectionPoint> OnClickOutPoint, Action<DialogNode> OnClickRemoveNode)
+        public DialogNode(Vector2 position, GUIStyle nodeStyle, GUIStyle selectedNodeStyle, GUIStyle inPointStyleNormal, GUIStyle inPointStylePressed, GUIStyle outPointStyleNormal, GUIStyle outPointStylePressed,
+            Action<DialogConnectionPoint> OnClickDownInPoint, Action<DialogConnectionPoint> OnClickDownOutPoint, Action<DialogConnectionPoint> OnClickReleaseInPoint, Action<DialogConnectionPoint> OnClickReleaseOutPoint,
+            Action<DialogNode> OnClickRemoveNode)
         {
             m_Rect = new Rect(position.x - m_Width * .5f, position.y - m_Height * .5f, m_Width, m_Height);
             m_Style = nodeStyle;
@@ -57,8 +64,8 @@ namespace dd
             //m_GuiContent = new GUIContent("Dialog Node", "this is a tooltip");
             m_GuiContent = new GUIContent();//set the title
 
-            m_InPoint = new DialogConnectionPoint(this, EConnectionPointType.In, inPointStyle, OnClickInPoint);
-            m_OutPoint = new DialogConnectionPoint(this, EConnectionPointType.Out, outPointStyle, OnClickOutPoint);
+            m_InPin = new DialogConnectionPoint(this, EConnectionPointType.In, inPointStyleNormal, inPointStylePressed);
+            m_OutPin = new DialogConnectionPoint(this, EConnectionPointType.Out, outPointStyleNormal, outPointStylePressed);
 
             //ID inputfield
             float idRectWidth = 180;
@@ -71,6 +78,10 @@ namespace dd
             m_LocalizedTextDisplayRect = new Rect(position.x - speechWidth * .5f, position.y - m_Height * .5f + idRectHeight + 20, speechWidth, speechHeight);
 
             //Actions
+            m_OnClickDownInPoint = OnClickDownInPoint;
+            m_OnClickDownOutPoint = OnClickDownOutPoint;
+            m_OnClickReleaseInPoint =  OnClickReleaseInPoint;
+            m_OnClickReleaseOutPoint = OnClickReleaseOutPoint;
             OnRemoveNode = OnClickRemoveNode;
 
             //default values
@@ -86,8 +97,8 @@ namespace dd
 
         public void Draw()
         {
-            m_InPoint.Draw();
-            m_OutPoint.Draw();
+            m_InPin.Draw();
+            m_OutPin.Draw();
 
             //background box
             GUI.Box(m_Rect, m_GuiContent, m_Style);
@@ -168,6 +179,9 @@ namespace dd
             bool mouseInNode = m_Rect.Contains(e.mousePosition);
             //mouseInNode && is a minor optimization
             bool mouseInIDTextBox = mouseInNode && m_IDRect.Contains(e.mousePosition);
+            bool mouseInInPin = m_InPin.m_Rect.Contains(e.mousePosition);
+            bool mouseInOutPin = m_OutPin.m_Rect.Contains(e.mousePosition);
+
             switch (e.type)
             {
                 case EventType.MouseDown:
@@ -181,7 +195,17 @@ namespace dd
                     //LMB down
                     if (e.button == 0)
                     {
-                        if (mouseInNode)
+                        if (mouseInInPin)
+                        {
+                            m_OnClickDownInPoint(m_InPin);
+                            e.Use();
+                        }
+                        else if (mouseInOutPin)
+                        {
+                            m_OnClickDownOutPoint(m_OutPin);
+                            e.Use();
+                        }
+                        else if (mouseInNode)
                         {
                             m_IsMoving = true;
 
@@ -193,6 +217,7 @@ namespace dd
                         else
                         {
                             m_IsSelected = false;
+
                             m_Style = m_DefaultNodeStyle;
 
                             GUI.changed = true;
@@ -222,6 +247,17 @@ namespace dd
 
                 case EventType.MouseUp:
                     m_IsMoving = false;
+                    if (e.button == 0)
+                    {
+                        if (mouseInInPin)
+                        {
+                            m_OnClickReleaseInPoint(m_InPin);
+                        }
+                        else if (mouseInOutPin)
+                        {
+                            m_OnClickReleaseOutPoint(m_OutPin);
+                        }
+                    }
                     break;
 
                 case EventType.MouseDrag:
