@@ -10,11 +10,11 @@ namespace dd
         public static string[] OnWillSaveAssets(string[] paths)
         {
             DialogSequenceWindow dsw = EditorWindow.GetWindow<DialogSequenceWindow>();
-            if (dsw != null)
+            if (dsw != null && dsw.m_Data != null)
             {
                 dsw.OnUnitySave();
+                EditorUtility.SetDirty(dsw.m_Data);
             }
-
 
             return paths;
         }

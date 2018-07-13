@@ -8,8 +8,6 @@ namespace dd
 {
     public class DDAssetHandler : MonoBehaviour
     {
-        //TODO: PUT THIS INTO A NEW CLASS: MyAssetHandler
-        //TODO: do the same thing for DialogGraphDatas (not the editor type)
         [OnOpenAsset(1)]
         public static bool step1(int instanceID, int line)
         {

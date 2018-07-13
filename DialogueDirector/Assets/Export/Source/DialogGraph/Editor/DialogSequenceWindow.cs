@@ -27,7 +27,7 @@ namespace dd
         private Vector2 m_Offset;//total offset from dragging
         private Vector2 m_Drag;//resets every frame: drag delta for current frame
 
-        private DialogGraphData m_Data;
+        public DialogGraphData m_Data;
 
         //zoom
         private float m_Zoom = 1.0f;//current zoom level
@@ -174,7 +174,7 @@ namespace dd
             m_ZoomRect = new Rect(0f, 0f, this.position.width, this.position.height);
 
             //BEGIN ZOOM AREA
-            Rect scaledRect = EditorZoomArea.Begin(m_Zoom, m_ZoomRect);
+            EditorZoomArea.Begin(m_Zoom, m_ZoomRect);
             //GUILayout.BeginArea(new Rect(-m_ZoomCoordsOrigin.x, -m_ZoomCoordsOrigin.y, (position.width), (position.height)));
 
             DrawGrid(20f, 0.2f, Color.gray);
