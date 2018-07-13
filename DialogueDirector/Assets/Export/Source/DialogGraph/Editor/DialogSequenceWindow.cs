@@ -417,6 +417,7 @@ namespace dd
                 return;
             }
 
+            DialogConnectionPoint cachedSelectedPoint = m_SelectedToPoint;
             m_SelectedToPoint = inPoint;
 
             if (m_SelectedFromPoint != null)
@@ -441,6 +442,10 @@ namespace dd
                     ClearConnectionSelection();
                 }
             }
+            else if (cachedSelectedPoint != null)
+            {
+                cachedSelectedPoint.SetGUIStyleActive(false);
+            }
         }
 
         private void HandleConnectionOutPoint(DialogConnectionPoint outPoint)
@@ -459,17 +464,21 @@ namespace dd
                 }
                 for (int i = 0; i < toRemove.Count; i++)
                 {
+                    toRemove[i].m_FromPoint.SetGUIStyleActive(false);
+                    toRemove[i].m_ToPoint.SetGUIStyleActive(false);
                     m_Connections.Remove(toRemove[i]);
                 }
+                if (m_SelectedToPoint != null)
+                {
+                    m_SelectedToPoint.SetGUIStyleActive(false);
+                }
+                m_SelectedToPoint = null;
                 return;
             }
 
+            DialogConnectionPoint cachedSelectedPoint = m_SelectedFromPoint;
             m_SelectedFromPoint = outPoint;
-            if (Event.current.control)
-            {
-                ClearConnectionSelection();
-                return;
-            }
+
             if (m_SelectedToPoint != null)
             {
                 if (m_SelectedFromPoint.m_Node != m_SelectedToPoint.m_Node)
@@ -492,10 +501,16 @@ namespace dd
                     ClearConnectionSelection();
                 }
             }
+            else if (cachedSelectedPoint != null)
+            {
+                cachedSelectedPoint.SetGUIStyleActive(false);
+            }
         }
 
         private void OnClickRemoveConnection(DialogConnection connection)
         {
+            connection.m_FromPoint.SetGUIStyleActive(false);
+            connection.m_ToPoint.SetGUIStyleActive(false);
             m_Connections.Remove(connection);
         }
 
