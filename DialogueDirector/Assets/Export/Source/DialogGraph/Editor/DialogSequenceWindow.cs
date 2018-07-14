@@ -32,9 +32,13 @@ namespace dd
         //zoom
         private float m_Zoom = 1.0f;//current zoom level
         private readonly float m_ZoomMin = 0.25f;
+        private float m_LogZoomMin;
         private readonly float m_ZoomMax = 3.0f;
+        private float m_LogZoomMax;
         private Rect m_ZoomRect;//clipping region of zoom rect
         private Vector2 m_ZoomCoordsOrigin = Vector2.zero;
+        private int m_ZoomStep = 10;
+        private readonly int m_TotalZoomSteps = 20;
 
         [MenuItem("Window/Dialog Director")]
         public static void OpenWindow()
@@ -83,6 +87,9 @@ namespace dd
             m_Drag = Vector2.zero;
             m_ZoomCoordsOrigin = Vector2.zero;
             m_Zoom = 1f;
+            m_ZoomStep = 10;
+            m_LogZoomMin = Mathf.Log(m_ZoomMin);
+            m_LogZoomMax = Mathf.Log(m_ZoomMax);
         }
 
         public void OnUnitySave()
@@ -146,10 +153,12 @@ namespace dd
             //TODO: don't load this every time
             DialogDBSerializer.LoadDialogLines(CultureInfo.GetCultureInfo("en"));
 
-            m_Offset = Vector2.zero;
-            m_Drag = Vector2.zero;
-            m_ZoomCoordsOrigin = Vector2.zero;
-            m_Zoom = 1f;
+            //m_Offset = Vector2.zero;
+            //m_Drag = Vector2.zero;
+            //m_ZoomCoordsOrigin = Vector2.zero;
+            //m_Zoom = 1f;
+            //m_LogZoomMin = Mathf.Log(m_ZoomMin);
+            //m_LogZoomMax = Mathf.Log(m_ZoomMax);
         }
 
         private void OnGUI()
@@ -284,8 +293,15 @@ namespace dd
                     Vector2 zoomCoordsMousePos = ConvertScreenCoordsToZoomCoords(screenCoordsMousePos);
                     float zoomDelta = -delta.y / 50.0f;
                     float oldZoom = m_Zoom;
-                    m_Zoom += zoomDelta;
+                    m_ZoomStep += zoomDelta < 0 ? -1 : +1;
+                    //float logZoom = m_LogZoomMin + (m_LogZoomMax - m_LogZoomMin) * ((m_ZoomMax) / (m_Zoom + zoomDelta));
+                    float logZoom = Mathf.Lerp(m_LogZoomMin, m_LogZoomMax, (float)m_ZoomStep / (float)m_TotalZoomSteps);
+
+                    //m_Zoom += zoomDelta;
+                    m_Zoom = Mathf.Exp(logZoom);
+
                     m_Zoom = Mathf.Clamp(m_Zoom, m_ZoomMin, m_ZoomMax);
+                    m_ZoomStep = Mathf.Clamp(m_ZoomStep, 0, m_TotalZoomSteps);
                     m_ZoomCoordsOrigin += (zoomCoordsMousePos - m_ZoomCoordsOrigin) - (oldZoom / m_Zoom) * (zoomCoordsMousePos - m_ZoomCoordsOrigin);
 
                     e.Use();
