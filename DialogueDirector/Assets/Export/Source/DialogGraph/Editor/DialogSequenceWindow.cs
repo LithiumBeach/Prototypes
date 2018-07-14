@@ -102,12 +102,15 @@ namespace dd
                 m_Data.m_Nodes.Add(dnd);
             }
 
-            for (int connectionIndex = 0; connectionIndex < m_Connections.Count; connectionIndex++)
+            if (m_Connections != null)
             {
-                //find the node data with the same ID as this connection's OUT node.
-                DialogNodeData connectionFromNodeData = m_Data.m_Nodes.Find((item) => item.m_NodeID == m_Connections[connectionIndex].m_FromPoint.m_Node.m_NodeID);
+                for (int connectionIndex = 0; connectionIndex < m_Connections.Count; connectionIndex++)
+                {
+                    //find the node data with the same ID as this connection's OUT node.
+                    DialogNodeData connectionFromNodeData = m_Data.m_Nodes.Find((item) => item.m_NodeID == m_Connections[connectionIndex].m_FromPoint.m_Node.m_NodeID);
 
-                connectionFromNodeData.m_ToNodeID = m_Connections[connectionIndex].m_ToPoint.m_Node.m_NodeID;
+                    connectionFromNodeData.m_ToNodeID = m_Connections[connectionIndex].m_ToPoint.m_Node.m_NodeID;
+                } 
             }
         }
 

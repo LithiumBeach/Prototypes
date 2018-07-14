@@ -21,5 +21,20 @@ namespace dd
             }
             return false; // we did not handle the open
         }
+
+        [MenuItem("Assets/Create/DialogDirector/Graph", false, priority = 281)]
+        public static void CreateDialogGraphDataAsset()
+        {
+            DialogGraphData asset = ScriptableObject.CreateInstance<DialogGraphData>();
+
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+            string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath(path + "/DialogGraphData" + ".asset");
+            AssetDatabase.CreateAsset(asset, assetPathAndName);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            EditorUtility.FocusProjectWindow();
+            Selection.activeObject = asset;
+            asset.OpenDialogGraph();//this will call Initialize
+        }
     }
 }

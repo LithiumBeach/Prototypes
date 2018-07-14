@@ -9,7 +9,6 @@ using UnityEditor;
 
 namespace dd
 {
-    [CreateAssetMenu(fileName = "DialogGraphData", menuName = "DialogDirector/Graph", order = 1)]
     public class DialogGraphData : ScriptableObject
     {
         [SerializeField]
@@ -27,7 +26,6 @@ namespace dd
 
             m_Rand = new System.Random();
         }
-#endif
 
         public void Clear()
         {
@@ -52,5 +50,6 @@ namespace dd
             }
             return newID;
         }
+#endif
     }
 }
