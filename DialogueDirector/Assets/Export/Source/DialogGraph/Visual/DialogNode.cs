@@ -104,8 +104,26 @@ namespace dd
             GUI.Box(m_Rect, m_GuiContent, m_Style);
 
             //ID writable textbox
-            GUI.SetNextControlName("m_IDText");
+            GUI.SetNextControlName("m_IDText" + m_NodeID.ToString());
             m_IDText = GUI.TextArea(m_IDRect, m_IDText, 10);
+
+            if (GUIUtility.keyboardControl != 0)
+            {
+                if (GUI.GetNameOfFocusedControl() == "m_IDText" + m_NodeID.ToString())
+                {
+                    m_IsSelected = true;
+                    m_Style = m_SelectedNodeStyle;
+
+                    GUI.changed = true; 
+                }
+                else
+                {
+                    m_IsSelected = false;
+                    m_Style = m_DefaultNodeStyle;
+
+                    GUI.changed = true;
+                }
+            }
 
             #region ID Value Validation
             m_IDText = Regex.Replace(m_IDText, @"[^0-9-]", "");
@@ -217,7 +235,6 @@ namespace dd
                         else
                         {
                             m_IsSelected = false;
-
                             m_Style = m_DefaultNodeStyle;
 
                             GUI.changed = true;

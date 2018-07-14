@@ -288,20 +288,29 @@ namespace dd
                     }
                     break;
                 case EventType.ScrollWheel:
-                    Vector2 screenCoordsMousePos = e.mousePosition;
-                    Vector2 delta = e.delta;
-                    Vector2 zoomCoordsMousePos = ConvertScreenCoordsToZoomCoords(screenCoordsMousePos);
-                    float zoomDelta = -delta.y / 50.0f;
+                    Vector2 zoomCoordsMousePos = ConvertScreenCoordsToZoomCoords(e.mousePosition);
+                    float zoomDelta = -e.delta.y / 50.0f;
                     float oldZoom = m_Zoom;
-                    m_ZoomStep += zoomDelta < 0 ? -1 : +1;
-                    //float logZoom = m_LogZoomMin + (m_LogZoomMax - m_LogZoomMin) * ((m_ZoomMax) / (m_Zoom + zoomDelta));
+
+                    //holding shift will zoom faster.
+                    int numZoomSteps = 1;
+                    if (e.shift)
+                    {
+                        numZoomSteps = 3;
+                    }
+                    //normalize zoom input.
+                    m_ZoomStep += zoomDelta < 0 ? -numZoomSteps : numZoomSteps;
+                    //use a logarithmic zoom instead of incremental, so it's even.
                     float logZoom = Mathf.Lerp(m_LogZoomMin, m_LogZoomMax, (float)m_ZoomStep / (float)m_TotalZoomSteps);
 
                     //m_Zoom += zoomDelta;
                     m_Zoom = Mathf.Exp(logZoom);
 
+                    //force bounds
                     m_Zoom = Mathf.Clamp(m_Zoom, m_ZoomMin, m_ZoomMax);
                     m_ZoomStep = Mathf.Clamp(m_ZoomStep, 0, m_TotalZoomSteps);
+
+                    //TODO: use this value to zoom with respect to the mouse position, rather than top left.
                     m_ZoomCoordsOrigin += (zoomCoordsMousePos - m_ZoomCoordsOrigin) - (oldZoom / m_Zoom) * (zoomCoordsMousePos - m_ZoomCoordsOrigin);
 
                     e.Use();
