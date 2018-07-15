@@ -15,14 +15,16 @@ namespace dd
         [HideInInspector]
         [SerializeField]
         public Vector2 m_Position;
+        [SerializeField]
+        public int m_SpeakerIndex;
 
         [HideInInspector]
         public int m_ToNodeID;
 
-        public DialogNodeData(int nodeID, int localizationID, Vector2 position, int toNodeID=0)
+        public DialogNodeData(int nodeID, int localizationID, Vector2 position, int speakerIndex, int toNodeID=0)
         {
             m_NodeID = nodeID;  m_LocalizationID = localizationID; m_Position = position;
-            m_ToNodeID = toNodeID;
+            m_SpeakerIndex = speakerIndex; m_ToNodeID = toNodeID;
         }
     }
 }

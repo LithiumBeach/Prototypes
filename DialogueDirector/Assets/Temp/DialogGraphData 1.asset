@@ -15,24 +15,37 @@ MonoBehaviour:
   - m_NodeID: 1144101849
     m_LocalizationID: 0
     m_Position: {x: 292, y: 236}
+    m_SpeakerIndex: 0
     m_ToNodeID: 984328903
   - m_NodeID: 612115076
     m_LocalizationID: 5
     m_Position: {x: 2, y: -706}
+    m_SpeakerIndex: 0
     m_ToNodeID: 1161385675
   - m_NodeID: 1161385675
     m_LocalizationID: 3
     m_Position: {x: 8, y: -454}
+    m_SpeakerIndex: 0
     m_ToNodeID: 612115076
   - m_NodeID: 783178816
     m_LocalizationID: 1
     m_Position: {x: -538, y: -738}
+    m_SpeakerIndex: 0
     m_ToNodeID: 984328903
   - m_NodeID: 984328903
     m_LocalizationID: 2
     m_Position: {x: -218, y: -746}
+    m_SpeakerIndex: 0
     m_ToNodeID: 1161385675
   - m_NodeID: 986897057
     m_LocalizationID: 6
     m_Position: {x: -251, y: -464}
+    m_SpeakerIndex: 0
     m_ToNodeID: 984328903
+  - m_NodeID: 155993809
+    m_LocalizationID: -1
+    m_Position: {x: 518, y: 246}
+    m_SpeakerIndex: 0
+    m_ToNodeID: 0
+  m_Actors:
+  - Actor 1

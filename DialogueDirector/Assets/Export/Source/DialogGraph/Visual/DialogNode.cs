@@ -19,6 +19,7 @@ namespace dd
         public GUIStyle m_SelectedNodeStyle;
         public GUIContent m_GuiContent;//for the whole node.
         public GUIStyle m_DisabledTextBoxGuiStyle = "TextField";
+        public GUIStyle m_ActorDropdownGUIStyle = "toolbarDropDown";
 
         public DialogConnectionPoint m_InPin;
         public DialogConnectionPoint m_OutPin;
@@ -28,6 +29,8 @@ namespace dd
 
         public Rect m_LocalizedTextDisplayRect;
         public Rect m_IDRect;
+        public Rect m_SpeakerRect;
+        public Rect m_SpeakerIndexRect;
 
         //misleading names, but calls back to existing function in DSWindow
         public Action<DialogConnectionPoint> m_OnClickDownInPoint;
@@ -45,6 +48,9 @@ namespace dd
 
         public readonly float m_Width = 200;
         public readonly float m_Height = 250;
+
+        public int m_SpeakerIndex = 0;
+
         public Vector2 GetPositionForSave()
         {
             //in the constructor, we start with an offset and update as normal.
@@ -57,9 +63,9 @@ namespace dd
             Action<DialogNode> OnClickRemoveNode)
         {
             m_Rect = new Rect(position.x - m_Width * .5f, position.y - m_Height * .5f, m_Width, m_Height);
-            m_Style = nodeStyle;
+            m_Style = new GUIStyle(nodeStyle);
             m_DefaultNodeStyle = nodeStyle;
-            m_SelectedNodeStyle = selectedNodeStyle;
+            m_SelectedNodeStyle = new GUIStyle(selectedNodeStyle);
 
             //m_GuiContent = new GUIContent("Dialog Node", "this is a tooltip");
             m_GuiContent = new GUIContent();//set the title
@@ -74,13 +80,21 @@ namespace dd
 
             //Speech Rect
             float speechWidth = 180;
-            float speechHeight = 150;
+            float speechHeight = 100;
             m_LocalizedTextDisplayRect = new Rect(position.x - speechWidth * .5f, position.y - m_Height * .5f + idRectHeight + 20, speechWidth, speechHeight);
+
+            //speaker dropdown rect
+            float speakerWidth = 130;
+            float speakerHeight = 20;
+            m_SpeakerRect = new Rect(position.x - speakerWidth * .5f - 25, position.y - m_Height * .5f + idRectHeight + speechHeight + 24, speakerWidth, speakerHeight);
+            float speakerIndexWidth = 40;
+            float speakerIndexHeight = 19;
+            m_SpeakerIndexRect = new Rect(m_SpeakerRect.position.x + speakerWidth + 10, position.y - m_Height * .5f + idRectHeight + speechHeight + 23, speakerIndexWidth, speakerIndexHeight);
 
             //Actions
             m_OnClickDownInPoint = OnClickDownInPoint;
             m_OnClickDownOutPoint = OnClickDownOutPoint;
-            m_OnClickReleaseInPoint =  OnClickReleaseInPoint;
+            m_OnClickReleaseInPoint = OnClickReleaseInPoint;
             m_OnClickReleaseOutPoint = OnClickReleaseOutPoint;
             OnRemoveNode = OnClickRemoveNode;
 
@@ -93,15 +107,21 @@ namespace dd
             m_Rect.position += delta;
             m_LocalizedTextDisplayRect.position += delta;
             m_IDRect.position += delta;
+            m_SpeakerRect.position += delta;
+            m_SpeakerIndexRect.position += delta;
         }
 
-        public void Draw()
+        public void Draw(List<string> speakers)
         {
             m_InPin.Draw();
             m_OutPin.Draw();
 
+            //TODO: you can make each node a certain color from their actor id.
+            //Color cacheColor = GUI.color;
+            //GUI.color = Color.magenta;
             //background box
             GUI.Box(m_Rect, m_GuiContent, m_Style);
+            //GUI.color = cacheColor;
 
             //ID writable textbox
             GUI.SetNextControlName("m_IDText" + m_NodeID.ToString());
@@ -114,7 +134,7 @@ namespace dd
                     m_IsSelected = true;
                     m_Style = m_SelectedNodeStyle;
 
-                    GUI.changed = true; 
+                    GUI.changed = true;
                 }
                 else
                 {
@@ -162,6 +182,11 @@ namespace dd
             m_LocalizedText = DialogDBSerializer.GetTextFromID(id);
             GUI.Label(m_LocalizedTextDisplayRect, m_LocalizedText, m_DisabledTextBoxGuiStyle);
 
+            //speaker dropdown
+            int prevSpeakerIndex = m_SpeakerIndex;
+            m_SpeakerIndex = EditorGUI.Popup(m_SpeakerRect, m_SpeakerIndex, speakers.ToArray(), m_ActorDropdownGUIStyle);
+            GUI.Label(m_SpeakerIndexRect, "i:" + m_SpeakerIndex.ToString(), m_DisabledTextBoxGuiStyle);
+
             #region temporarily display node's id for debugging
             string temp = m_NodeID.ToString();
             Rect tmpRect = new Rect(m_IDRect);
@@ -172,6 +197,7 @@ namespace dd
         }
 
         private static int s_OpenContextMenuNextFrameID = -1;
+
         /// <returns>needs repaint?</returns>
         public bool ProcessEvents(Event e)
         {

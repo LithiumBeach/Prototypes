@@ -14,25 +14,35 @@ MonoBehaviour:
   m_Nodes:
   - m_NodeID: 930427927
     m_LocalizationID: 3
-    m_Position: {x: 621, y: 323}
+    m_Position: {x: 545.0001, y: 409.99997}
+    m_SpeakerIndex: 1
     m_ToNodeID: 1922242120
   - m_NodeID: 1922242120
-    m_LocalizationID: 2
-    m_Position: {x: 873, y: 257}
+    m_LocalizationID: 1
+    m_Position: {x: 873.0004, y: 277.00003}
+    m_SpeakerIndex: 0
     m_ToNodeID: 545124464
   - m_NodeID: 545124464
     m_LocalizationID: 5
-    m_Position: {x: 626, y: 71}
+    m_Position: {x: 542.0001, y: 142.00005}
+    m_SpeakerIndex: 2
     m_ToNodeID: 1922242120
   - m_NodeID: 347445116
-    m_LocalizationID: 1
-    m_Position: {x: 379, y: 324}
+    m_LocalizationID: 2
+    m_Position: {x: 138.19788, y: 422.80215}
+    m_SpeakerIndex: 2
     m_ToNodeID: 545124464
   - m_NodeID: 1958204741
-    m_LocalizationID: 4
-    m_Position: {x: 419, y: 79}
+    m_LocalizationID: 0
+    m_Position: {x: 116, y: 148.00005}
+    m_SpeakerIndex: 0
     m_ToNodeID: 930427927
   - m_NodeID: 958979130
     m_LocalizationID: -1
-    m_Position: {x: 1669, y: -490}
+    m_Position: {x: 1669.0002, y: -489.99976}
+    m_SpeakerIndex: 0
     m_ToNodeID: 0
+  m_Actors:
+  - Person A
+  - Actor 2
+  - Person C

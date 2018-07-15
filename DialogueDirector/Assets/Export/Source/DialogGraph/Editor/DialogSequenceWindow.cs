@@ -28,6 +28,7 @@ namespace dd
         private Vector2 m_Drag;//resets every frame: drag delta for current frame
 
         public DialogGraphData m_Data;
+        private List<string> m_SpeakerStrings;
 
         //zoom
         private float m_Zoom = 1.0f;//current zoom level
@@ -71,6 +72,7 @@ namespace dd
                     DialogNode newNode = OnClickAddNode(data.m_Nodes[i].m_Position);
                     newNode.m_IDText = data.m_Nodes[i].m_LocalizationID.ToString();
                     newNode.m_NodeID = data.m_Nodes[i].m_NodeID;
+                    newNode.m_SpeakerIndex = data.m_Nodes[i].m_SpeakerIndex;
                 }
                 //this loop must occur after all nodes have been initialized
                 for (int i = 0; i < data.m_Nodes.Count; i++)
@@ -99,16 +101,17 @@ namespace dd
             m_Data.Clear();
             for (int nodeIndex = 0; nodeIndex < m_Nodes.Count; nodeIndex++)
             {
-                int iterID = -1;
-                if (!int.TryParse(m_Nodes[nodeIndex].m_IDText, out iterID))
+                int iterLocalizationID = -1;
+                if (!int.TryParse(m_Nodes[nodeIndex].m_IDText, out iterLocalizationID))
                 {
-                    iterID = -1;
+                    iterLocalizationID = -1;
                 }
-                DialogNodeData dnd = new DialogNodeData(m_Nodes[nodeIndex].m_NodeID, iterID, m_Nodes[nodeIndex].GetPositionForSave() - m_Offset);
+                DialogNodeData dnd = new DialogNodeData(m_Nodes[nodeIndex].m_NodeID, iterLocalizationID, m_Nodes[nodeIndex].GetPositionForSave() - m_Offset, m_Nodes[nodeIndex].m_SpeakerIndex);
 
                 m_Data.m_Nodes.Add(dnd);
             }
 
+            //find and set m_ToNodeIDs
             if (m_Connections != null)
             {
                 for (int connectionIndex = 0; connectionIndex < m_Connections.Count; connectionIndex++)
@@ -152,13 +155,6 @@ namespace dd
 
             //TODO: don't load this every time
             DialogDBSerializer.LoadDialogLines(CultureInfo.GetCultureInfo("en"));
-
-            //m_Offset = Vector2.zero;
-            //m_Drag = Vector2.zero;
-            //m_ZoomCoordsOrigin = Vector2.zero;
-            //m_Zoom = 1f;
-            //m_LogZoomMin = Mathf.Log(m_ZoomMin);
-            //m_LogZoomMax = Mathf.Log(m_ZoomMax);
         }
 
         private void OnGUI()
@@ -238,7 +234,7 @@ namespace dd
             {
                 for (int i = 0; i < m_Nodes.Count; i++)
                 {
-                    m_Nodes[i].Draw();
+                    m_Nodes[i].Draw(m_Data.Actors);
                 }
             }
         }
@@ -379,6 +375,7 @@ namespace dd
         }
 
         private DialogConnectionPoint m_ClickDownConnectionPoint = null;
+
         private void OnClickDownInPoint(DialogConnectionPoint inPin)
         {
             m_ClickDownConnectionPoint = inPin;

@@ -15,6 +15,47 @@ namespace dd
         [HideInInspector]
         public List<DialogNodeData> m_Nodes;
 
+        [SerializeField]
+        [OnValueChanged("OnNodeSpeakerInfosChanged")]
+        private List<string> m_Actors;
+        public List<string> Actors
+        {
+            get
+            {
+                if (m_Actors == null)
+                {
+                    m_Actors = new List<string>();
+                }
+                return m_Actors;
+            }
+        }
+
+        public void OnNodeSpeakerInfosChanged()
+        {
+            for (int i = 0; i < Actors.Count; i++)
+            {
+                //"Actor 1"..."Actor n"
+                if (m_Actors[i] == "")
+                {
+                    m_Actors[i] = "Actor " + (i + 1).ToString();
+                }
+            }
+        }
+        public List<string> GetActorStrings()
+        {
+            List<string> strings = new List<string>();
+            for (int i = 0; i < Actors.Count; i++)
+            {
+                if (m_Actors[i] == "")
+                {
+                    m_Actors[i] = "Actor " + (i + 1).ToString();
+                }
+                strings.Add(m_Actors[i]);
+            }
+            return strings;
+        }
+
+
 #if UNITY_EDITOR
         private System.Random m_Rand;
 
