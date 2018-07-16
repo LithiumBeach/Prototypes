@@ -67,6 +67,8 @@ namespace dd
             m_DefaultNodeStyle = nodeStyle;
             m_SelectedNodeStyle = new GUIStyle(selectedNodeStyle);
 
+            m_DisabledTextBoxGuiStyle.wordWrap = true;
+
             //m_GuiContent = new GUIContent("Dialog Node", "this is a tooltip");
             m_GuiContent = new GUIContent();//set the title
 
@@ -75,21 +77,21 @@ namespace dd
 
             //ID inputfield
             float idRectWidth = 180;
-            float idRectHeight = 32;
+            float idRectHeight = 16;
             m_IDRect = new Rect(position.x - idRectWidth * .5f, position.y - m_Height * .5f + 20, idRectWidth, idRectHeight);
 
             //Speech Rect
             float speechWidth = 180;
             float speechHeight = 100;
-            m_LocalizedTextDisplayRect = new Rect(position.x - speechWidth * .5f, position.y - m_Height * .5f + idRectHeight + 20, speechWidth, speechHeight);
+            m_LocalizedTextDisplayRect = new Rect(position.x - speechWidth * .5f, position.y - m_Height * .5f + idRectHeight + 30, speechWidth, speechHeight);
 
             //speaker dropdown rect
             float speakerWidth = 130;
             float speakerHeight = 20;
-            m_SpeakerRect = new Rect(position.x - speakerWidth * .5f - 25, position.y - m_Height * .5f + idRectHeight + speechHeight + 24, speakerWidth, speakerHeight);
+            m_SpeakerRect = new Rect(position.x - speakerWidth * .5f - 25, position.y - m_Height * .5f + idRectHeight + speechHeight + 34, speakerWidth, speakerHeight);
             float speakerIndexWidth = 40;
             float speakerIndexHeight = 19;
-            m_SpeakerIndexRect = new Rect(m_SpeakerRect.position.x + speakerWidth + 10, position.y - m_Height * .5f + idRectHeight + speechHeight + 23, speakerIndexWidth, speakerIndexHeight);
+            m_SpeakerIndexRect = new Rect(m_SpeakerRect.position.x + speakerWidth + 10, position.y - m_Height * .5f + idRectHeight + speechHeight + 33, speakerIndexWidth, speakerIndexHeight);
 
             //Actions
             m_OnClickDownInPoint = OnClickDownInPoint;
@@ -180,20 +182,34 @@ namespace dd
             GUI.SetNextControlName("m_LocalizedTextDisplayRect");
 
             m_LocalizedText = DialogDBSerializer.GetTextFromID(id);
+            float oldHeight = m_LocalizedTextDisplayRect.height;
+            m_LocalizedTextDisplayRect.height = m_DisabledTextBoxGuiStyle.CalcHeight(new GUIContent(m_LocalizedText), m_LocalizedTextDisplayRect.width);
+            if (oldHeight != m_LocalizedTextDisplayRect.height)
+            {
+                OnHeightChange(oldHeight, m_LocalizedTextDisplayRect.height);
+            }
             GUI.Label(m_LocalizedTextDisplayRect, m_LocalizedText, m_DisabledTextBoxGuiStyle);
 
             //speaker dropdown
-            int prevSpeakerIndex = m_SpeakerIndex;
+            //int prevSpeakerIndex = m_SpeakerIndex;
             m_SpeakerIndex = EditorGUI.Popup(m_SpeakerRect, m_SpeakerIndex, speakers.ToArray(), m_ActorDropdownGUIStyle);
             GUI.Label(m_SpeakerIndexRect, "i:" + m_SpeakerIndex.ToString(), m_DisabledTextBoxGuiStyle);
 
             #region temporarily display node's id for debugging
-            string temp = m_NodeID.ToString();
-            Rect tmpRect = new Rect(m_IDRect);
-            tmpRect.height *= .45f;
-            tmpRect.position -= new Vector2(0, tmpRect.height * 2);
-            GUI.Label(new Rect(tmpRect), temp, m_DisabledTextBoxGuiStyle);
+            //string temp = m_NodeID.ToString();
+            //Rect tmpRect = new Rect(m_IDRect);
+            //tmpRect.height *= .45f;
+            //tmpRect.position -= new Vector2(0, tmpRect.height * 2);
+            //GUI.Label(new Rect(tmpRect), temp, m_DisabledTextBoxGuiStyle);
             #endregion
+        }
+
+        private void OnHeightChange(float oldHeight, float newHeight)
+        {
+            float heightDelta = newHeight - oldHeight;
+            m_Rect.height += heightDelta;
+            m_SpeakerRect.y += heightDelta;
+            m_SpeakerIndexRect.y += heightDelta;
         }
 
         private static int s_OpenContextMenuNextFrameID = -1;

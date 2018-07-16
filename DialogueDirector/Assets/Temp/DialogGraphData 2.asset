@@ -13,14 +13,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Nodes:
   - m_NodeID: 1989926260
-    m_LocalizationID: 1
+    m_LocalizationID: 8
     m_Position: {x: 569, y: 307}
     m_SpeakerIndex: 3
     m_ToNodeID: 0
   - m_NodeID: 1303416611
-    m_LocalizationID: 3
+    m_LocalizationID: 5
     m_Position: {x: 310, y: 181}
-    m_SpeakerIndex: 3
+    m_SpeakerIndex: 4
     m_ToNodeID: 1989926260
   m_Actors:
   - Actor 1
