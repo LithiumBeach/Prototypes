@@ -5,7 +5,7 @@ namespace dd
 {
     public class EditorZoomArea
     {
-        private const float kEditorWindowTabHeight = 19.0f;
+        private const float kEditorWindowTabHeight = 20.0f;
         private static Matrix4x4 _prevGuiMatrix;
 
         public static Rect Begin(float zoomScale, Rect screenCoordsArea)
@@ -17,9 +17,12 @@ namespace dd
             GUI.BeginGroup(clippedArea);
 
             _prevGuiMatrix = GUI.matrix;
-            Matrix4x4 translation = Matrix4x4.TRS(clippedArea.TopLeft(), Quaternion.identity, Vector3.one);
-            Matrix4x4 scale = Matrix4x4.Scale(new Vector3(zoomScale, zoomScale, 1.0f));
-            GUI.matrix = translation * scale * translation.inverse * GUI.matrix;
+
+            GUIUtility.ScaleAroundPivot(zoomScale * Vector2.one, screenCoordsArea.TopLeft());
+
+            //proof that to zoom about the mouse position, this function will not suffice.
+            //GUIUtility.ScaleAroundPivot(zoomScale * Vector2.one, screenCoordsArea.center);
+            //GUI.matrix = Matrix4x4.Translate(((screenCoordsArea.center * zoomScale) - screenCoordsArea.center)) * GUI.matrix;
 
             return clippedArea;
         }
