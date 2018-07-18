@@ -37,6 +37,7 @@ namespace dd
         public Action<DialogConnectionPoint> m_OnClickDownOutPoint;
         public Action<DialogConnectionPoint> m_OnClickReleaseInPoint;
         public Action<DialogConnectionPoint> m_OnClickReleaseOutPoint;
+        public Action<DialogNode> m_OnBecomeStartNode;
 
         public Action<DialogNode> OnRemoveNode;
 
@@ -59,8 +60,8 @@ namespace dd
         }
 
         public DialogNode(Vector2 position, GUIStyle nodeStyle, GUIStyle selectedNodeStyle, GUIStyle inPointStyleNormal, GUIStyle inPointStylePressed, GUIStyle outPointStyleNormal, GUIStyle outPointStylePressed,
-            Action<DialogConnectionPoint> OnClickDownInPoint, Action<DialogConnectionPoint> OnClickDownOutPoint, Action<DialogConnectionPoint> OnClickReleaseInPoint, Action<DialogConnectionPoint> OnClickReleaseOutPoint,
-            Action<DialogNode> OnClickRemoveNode)
+            Action<DialogConnectionPoint> onClickDownInPoint, Action<DialogConnectionPoint> onClickDownOutPoint, Action<DialogConnectionPoint> onClickReleaseInPoint, Action<DialogConnectionPoint> onClickReleaseOutPoint,
+            Action<DialogNode> onClickRemoveNode, Action<DialogNode> onBecomeStartNode)
         {
             m_Rect = new Rect(position.x - m_Width * .5f, position.y - m_Height * .5f, m_Width, m_Height);
             m_Style = new GUIStyle(nodeStyle);
@@ -94,11 +95,12 @@ namespace dd
             m_SpeakerIndexRect = new Rect(m_SpeakerRect.position.x + speakerWidth + 10, position.y - m_Height * .5f + idRectHeight + speechHeight + 33, speakerIndexWidth, speakerIndexHeight);
 
             //Actions
-            m_OnClickDownInPoint = OnClickDownInPoint;
-            m_OnClickDownOutPoint = OnClickDownOutPoint;
-            m_OnClickReleaseInPoint = OnClickReleaseInPoint;
-            m_OnClickReleaseOutPoint = OnClickReleaseOutPoint;
-            OnRemoveNode = OnClickRemoveNode;
+            m_OnClickDownInPoint = onClickDownInPoint;
+            m_OnClickDownOutPoint = onClickDownOutPoint;
+            m_OnClickReleaseInPoint = onClickReleaseInPoint;
+            m_OnClickReleaseOutPoint = onClickReleaseOutPoint;
+            OnRemoveNode = onClickRemoveNode;
+            m_OnBecomeStartNode = onBecomeStartNode;
 
             //default values
             m_IDText = "";
@@ -113,9 +115,12 @@ namespace dd
             m_SpeakerIndexRect.position += delta;
         }
 
-        public void Draw(List<string> speakers)
+        public void Draw(List<string> speakers, bool isStartNode)
         {
-            m_InPin.Draw();
+            if (!isStartNode)
+            {
+                m_InPin.Draw(); 
+            }
             m_OutPin.Draw();
 
             //TODO: you can make each node a certain color from their actor id.
@@ -343,6 +348,7 @@ namespace dd
         {
             GenericMenu genericMenu = new GenericMenu();
             genericMenu.AddItem(new GUIContent("Remove node"), false, HandleRemoveNode);
+            genericMenu.AddItem(new GUIContent("Make this Start Node"), false, HandleBecomeStartNode);
             genericMenu.ShowAsContext();
         }
 
@@ -351,6 +357,14 @@ namespace dd
             if (OnRemoveNode != null)
             {
                 OnRemoveNode(this);
+            }
+        }
+
+        private void HandleBecomeStartNode()
+        {
+            if (m_OnBecomeStartNode != null)
+            {
+                m_OnBecomeStartNode(this);
             }
         }
 

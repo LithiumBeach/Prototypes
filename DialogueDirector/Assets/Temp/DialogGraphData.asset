@@ -12,31 +12,31 @@ MonoBehaviour:
   m_Name: DialogGraphData
   m_EditorClassIdentifier: 
   m_Nodes:
-  - m_NodeID: 930427927
-    m_LocalizationID: 3
-    m_Position: {x: 545.0001, y: 409.99997}
-    m_SpeakerIndex: 1
-    m_ToNodeID: 1922242120
-  - m_NodeID: 1922242120
-    m_LocalizationID: 1
-    m_Position: {x: 873.0004, y: 277.00003}
-    m_SpeakerIndex: 0
-    m_ToNodeID: 545124464
   - m_NodeID: 545124464
     m_LocalizationID: 5
     m_Position: {x: 542.0001, y: 142.00005}
     m_SpeakerIndex: 2
     m_ToNodeID: 1922242120
+  - m_NodeID: 1922242120
+    m_LocalizationID: 1
+    m_Position: {x: 873.0004, y: 277.00003}
+    m_SpeakerIndex: 0
+    m_ToNodeID: 1958204741
   - m_NodeID: 347445116
     m_LocalizationID: 2
     m_Position: {x: 138.19788, y: 422.80215}
     m_SpeakerIndex: 2
-    m_ToNodeID: 545124464
+    m_ToNodeID: 930427927
+  - m_NodeID: 930427927
+    m_LocalizationID: 3
+    m_Position: {x: 545.0001, y: 409.99997}
+    m_SpeakerIndex: 1
+    m_ToNodeID: 1922242120
   - m_NodeID: 1958204741
     m_LocalizationID: 0
     m_Position: {x: 116, y: 148.00005}
     m_SpeakerIndex: 0
-    m_ToNodeID: 930427927
+    m_ToNodeID: 0
   - m_NodeID: 958979130
     m_LocalizationID: -1
     m_Position: {x: 1669.0002, y: -489.99976}

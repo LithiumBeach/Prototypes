@@ -16,8 +16,8 @@ namespace dd
             System.Type t = o.GetType();
             if (t == typeof(DialogGraphData))
             {
-                DialogSequenceWindow.OpenWindow();
-                EditorWindow.GetWindow<DialogSequenceWindow>().Initialize((o as DialogGraphData));
+                DialogGraphWindow.OpenWindow();
+                EditorWindow.GetWindow<DialogGraphWindow>().Initialize((o as DialogGraphData));
             }
             return false; // we did not handle the open
         }

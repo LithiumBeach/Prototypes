@@ -9,7 +9,7 @@ namespace dd
     {
         public static string[] OnWillSaveAssets(string[] paths)
         {
-            DialogSequenceWindow dsw = EditorWindow.GetWindow<DialogSequenceWindow>();
+            DialogGraphWindow dsw = EditorWindow.GetWindow<DialogGraphWindow>();
             if (dsw != null && dsw.m_Data != null)
             {
                 dsw.OnUnitySave();

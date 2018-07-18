@@ -11,20 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b16fc3f4af182b41b735037c1c7a669, type: 3}
   m_Name: DialogGraphData 2
   m_EditorClassIdentifier: 
-  m_Nodes:
-  - m_NodeID: 1989926260
-    m_LocalizationID: 8
-    m_Position: {x: 569, y: 307}
-    m_SpeakerIndex: 3
-    m_ToNodeID: 0
-  - m_NodeID: 1303416611
-    m_LocalizationID: 5
-    m_Position: {x: 310, y: 181}
-    m_SpeakerIndex: 4
-    m_ToNodeID: 1989926260
-  m_Actors:
-  - Actor 1
-  - Actor 2
-  - Actor 3
-  - Steve!
-  - Actor 5
+  m_Nodes: []
+  m_Actors: []

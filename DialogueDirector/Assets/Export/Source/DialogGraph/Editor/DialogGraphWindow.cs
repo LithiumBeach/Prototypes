@@ -9,8 +9,9 @@ using UnityEngine;
 
 namespace dd
 {
-    public class DialogSequenceWindow : EditorWindow
+    public class DialogGraphWindow : EditorWindow
     {
+        //first node in m_Nodes is the start node.
         private List<DialogNode> m_Nodes;
         private List<DialogConnection> m_Connections;
 
@@ -47,7 +48,7 @@ namespace dd
             //get type of Scene View
             Type t = Type.GetType("UnityEditor.SceneView,UnityEditor.dll");
             //by default, dock next to scene view.
-            EditorWindow window = GetWindow<DialogSequenceWindow>(new Type[] { t });
+            EditorWindow window = GetWindow<DialogGraphWindow>(new Type[] { t });
             window.titleContent = new GUIContent("Dialog Director");
         }
 
@@ -157,6 +158,7 @@ namespace dd
             DialogDBSerializer.LoadDialogLines(CultureInfo.GetCultureInfo("en"));
         }
 
+        public bool m_ForceRepaint = false;
         private void OnGUI()
         {
             #region Handle Invalid Data
@@ -177,6 +179,12 @@ namespace dd
                 return;
             }
             #endregion
+
+            if (m_ForceRepaint)
+            {
+                m_ForceRepaint = false;
+                GUI.changed = true;
+            }
 
             //for some god foresaken reason this editor window's rect is called 'position'
             m_ZoomRect = new Rect(0f, 0f, this.position.width, this.position.height);
@@ -230,11 +238,24 @@ namespace dd
 
         private void DrawNodes()
         {
-            if (m_Nodes != null)
+            if (m_Nodes != null && m_Nodes.Count > 0)
             {
+                //draw background for start node
+                Rect startNodeRect = m_Nodes[0].m_Rect;
+                //scale from bottom center
+                startNodeRect.size += new Vector2(-8, 9);
+                startNodeRect.center = m_Nodes[0].m_Rect.center - new Vector2(0, 10);
+                Rect startNodeHeaderRect = startNodeRect;
+                startNodeHeaderRect.height = 18;
+                GUI.backgroundColor = DDColors.Coral;
+                GUI.Box(startNodeRect, "");
+                GUI.Box(startNodeHeaderRect, "Start Node");
+                GUI.backgroundColor = Color.white;
+
                 for (int i = 0; i < m_Nodes.Count; i++)
                 {
-                    m_Nodes[i].Draw(m_Data.Actors);
+                    //i == 0 ? I am the start node : I am not
+                    m_Nodes[i].Draw(m_Data.Actors, i == 0);
                 }
             }
         }
@@ -243,9 +264,21 @@ namespace dd
         {
             if (m_Connections != null)
             {
+                DialogConnection connectionToRemove = null;
                 for (int i = 0; i < m_Connections.Count; i++)
                 {
-                    m_Connections[i].Draw();
+                    if (m_Connections[i].m_ToPoint != m_Nodes[0].m_InPin)
+                    {
+                        m_Connections[i].Draw();
+                    }
+                    else
+                    {
+                        connectionToRemove = m_Connections[i];
+                    }
+                }
+                if (connectionToRemove != null)
+                {
+                    m_Connections.Remove(connectionToRemove);
                 }
             }
         }
@@ -366,12 +399,21 @@ namespace dd
 
             DialogNode node = new DialogNode(mousePosition, m_NodeStyle, m_SelectedNodeStyle, m_ToPointStyleNormal, m_ToPointStylePressed, m_FromPointStyleNormal, m_FromPointStylePressed, 
                                              OnClickDownInPoint, OnClickDownOutPoint, OnClickReleaseInPoint, OnClickReleaseOutPoint,
-                                             OnClickRemoveNode);
+                                             OnClickRemoveNode, OnBecomeStartNode);
             node.m_NodeID = m_Data.GetUniqueNodeID();
             m_Nodes.Add(node);
             GUI.changed = true;
             Repaint();
             return node;
+        }
+
+        private void OnBecomeStartNode(DialogNode node)
+        {
+            int index = m_Nodes.IndexOf(node);
+            DialogNode tmp = m_Nodes[0];
+            m_Nodes[0] = node;
+            m_Nodes[index] = tmp;
+            m_ForceRepaint = true;
         }
 
         private DialogConnectionPoint m_ClickDownConnectionPoint = null;
@@ -447,7 +489,7 @@ namespace dd
 
             if (m_SelectedFromPoint != null)
             {
-                if (m_SelectedFromPoint.m_Node != m_SelectedToPoint.m_Node)
+                if (m_SelectedFromPoint.m_Node != m_SelectedToPoint.m_Node && m_SelectedToPoint != m_Nodes[0].m_InPin)
                 {
                     //check all existing connections, don't add a duplicate.
                     for (int i = 0; i < (m_Connections != null ? m_Connections.Count : 0); i++)
@@ -506,7 +548,7 @@ namespace dd
 
             if (m_SelectedToPoint != null)
             {
-                if (m_SelectedFromPoint.m_Node != m_SelectedToPoint.m_Node)
+                if (m_SelectedFromPoint.m_Node != m_SelectedToPoint.m_Node && m_SelectedToPoint != m_Nodes[0].m_InPin)
                 {
                     //check all existing connections, don't add a duplicate.
                     for (int i = 0; i < (m_Connections != null ? m_Connections.Count : 0); i++)
