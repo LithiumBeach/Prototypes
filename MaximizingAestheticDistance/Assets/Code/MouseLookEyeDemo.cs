@@ -38,8 +38,53 @@ namespace dd
         float updateTimer = 0f;
         int tempLookForwardIndex;
         int tempLookForwardDirection = 1;
+
+        //if we've just clicked, or just released click, lock the update (with this != 0)
+        //if position, count up, and set index regularly, we are looking to lens
+        //if negative, count up, and set index backwards, we are looking back to lens
+        int m_TransitionIndex = 0;
         private void Update()
         {
+            //look back to lens
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (m_TransitionIndex == 0)
+                {
+                    m_TransitionIndex = -3;
+                }
+                //if we release during the 3 frames
+                else
+                {
+                    m_TransitionIndex *= -1;
+                }
+            }
+            //look out from lens
+            else if (Input.GetMouseButtonUp(0))
+            {
+                if (m_TransitionIndex == 0)
+                {
+                    m_TransitionIndex = 3;
+                }
+                //if we release during the 3 frames
+                else
+                {
+                    m_TransitionIndex *= -1;
+                }
+            }
+
+            if (Input.mouseScrollDelta.magnitude > 0f)
+            {
+                m_Renderer.transform.position += new Vector3(0, 0, Input.mouseScrollDelta.y * Time.deltaTime * (Input.GetKey(KeyCode.LeftControl) ? 24f : 6f));
+                if (m_Renderer.transform.position.z < 0)
+                {
+                    m_Renderer.transform.position = Vector3.zero;
+                }
+                else if (m_Renderer.transform.position.z > 10f)
+                {
+                    m_Renderer.transform.position = new Vector3(0, 0, 10);
+                }
+            }
+
             //TODO: ... you know what to do lol this is very temp
             updateTimer += Time.deltaTime;
             if (updateTimer < fps)
@@ -54,8 +99,59 @@ namespace dd
 
             Vector2 mousePos = Input.mousePosition;
 
+            if (m_TransitionIndex != 0)
+            {
+                //raycast forward from camera
+                Ray r = Camera.main.ScreenPointToRay(mousePos);
+                RaycastHit hit;
+                //if it hit the eye sprite's shitty collider plane
+                int[] eyeAngleFrames = null;
+                if (Physics.Raycast(r, out hit))
+                {
+                    //get direction from center of eyes to hit point
+                    Vector2 spriteToHitDir = (hit.point - m_Renderer.transform.position).normalized;
+                    //Debug.DrawRay(m_Renderer.transform.position, (hit.point - m_Renderer.transform.position), Color.green, 10f);
+
+                    float angle = Mathf.Atan2(hit.point.y - m_Renderer.transform.position.y, hit.point.x - m_Renderer.transform.position.x);
+                    angle *= Mathf.Rad2Deg;
+                    angle -= 90;
+                    if (angle < 0f)
+                    {
+                        angle = 360 + angle;
+                    }
+                    //reverse all angles
+                    angle = 360 - angle;
+                    angle = Mathf.Repeat(angle, 360);
+                    //Debug.Log(angle);
+
+                    int nearestEyeAngle = (int)Math.Round(angle / 15) * 15;
+                    if (nearestEyeAngle == 360)
+                    {
+                        nearestEyeAngle = 0;
+                    }
+                    Debug.Log(nearestEyeAngle);
+
+                    eyeAngleFrames = GetEyeAngleFrameIndices(nearestEyeAngle, true);
+
+                }
+                Debug.Assert(eyeAngleFrames != null);
+                //looking back to lens
+                if (m_TransitionIndex < 0)
+                {
+                    m_Renderer.sprite = m_AtlasArray[eyeAngleFrames[eyeAngleFrames.Length - 1] - ((m_TransitionIndex * -1))];
+
+                    m_TransitionIndex++;
+                }
+                //looking away from lens to angle
+                else if (m_TransitionIndex > 0)
+                {
+                    m_Renderer.sprite = m_AtlasArray[eyeAngleFrames[0] + (3 - m_TransitionIndex)];
+
+                    m_TransitionIndex--;
+                }
+            }
             //if left clicking
-            if (Input.GetMouseButton(0))
+            else if (Input.GetMouseButton(0))
             {
                 //choose random frame from last 20 (staring forward)
                 //m_Renderer.sprite = m_AtlasArray[UnityEngine.Random.Range(m_AtlasArray.Length - 21, m_AtlasArray.Length - 1)];
@@ -103,14 +199,14 @@ namespace dd
                     }
                     Debug.Log(nearestEyeAngle);
 
-                    int[] eyeAngleFrames = GetEyeAngleFrames(nearestEyeAngle);
+                    int[] eyeAngleFrames = GetEyeAngleFrameIndices(nearestEyeAngle);
                     m_Renderer.sprite = m_AtlasArray[UnityEngine.Random.Range(eyeAngleFrames[0], eyeAngleFrames[eyeAngleFrames.Length-1])];
 
                 }
             }
         }
 
-        private int[] GetEyeAngleFrames(int nearestEyeAngle, bool includeLookToFromFrames = false)
+        private int[] GetEyeAngleFrameIndices(int nearestEyeAngle, bool includeLookToFromFrames = false)
         {
             //14 frames including lookframes, 8 frames in each static angle
             int numFrames = includeLookToFromFrames ? 14 : 8;
