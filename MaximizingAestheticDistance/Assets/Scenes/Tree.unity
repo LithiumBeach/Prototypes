@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 746444556}
   - component: {fileID: 746444557}
   m_Layer: 0
-  m_Name: triangle0
+  m_Name: tree0
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -322,9 +322,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 746444555}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22f74afc343f0fa4c8758516ec258d07, type: 3}
+  m_Script: {fileID: 11500000, guid: 558197a53b5ee6744a3d371470fb68ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  A: {x: 0, y: 0, z: 0}
+  B: {x: 0, y: 0, z: 0}
+  C: {x: 0, y: 0, z: 0}
+  Normal: {x: 0, y: 0, z: 0}
 --- !u!1 &1353425299
 GameObject:
   m_ObjectHideFlags: 0

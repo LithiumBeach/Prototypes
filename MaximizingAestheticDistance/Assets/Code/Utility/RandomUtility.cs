@@ -22,6 +22,23 @@ namespace util
 
             //random points in a sphere
             //https://stackoverflow.com/questions/5408276/sampling-uniformly-distributed-random-points-inside-a-spherical-volume
+            //float phi = Random.Range(0f, MathUtility.TWOPI);
+            //float costheta = Random.Range(-1f, 1f);
+            //float u = Random.Range(0f, 1f);
+
+            //float theta = Mathf.Acos(costheta);
+            //float _r = r * Mathf.Pow(u, 1 / 3);//cubic root
+
+            //float x = _r * Mathf.Sin(theta) * Mathf.Cos(phi);
+            //float y = _r * Mathf.Sin(theta) * Mathf.Sin(phi);
+            //float z = _r * Mathf.Cos(theta);
+            //return (new Vector3(x, y, z) + center) + centerPos2D;
+            return GetRandomPointInVolumeOfASphere(center, r) + centerPos2D;
+        }
+
+        public static Vector3 GetRandomPointInVolumeOfASphere(Vector3 center, float r)
+        {//random points in a sphere
+            //https://stackoverflow.com/questions/5408276/sampling-uniformly-distributed-random-points-inside-a-spherical-volume
             float phi = Random.Range(0f, MathUtility.TWOPI);
             float costheta = Random.Range(-1f, 1f);
             float u = Random.Range(0f, 1f);
@@ -32,7 +49,7 @@ namespace util
             float x = _r * Mathf.Sin(theta) * Mathf.Cos(phi);
             float y = _r * Mathf.Sin(theta) * Mathf.Sin(phi);
             float z = _r * Mathf.Cos(theta);
-            return (new Vector3(x, y, z)) + centerPos2D + center;
+            return new Vector3(x, y, z) + center;
         }
 
         //http://mathworld.wolfram.com/SpherePointPicking.html
