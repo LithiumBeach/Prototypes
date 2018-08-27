@@ -16,7 +16,7 @@ namespace dd
         public void Awake()
         {
             m_Triangles = new List<GLTriangle>();
-            GenerateTrianglesInSphere(new Vector3(0, 3, 0), 50f, 100);
+            GenerateTrianglesInSphere(new Vector3(0, 3, 0), 1.5f, 20);
         }
 
         private void GenerateTrianglesInSphere(Vector3 position, float r, int numTriangles)
@@ -24,8 +24,8 @@ namespace dd
             for (int triangleIndex = 0; triangleIndex < numTriangles; triangleIndex++)
             {
                 //Vector3 position = RandomUtility.GetRandomPointInVolumeOfASphere(new Vector3(0, 0, 0), 2f);
-                Vector3 randLocalPosition = UnityEngine.Random.insideUnitSphere * UnityEngine.Random.Range(.1f, r);
-                m_Triangles.Add(MakeTriangle(randLocalPosition + position, Vector3.forward, Vector3.up, UnityEngine.Random.Range(.6f, 1.2f)));
+                Vector3 randLocalPosition = UnityEngine.Random.insideUnitSphere * UnityEngine.Random.Range(.01f, r);
+                m_Triangles.Add(MakeTriangle(randLocalPosition + position, Vector3.forward, Vector3.down, UnityEngine.Random.Range(.2f, .6f)));
             }
         }
 
@@ -39,7 +39,6 @@ namespace dd
             float randAngleC = UnityEngine.Random.Range(randAngleB, 345f);
             newTri.m_C = position + Quaternion.AngleAxis(randAngleC, forward * Mathf.Rad2Deg) * (up * radius);
             //Vector3 right = Vector3.Cross(forward, up);
-
 
             return newTri;
         }
