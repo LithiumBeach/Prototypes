@@ -13,31 +13,33 @@ namespace dd
 
         private List<GLTriangle> m_Triangles;
 
-        public void Awake()
+        public void Start()
         {
             m_Triangles = new List<GLTriangle>();
-            GenerateTrianglesInSphere(new Vector3(0, 3, 0), 1.5f, 20);
+            GenerateTrianglesInSphere(new Vector3(0, 4, 0), 4, 200);
         }
 
         private void GenerateTrianglesInSphere(Vector3 position, float r, int numTriangles)
         {
             for (int triangleIndex = 0; triangleIndex < numTriangles; triangleIndex++)
             {
-                //Vector3 position = RandomUtility.GetRandomPointInVolumeOfASphere(new Vector3(0, 0, 0), 2f);
                 Vector3 randLocalPosition = UnityEngine.Random.insideUnitSphere * UnityEngine.Random.Range(.01f, r);
-                m_Triangles.Add(MakeTriangle(randLocalPosition + position, Vector3.forward, Vector3.down, UnityEngine.Random.Range(.2f, .6f)));
+                m_Triangles.Add(MakeTriangle(randLocalPosition + position, Vector3.forward, Vector3.down, UnityEngine.Random.Range(.2f, .6f), GradientFunctors.Instance.GetGradientAt));
             }
         }
 
-        public GLTriangle MakeTriangle(Vector3 position, Vector3 forward, Vector3 up, float radius)
+        public GLTriangle MakeTriangle(Vector3 position, Vector3 forward, Vector3 up, float radius, System.Func<Vector3, Color> gradientFunctor)
         {
             //since backface culling is off, the direction of right (vs left) shouldn't matter.
             GLTriangle newTri = new GLTriangle();
             newTri.m_A = position + up * radius;
+            newTri.m_AColor = gradientFunctor(newTri.m_A);
             float randAngleB = UnityEngine.Random.Range(15f, 165f);
             newTri.m_B = position + Quaternion.AngleAxis(randAngleB, forward) * (up * radius);
+            newTri.m_BColor = gradientFunctor(newTri.m_B);
             float randAngleC = UnityEngine.Random.Range(randAngleB, 345f);
             newTri.m_C = position + Quaternion.AngleAxis(randAngleC, forward * Mathf.Rad2Deg) * (up * radius);
+            newTri.m_CColor = gradientFunctor(newTri.m_C);
             //Vector3 right = Vector3.Cross(forward, up);
 
             return newTri;
