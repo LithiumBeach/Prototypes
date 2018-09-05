@@ -325,6 +325,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558197a53b5ee6744a3d371470fb68ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_ForkProbabilityFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.042662665
+      outSlope: -0.042662665
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.0961746
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2.862624
+      outSlope: -2.862624
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.02360022
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_MaxBranchesAtFork: 4
+  m_MinMaxHeight: {x: 20, y: 30}
+  m_MaxLevels: 16
+  m_RngSeed: 681433568
 --- !u!1 &1353425299
 GameObject:
   m_ObjectHideFlags: 0

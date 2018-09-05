@@ -13,10 +13,27 @@ namespace dd
 
         private List<GLTriangle> m_Triangles;
 
+        private TreeSkeleton m_TreeSkeleton;
+
+        public AnimationCurve m_ForkProbabilityFalloff;
+        public int m_MaxBranchesAtFork;
+        public Vector2 m_MinMaxHeight;
+        public int m_MaxLevels;
+        [Sirenix.OdinInspector.Button("New RNG Seed", Sirenix.OdinInspector.ButtonSizes.Small)]
+        public void OnNewRNGSeed() { m_RngSeed = UnityEngine.Random.Range(int.MinValue, int.MaxValue); }
+        public int m_RngSeed;
+
         public void Start()
         {
             m_Triangles = new List<GLTriangle>();
-            GenerateTrianglesInSphere(new Vector3(0, 4, 0), 4, 200);
+            GenerateSkeleton(Vector3.zero);
+            //GenerateTrianglesInSphere(new Vector3(0, 4, 0), 4, 200);
+        }
+
+        private void GenerateSkeleton(Vector3 basePosition)
+        {
+            m_TreeSkeleton = new TreeSkeleton();
+            m_TreeSkeleton.Generate(GradientFunctors.Instance.m_Gradients[0], m_ForkProbabilityFalloff, m_MaxBranchesAtFork, m_MinMaxHeight, m_MaxLevels, m_RngSeed);
         }
 
         private void GenerateTrianglesInSphere(Vector3 position, float r, int numTriangles)
