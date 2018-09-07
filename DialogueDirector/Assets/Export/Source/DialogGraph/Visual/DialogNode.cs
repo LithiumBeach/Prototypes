@@ -46,11 +46,10 @@ namespace dd
         public string m_LocalizedText = "";
 
         public int m_NodeID = -1;
+        public int m_SpeakerIndex = 0;
 
         public readonly float m_Width = 200;
         public readonly float m_Height = 250;
-
-        public int m_SpeakerIndex = 0;
 
         public Vector2 GetPositionForSave()
         {
@@ -106,7 +105,7 @@ namespace dd
             m_IDText = "";
         }
 
-        public void Move(Vector2 delta)
+        public virtual void Move(Vector2 delta)
         {
             m_Rect.position += delta;
             m_LocalizedTextDisplayRect.position += delta;

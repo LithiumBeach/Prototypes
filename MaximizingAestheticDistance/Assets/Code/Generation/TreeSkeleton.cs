@@ -2,12 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using util;
 
 namespace dd
 {
     public class TreeSkeleton
     {
         public TreeSkeletonNode m_Root;
+        private int m_NodeCount;
+        public int NodeCount { get { return m_NodeCount; } }
 
         private UnityEngine.Random m_RNG;
         private AnimationCurve m_ForkProbabilityFalloff;
@@ -15,6 +18,7 @@ namespace dd
         private float m_TotalHeight;
         private int m_MaxBranchesAtFork;
         private int m_MaxLevels;
+        public int MaxLevels { get { return m_MaxLevels; } }
         private Gradient m_ColorGradient;
 
         //@Note: if this were to need to be parallelized, i would recommend starting with the leaves and working your way inward to the trunk.
@@ -37,6 +41,7 @@ namespace dd
             m_MaxBranchesAtFork = maxBranchesAtFork;
             m_MaxLevels = maxLevels;
             m_ColorGradient = colorGradient;
+            m_NodeCount = 0;
 
             //generate the bottom node of the tree.
             m_Root = new TreeSkeletonNode();
@@ -77,6 +82,11 @@ namespace dd
 
         private void Fork(TreeSkeletonNode root, int numForks, int level, Vector3 rootDirectionNormalized)
         {
+            if (level > m_MaxLevels)
+            {
+                return;
+            }
+            m_NodeCount++;
             //List<TreeSkeletonNode> nextNodes = new List<TreeSkeletonNode>();
             for (int forkIndex = 0; forkIndex < numForks; forkIndex++)
             {
@@ -84,14 +94,17 @@ namespace dd
                 TreeSkeletonNode nextNode = new TreeSkeletonNode();
 
                 //quick and dirty noisy falloff function for reducing length of branches as level goes higher.
-                float levelToLengthRatio = Mathf.Clamp01(1f - level / m_MaxLevels);
-                float randLength = UnityEngine.Random.Range(levelToLengthRatio - .1f, levelToLengthRatio + .1f);
+                float levelToLengthRatio = Mathf.Clamp01(1f - (level / m_MaxLevels));
+                float randLength = UnityEngine.Random.Range(levelToLengthRatio - .05f, levelToLengthRatio + .05f) * 0.5f;
 
-                //@TODO: get random offset from root node (between root node position and root node position + a little bit)
+                //@TODO: get random offset from root node (between root node position and root node position + a little bit) along root dir
                 Vector3 randomNodeOffset = Vector3.zero;
 
+                Vector2 angleRange = new Vector2(UnityEngine.Random.Range(1f * levelToLengthRatio, 24f * levelToLengthRatio), UnityEngine.Random.Range(45f * levelToLengthRatio, 65f * levelToLengthRatio));
                 //multiply length to a normalized random branch direction determined by this tree. add last position.
-                nextNode.m_Position = root.m_Position + randomNodeOffset + GenerateBranchDirection(rootDirectionNormalized) * randLength;
+                nextNode.m_Position = root.m_Position + randomNodeOffset + GenerateBranchDirection(rootDirectionNormalized,
+                    angleRange,
+                    level) * randLength;
 
                 //it's going to go a max of one branch higher than the passed in max height. tell nobody.
                 //@TODO: you could do this at the start of the function using root's position.
@@ -114,7 +127,7 @@ namespace dd
                         root.m_NextNodes.Add(nextNode);
 
                         //Fork
-                        int nextNumForkAttempts = UnityEngine.Random.Range(0, m_MaxBranchesAtFork + 1);
+                        int nextNumForkAttempts = UnityEngine.Random.Range(m_NodeCount > 10 ? 0 : 1, m_MaxBranchesAtFork + 1);
                         Fork(nextNode, nextNumForkAttempts, level + 1, Vector3.Normalize((nextNode.m_Position - root.m_Position))); 
                     }
                 }
@@ -123,11 +136,25 @@ namespace dd
         }
 
         //@TODO: parameterize function with tree types 🙃
-        private Vector3 GenerateBranchDirection(Vector3 rootDirNormalized)
+        private Vector3 GenerateBranchDirection(Vector3 rootDirNormalized, Vector2 angleRange, int level)
         {
-            //stub
+            //imagine a circle about rootDirNormalized. this angle is regarding that circle. it's the direction your pitch angle will pitch in.
+            float randAngle = UnityEngine.Random.Range(0f, 360);
+            //this is hard to describe. make an L-shape with your index finger and your thumb. pretend your finger and thumb are branches of a tree.
+            //this is the angle between your thumb and finger.
+            //angleRange = angleRange * Mathf.Clamp01(1f - (level / m_MaxLevels));
+            float randPitchAngle = UnityEngine.Random.Range(angleRange.x, angleRange.y);
 
-            return Vector3.up;
+            //ARBITRARY perpendicular angle. Chosen constants maintain normalized vector. Pretty sure. It's fine we're fine.
+            Vector3 arbitraryOrtho = Vector3.Cross(rootDirNormalized, Vector3.up);
+
+            Vector3 newDir = rootDirNormalized;
+            Quaternion randPitchRotation = Quaternion.AngleAxis(randPitchAngle, arbitraryOrtho);
+            newDir = randPitchRotation * newDir;
+            Quaternion randRotation = Quaternion.AngleAxis(randAngle, rootDirNormalized);
+            newDir = randRotation * newDir;
+
+            return Vector3.Normalize(newDir);
         }
     }
 

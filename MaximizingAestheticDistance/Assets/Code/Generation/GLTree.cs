@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,9 +20,14 @@ namespace dd
         public int m_MaxBranchesAtFork;
         public Vector2 m_MinMaxHeight;
         public int m_MaxLevels;
-        [Sirenix.OdinInspector.Button("New RNG Seed", Sirenix.OdinInspector.ButtonSizes.Small)]
+        [Button("New RNG Seed", Sirenix.OdinInspector.ButtonSizes.Small)]
         public void OnNewRNGSeed() { m_RngSeed = UnityEngine.Random.Range(int.MinValue, int.MaxValue); }
         public int m_RngSeed;
+
+        public AnimationCurve m_BranchWidthOverLevelCurve;
+
+        [Required]
+        public LineRenderer m_BranchPrefab;
 
         public void Start()
         {
@@ -34,6 +40,9 @@ namespace dd
         {
             m_TreeSkeleton = new TreeSkeleton();
             m_TreeSkeleton.Generate(GradientFunctors.Instance.m_Gradients[0], m_ForkProbabilityFalloff, m_MaxBranchesAtFork, m_MinMaxHeight, m_MaxLevels, m_RngSeed);
+
+            m_BranchRenderers = new List<LineRenderer>();
+            RecursiveDrawBranches(m_TreeSkeleton.m_Root);
         }
 
         private void GenerateTrianglesInSphere(Vector3 position, float r, int numTriangles)
@@ -57,8 +66,6 @@ namespace dd
             float randAngleC = UnityEngine.Random.Range(randAngleB, 345f);
             newTri.m_C = position + Quaternion.AngleAxis(randAngleC, forward * Mathf.Rad2Deg) * (up * radius);
             newTri.m_CColor = gradientFunctor(newTri.m_C);
-            //Vector3 right = Vector3.Cross(forward, up);
-
             return newTri;
         }
 
@@ -97,22 +104,40 @@ namespace dd
 
             //Begin GL Draws
 
-            //GLTriangle tri = new GLTriangle();
-            //tri.A = new Vector3(0, 1, 0);
-            //tri.B = new Vector3(0, 0, 0);
-            //tri.C = new Vector3(1, 0, 0);
-            //tri.Draw();
-
             for (int i = 0; i < m_Triangles.Count; i++)
             {
                 m_Triangles[i].Draw();
             }
 
-            //GenerateTrianglesInSphere(new Vector3(0, 3, 0), 4f, 10);
-
             //End GL Draws
 
             GL.PopMatrix();
+        }
+
+        private void RecursiveDrawBranches(TreeSkeletonNode root)
+        {
+            for (int i = 0; i < root.m_NextNodes.Count; i++)
+            {
+                DrawBranch(root, root.m_NextNodes[i]);
+                RecursiveDrawBranches(root.m_NextNodes[i]);
+            }
+        }
+
+        private List<LineRenderer> m_BranchRenderers;
+        private void DrawBranch(TreeSkeletonNode startNode, TreeSkeletonNode endNode)
+        {
+            LineRenderer newBranch = GameObject.Instantiate(m_BranchPrefab.gameObject).GetComponent<LineRenderer>();
+
+            //@TODO:
+            //newBranch.startWidth = Mathf.Lerp(0.5f, 0.01f, m_BranchWidthOverLevelCurve.Evaluate(Mathf.Clamp(startNode.m_Level / m_TreeSkeleton.MaxLevels, .05f, 0.95f)));
+            //newBranch.endWidth = Mathf.Lerp(0.5f, 0.01f, m_BranchWidthOverLevelCurve.Evaluate(Mathf.Clamp(endNode.m_Level / m_TreeSkeleton.MaxLevels, .05f, 0.95f)));
+            newBranch.startWidth = .01f;
+            newBranch.endWidth = .01f;
+
+
+            newBranch.SetPosition(1, startNode.m_Position);
+            newBranch.SetPosition(0, endNode.m_Position);
+            m_BranchRenderers.Add(newBranch);
         }
     }
 }
