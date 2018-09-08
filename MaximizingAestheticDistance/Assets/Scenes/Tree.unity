@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: 1564398173
+  m_RngSeed: -2059129131
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!1 &1353425299

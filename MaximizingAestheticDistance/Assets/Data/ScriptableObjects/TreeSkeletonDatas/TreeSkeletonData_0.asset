@@ -93,3 +93,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_LeavesPerClusterMinMax: {x: 4, y: 8}
+  m_ChanceOfCluster: 0.666
+  m_LevelsFromMaxToSpawnLeaves: 1
+  m_MinMaxLeafSize: {x: 0.2, y: 0.4}
+  m_LeafClusterRadius: 1.25

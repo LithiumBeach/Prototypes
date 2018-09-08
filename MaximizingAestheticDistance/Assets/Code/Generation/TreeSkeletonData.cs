@@ -8,6 +8,7 @@ namespace dd
     [CreateAssetMenu(fileName = "TreeSkeletonData_", menuName = "GenerationDatas/TreeSkeleton", order = 1)]
     public class TreeSkeletonData : ScriptableObject
     {
+        [Header("Trunk & Branches")]
         [Tooltip("after every fork, there is a chance that those forked branches will split. this defines that as a function over time. probability should go down (falloff) as more splits occur (t++)")]
         public AnimationCurve m_ForkProbabilityFalloff;
 
@@ -37,5 +38,21 @@ namespace dd
 
         [Tooltip("define a function to control width over t (node depth), between max/min width")]
         public AnimationCurve m_WidthCurve;
+
+        [Header("Leaves")]
+        //[MinMaxSlider(1, 20, true)]
+        public Vector2 m_LeavesPerClusterMinMax = Vector2.one;
+        [Range(0f, 1f)]
+        [Tooltip("per-branch")]
+        public float m_ChanceOfCluster = 1f;
+        [Tooltip("start spawning leaves at (MaxLevels - m_LevelsFromMaxToSpawnLeaves)")]
+        public int m_LevelsFromMaxToSpawnLeaves = 2;
+        [Tooltip("how big will the leaves be?")]
+        [MinMaxSlider(0.01f, 1.0f, true)]
+        public Vector2 m_MinMaxLeafSize;
+
+        [Tooltip("radius to spawn leaves from branches")]
+        [Range(.1f, 6f)]
+        public float m_LeafClusterRadius = .5f;
     }
 }

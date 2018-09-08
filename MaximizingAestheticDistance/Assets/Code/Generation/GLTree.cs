@@ -41,12 +41,15 @@ namespace dd
             RecursiveDrawBranches(m_TreeSkeleton.m_Root);
         }
 
-        private void GenerateTrianglesInSphere(Vector3 position, float r, int numTriangles)
+        private void GenerateTrianglesInSphere(Vector3 position, float r, int numTriangles, Vector2 minMaxLeafRadius)
         {
             for (int triangleIndex = 0; triangleIndex < numTriangles; triangleIndex++)
             {
+                Vector3 forward = UnityEngine.Random.onUnitSphere;
                 Vector3 randLocalPosition = UnityEngine.Random.insideUnitSphere * UnityEngine.Random.Range(.01f, r);
-                m_Triangles.Add(MakeTriangle(randLocalPosition + position, Vector3.forward, Vector3.down, UnityEngine.Random.Range(.2f, .6f), GradientFunctors.Instance.GetGradientAt));
+                m_Triangles.Add(MakeTriangle(randLocalPosition + position, forward, Vector3.Cross(forward, Vector3.up),
+                                             UnityEngine.Random.Range(minMaxLeafRadius.x, minMaxLeafRadius.y),
+                                             GradientFunctors.Instance.GetGradientAt));
             }
         }
 
@@ -137,6 +140,19 @@ namespace dd
                                             m_SkeletonData.m_WidthCurve.Evaluate((float)endNode.m_Level / (float)m_SkeletonData.m_MaxLevels));
             //newBranch.startWidth = .025f;
             //newBranch.endWidth = .025f;
+
+            if (endNode.m_Level >= (m_TreeSkeleton.m_Data.m_MaxLevels - m_TreeSkeleton.m_Data.m_LevelsFromMaxToSpawnLeaves))
+            {
+                float rand01 = UnityEngine.Random.Range(0f, 1f);
+                if (rand01 < m_TreeSkeleton.m_Data.m_ChanceOfCluster)
+                {
+                    GenerateTrianglesInSphere((startNode.m_Position + endNode.m_Position) * .5f,
+                                                //Vector3.Distance(startNode.m_Position, endNode.m_Position) * .5f,
+                                                m_TreeSkeleton.m_Data.m_LeafClusterRadius,
+                                                (int)UnityEngine.Random.Range(m_TreeSkeleton.m_Data.m_LeavesPerClusterMinMax.x, m_TreeSkeleton.m_Data.m_LeavesPerClusterMinMax.y),
+                                                m_TreeSkeleton.m_Data.m_MinMaxLeafSize);
+                }
+            }
 
             newBranch.SetPosition(0, startNode.m_Position);// - littleStartOffset);
             newBranch.SetPosition(1, endNode.m_Position);
