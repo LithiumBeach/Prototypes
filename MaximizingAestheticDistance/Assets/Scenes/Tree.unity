@@ -285,48 +285,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 428476369}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &667596262
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4677675868641200, guid: 770085cc47f298c4298d9f31cb5836e8, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677675868641200, guid: 770085cc47f298c4298d9f31cb5836e8, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.71
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677675868641200, guid: 770085cc47f298c4298d9f31cb5836e8, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -1.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677675868641200, guid: 770085cc47f298c4298d9f31cb5836e8, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0.03707977
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677675868641200, guid: 770085cc47f298c4298d9f31cb5836e8, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677675868641200, guid: 770085cc47f298c4298d9f31cb5836e8, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677675868641200, guid: 770085cc47f298c4298d9f31cb5836e8, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 0.99931234
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677675868641200, guid: 770085cc47f298c4298d9f31cb5836e8, type: 2}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 770085cc47f298c4298d9f31cb5836e8, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &746444555
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,8 +307,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 746444555}
-  m_LocalRotation: {x: 0.03707977, y: -0, z: -0, w: 0.99931234}
-  m_LocalPosition: {x: 0, y: 0.71, z: -1.35}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -367,64 +325,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558197a53b5ee6744a3d371470fb68ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ForkProbabilityFalloff:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -0.042662665
-      outSlope: -0.042662665
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.0961746
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -2.862624
-      outSlope: -2.862624
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.02360022
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_MaxBranchesAtFork: 4
-  m_MinMaxHeight: {x: 8, y: 16}
-  m_MaxLevels: 8
-  m_RngSeed: 61502230
-  m_BranchWidthOverLevelCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: -0.0009918213
-      value: 0.011629507
-      inSlope: 3.878865
-      outSlope: 3.878865
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.01984007
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0.4878897
-      outSlope: 0.4878897
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.05064547
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_BranchPrefab: {fileID: 1169532822}
---- !u!120 &1169532822 stripped
-LineRenderer:
-  m_PrefabParentObject: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
+  m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
+  m_RngSeed: 1564398173
+  m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
-  m_PrefabInternal: {fileID: 667596262}
 --- !u!1 &1353425299
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,22 +9,18 @@ namespace dd
 {
     public class GLTree : MonoBehaviour
     {
-
         static Material lineMaterial;
 
         private List<GLTriangle> m_Triangles;
 
         private TreeSkeleton m_TreeSkeleton;
 
-        public AnimationCurve m_ForkProbabilityFalloff;
-        public int m_MaxBranchesAtFork;
-        public Vector2 m_MinMaxHeight;
-        public int m_MaxLevels;
+        [Required]
+        public TreeSkeletonData m_SkeletonData;
+
         [Button("New RNG Seed", Sirenix.OdinInspector.ButtonSizes.Small)]
         public void OnNewRNGSeed() { m_RngSeed = UnityEngine.Random.Range(int.MinValue, int.MaxValue); }
         public int m_RngSeed;
-
-        public AnimationCurve m_BranchWidthOverLevelCurve;
 
         [Required]
         public LineRenderer m_BranchPrefab;
@@ -39,7 +35,7 @@ namespace dd
         private void GenerateSkeleton(Vector3 basePosition)
         {
             m_TreeSkeleton = new TreeSkeleton();
-            m_TreeSkeleton.Generate(GradientFunctors.Instance.m_Gradients[0], m_ForkProbabilityFalloff, m_MaxBranchesAtFork, m_MinMaxHeight, m_MaxLevels, m_RngSeed);
+            m_TreeSkeleton.Generate(m_SkeletonData, m_RngSeed);
 
             m_BranchRenderers = new List<LineRenderer>();
             RecursiveDrawBranches(m_TreeSkeleton.m_Root);
@@ -118,25 +114,35 @@ namespace dd
         {
             for (int i = 0; i < root.m_NextNodes.Count; i++)
             {
-                DrawBranch(root, root.m_NextNodes[i]);
+                DrawBranch(root, root.m_NextNodes[i],
+                    m_TreeSkeleton.m_Data.m_BranchColorGradient.Evaluate(root.m_Position.y / (m_TreeSkeleton.m_Root.m_Position.y + m_TreeSkeleton.Height)),
+                    m_TreeSkeleton.m_Data.m_BranchColorGradient.Evaluate(root.m_NextNodes[i].m_Position.y / (m_TreeSkeleton.m_Root.m_Position.y + m_TreeSkeleton.Height)));
                 RecursiveDrawBranches(root.m_NextNodes[i]);
             }
         }
 
         private List<LineRenderer> m_BranchRenderers;
-        private void DrawBranch(TreeSkeletonNode startNode, TreeSkeletonNode endNode)
+        private void DrawBranch(TreeSkeletonNode startNode, TreeSkeletonNode endNode, Color startColor, Color endColor)
         {
             LineRenderer newBranch = GameObject.Instantiate(m_BranchPrefab.gameObject).GetComponent<LineRenderer>();
 
             //@TODO:
             //newBranch.startWidth = Mathf.Lerp(0.5f, 0.01f, m_BranchWidthOverLevelCurve.Evaluate(Mathf.Clamp(startNode.m_Level / m_TreeSkeleton.MaxLevels, .05f, 0.95f)));
             //newBranch.endWidth = Mathf.Lerp(0.5f, 0.01f, m_BranchWidthOverLevelCurve.Evaluate(Mathf.Clamp(endNode.m_Level / m_TreeSkeleton.MaxLevels, .05f, 0.95f)));
-            newBranch.startWidth = .01f;
-            newBranch.endWidth = .01f;
+            newBranch.startWidth = Mathf.Lerp(m_SkeletonData.m_MinMaxWidth.x,
+                                              m_SkeletonData.m_MinMaxWidth.y,
+                                              m_SkeletonData.m_WidthCurve.Evaluate((float)startNode.m_Level / (float)m_SkeletonData.m_MaxLevels));
+            newBranch.endWidth = Mathf.Lerp(m_SkeletonData.m_MinMaxWidth.x,
+                                            m_SkeletonData.m_MinMaxWidth.y,
+                                            m_SkeletonData.m_WidthCurve.Evaluate((float)endNode.m_Level / (float)m_SkeletonData.m_MaxLevels));
+            //newBranch.startWidth = .025f;
+            //newBranch.endWidth = .025f;
 
+            newBranch.SetPosition(0, startNode.m_Position);// - littleStartOffset);
+            newBranch.SetPosition(1, endNode.m_Position);
 
-            newBranch.SetPosition(1, startNode.m_Position);
-            newBranch.SetPosition(0, endNode.m_Position);
+            newBranch.startColor = startColor;
+            newBranch.endColor = endColor;
             m_BranchRenderers.Add(newBranch);
         }
     }
