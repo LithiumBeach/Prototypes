@@ -48,26 +48,30 @@ namespace dd
                 Vector3 forward = UnityEngine.Random.onUnitSphere;
                 Vector3 randLocalPosition = UnityEngine.Random.insideUnitSphere * UnityEngine.Random.Range(.01f, r);
                 m_Triangles.Add(MakeTriangle(randLocalPosition + position, forward, Vector3.Cross(forward, Vector3.up),
-                                             UnityEngine.Random.Range(minMaxLeafRadius.x, minMaxLeafRadius.y),
-                                             GradientFunctors.Instance.GetGradientAt));
+                                             UnityEngine.Random.Range(minMaxLeafRadius.x, minMaxLeafRadius.y)
+                                             ));
             }
         }
 
-        public GLTriangle MakeTriangle(Vector3 position, Vector3 forward, Vector3 up, float radius, System.Func<Vector3, Color> gradientFunctor)
+        public GLTriangle MakeTriangle(Vector3 position, Vector3 forward, Vector3 up, float radius)
         {
             //since backface culling is off, the direction of right (vs left) shouldn't matter.
             GLTriangle newTri = new GLTriangle();
             newTri.m_A = position + up * radius;
-            newTri.m_AColor = gradientFunctor(newTri.m_A);
+            newTri.m_AColor = GetLeafGradientAt(newTri.m_A);
             float randAngleB = UnityEngine.Random.Range(15f, 165f);
             newTri.m_B = position + Quaternion.AngleAxis(randAngleB, forward) * (up * radius);
-            newTri.m_BColor = gradientFunctor(newTri.m_B);
+            newTri.m_BColor = GetLeafGradientAt(newTri.m_B);
             float randAngleC = UnityEngine.Random.Range(randAngleB, 345f);
             newTri.m_C = position + Quaternion.AngleAxis(randAngleC, forward * Mathf.Rad2Deg) * (up * radius);
-            newTri.m_CColor = gradientFunctor(newTri.m_C);
+            newTri.m_CColor = GetLeafGradientAt(newTri.m_C);
             return newTri;
         }
 
+        private Color GetLeafGradientAt(Vector3 pos)
+        {
+            return m_TreeSkeleton.m_Data.m_LeafGradient.Evaluate(pos.y / (m_TreeSkeleton.m_Root.m_Position.y + m_TreeSkeleton.Height));
+        }
 
         static void CreateLineMaterial()
         {

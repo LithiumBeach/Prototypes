@@ -54,5 +54,7 @@ namespace dd
         [Tooltip("radius to spawn leaves from branches")]
         [Range(.1f, 6f)]
         public float m_LeafClusterRadius = .5f;
+
+        public Gradient m_LeafGradient;
     }
 }
