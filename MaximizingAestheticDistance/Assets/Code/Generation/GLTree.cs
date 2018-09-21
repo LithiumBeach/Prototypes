@@ -25,11 +25,15 @@ namespace dd
         [Required]
         public LineRenderer m_BranchPrefab;
 
+        //cache transform reference
+        private Transform m_TransformComponent;
+
         public void Start()
         {
+            m_TransformComponent = GetComponent<Transform>();
+
             m_Triangles = new List<GLTriangle>();
             GenerateSkeleton(Vector3.zero);
-            //GenerateTrianglesInSphere(new Vector3(0, 4, 0), 4, 200);
         }
 
         private void GenerateSkeleton(Vector3 basePosition)
@@ -38,7 +42,7 @@ namespace dd
             m_TreeSkeleton.Generate(m_SkeletonData, m_RngSeed);
 
             m_BranchRenderers = new List<LineRenderer>();
-            RecursiveDrawBranches(m_TreeSkeleton.m_Root);
+            RecursiveMakeBranches(m_TreeSkeleton.m_Root);
         }
 
         private void GenerateTrianglesInSphere(Vector3 position, float r, int numTriangles, Vector2 minMaxLeafRadius)
@@ -109,7 +113,7 @@ namespace dd
 
             for (int i = 0; i < m_Triangles.Count; i++)
             {
-                m_Triangles[i].Draw();
+                m_Triangles[i].Draw(m_TransformComponent.position);
             }
 
             //End GL Draws
@@ -117,19 +121,19 @@ namespace dd
             GL.PopMatrix();
         }
 
-        private void RecursiveDrawBranches(TreeSkeletonNode root)
+        private void RecursiveMakeBranches(TreeSkeletonNode root)
         {
             for (int i = 0; i < root.m_NextNodes.Count; i++)
             {
-                DrawBranch(root, root.m_NextNodes[i],
+                MakeBranch(root, root.m_NextNodes[i],
                     m_TreeSkeleton.m_Data.m_BranchColorGradient.Evaluate(root.m_Position.y / (m_TreeSkeleton.m_Root.m_Position.y + m_TreeSkeleton.Height)),
                     m_TreeSkeleton.m_Data.m_BranchColorGradient.Evaluate(root.m_NextNodes[i].m_Position.y / (m_TreeSkeleton.m_Root.m_Position.y + m_TreeSkeleton.Height)));
-                RecursiveDrawBranches(root.m_NextNodes[i]);
+                RecursiveMakeBranches(root.m_NextNodes[i]);
             }
         }
 
         private List<LineRenderer> m_BranchRenderers;
-        private void DrawBranch(TreeSkeletonNode startNode, TreeSkeletonNode endNode, Color startColor, Color endColor)
+        private void MakeBranch(TreeSkeletonNode startNode, TreeSkeletonNode endNode, Color startColor, Color endColor)
         {
             LineRenderer newBranch = GameObject.Instantiate(m_BranchPrefab.gameObject).GetComponent<LineRenderer>();
 
@@ -164,6 +168,9 @@ namespace dd
             newBranch.startColor = startColor;
             newBranch.endColor = endColor;
             m_BranchRenderers.Add(newBranch);
+
+            //child all branches to this. make sure UseWorldSpace is off in your linerenderer prefab.
+            newBranch.transform.parent = transform;
         }
     }
 }

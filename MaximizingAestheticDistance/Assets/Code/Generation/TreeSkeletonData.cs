@@ -48,7 +48,7 @@ namespace dd
         [Tooltip("start spawning leaves at (MaxLevels - m_LevelsFromMaxToSpawnLeaves)")]
         public int m_LevelsFromMaxToSpawnLeaves = 2;
         [Tooltip("how big will the leaves be?")]
-        [MinMaxSlider(0.01f, 1.0f, true)]
+        [MinMaxSlider(0.01f, 8.0f, true)]
         public Vector2 m_MinMaxLeafSize;
 
         [Tooltip("radius to spawn leaves from branches")]
