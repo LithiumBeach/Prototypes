@@ -162,8 +162,8 @@ namespace dd
                 }
             }
 
-            newBranch.SetPosition(0, startNode.m_Position);// - littleStartOffset);
-            newBranch.SetPosition(1, endNode.m_Position);
+            newBranch.SetPosition(0, startNode.m_Position + m_TransformComponent.position);// - littleStartOffset);
+            newBranch.SetPosition(1, endNode.m_Position + m_TransformComponent.position);
 
             newBranch.startColor = startColor;
             newBranch.endColor = endColor;
