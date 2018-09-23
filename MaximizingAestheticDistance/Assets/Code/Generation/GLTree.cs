@@ -10,10 +10,13 @@ namespace dd
     public class GLTree : MonoBehaviour
     {
         static Material lineMaterial;
+        public Material m_VertexColorsMaterial;
 
-        private List<GLTriangle> m_Triangles;
+        private List<MeshFilter> m_Triangles;
 
         private TreeSkeleton m_TreeSkeleton;
+
+        private Transform m_LeavesRoot = null;
 
         [Required]
         public TreeSkeletonData m_SkeletonData;
@@ -32,7 +35,13 @@ namespace dd
         {
             m_TransformComponent = GetComponent<Transform>();
 
-            m_Triangles = new List<GLTriangle>();
+            m_Triangles = new List<MeshFilter>();
+            m_LeavesRoot = GameObject.Instantiate(new GameObject()).GetComponent<Transform>();
+            m_LeavesRoot.name = "leaves_root";
+            m_LeavesRoot.SetParent(transform);
+            m_LeavesRoot.transform.localPosition = Vector3.zero;
+            m_LeavesRoot.transform.localRotation = Quaternion.identity;
+            m_LeavesRoot.transform.localScale = Vector3.one;
             GenerateSkeleton(Vector3.zero);
         }
 
@@ -57,19 +66,49 @@ namespace dd
             }
         }
 
-        public GLTriangle MakeTriangle(Vector3 position, Vector3 forward, Vector3 up, float radius)
+        public MeshFilter MakeTriangle(Vector3 position, Vector3 forward, Vector3 up, float radius)
         {
             //since backface culling is off, the direction of right (vs left) shouldn't matter.
-            GLTriangle newTri = new GLTriangle();
-            newTri.m_A = position + up * radius;
-            newTri.m_AColor = GetLeafGradientAt(newTri.m_A);
+            Mesh newTri = new Mesh();
+            Vector3[] newVerts = new Vector3[3];
+            Color32[] newColors32 = new Color32[3];
+
+
+            newVerts[0] = position + up * radius;
+            newColors32[0] = GetLeafGradientAt(newVerts[0]);
+
             float randAngleB = UnityEngine.Random.Range(15f, 165f);
-            newTri.m_B = position + Quaternion.AngleAxis(randAngleB, forward) * (up * radius);
-            newTri.m_BColor = GetLeafGradientAt(newTri.m_B);
+            newVerts[1] = position + Quaternion.AngleAxis(randAngleB, forward) * (up * radius);
+            newColors32[1] = GetLeafGradientAt(newVerts[1]);
             float randAngleC = UnityEngine.Random.Range(randAngleB, 345f);
-            newTri.m_C = position + Quaternion.AngleAxis(randAngleC, forward * Mathf.Rad2Deg) * (up * radius);
-            newTri.m_CColor = GetLeafGradientAt(newTri.m_C);
-            return newTri;
+
+            newVerts[2] = position + Quaternion.AngleAxis(randAngleC, forward * Mathf.Rad2Deg) * (up * radius);
+            newColors32[2] = GetLeafGradientAt(newVerts[2]);
+
+
+            newTri.vertices = newVerts;
+            newTri.colors32 = newColors32;
+
+            int[] tris = new int[6];
+            tris[0] = 0; tris[1] = 1; tris[2] = 2;
+            tris[3] = 2; tris[4] = 1; tris[5] = 0;
+
+            newTri.SetTriangles(tris, 0, false);
+
+            //newTri.RecalculateNormals();
+            //Vector3 newNormal = newTri.normals[0];
+            //newTri.SetNormals(new List<Vector3>{ newNormal, -newNormal });
+
+            GameObject newObject = GameObject.Instantiate(new GameObject());
+            newObject.transform.SetParent(m_LeavesRoot);
+            newObject.transform.localPosition = Vector3.zero;
+            newObject.transform.localRotation = Quaternion.identity;
+            newObject.transform.localScale = Vector3.one;
+            MeshFilter newMF = newObject.AddComponent<MeshFilter>();
+            MeshRenderer newMR = newObject.AddComponent<MeshRenderer>();
+            newMF.mesh = newTri;
+            newMR.material = m_VertexColorsMaterial;
+            return newMF;
         }
 
         private Color GetLeafGradientAt(Vector3 pos)
@@ -97,29 +136,29 @@ namespace dd
         }
 
         // Will be called after all regular rendering is done
-        public void OnRenderObject()
-        {
-            CreateLineMaterial();
-            // Apply the line material
-            lineMaterial.SetPass(0);
-
-            GL.PushMatrix();
-            // Set transformation matrix for drawing to
-            // match our transform
-            GL.LoadIdentity();
-            GL.MultMatrix(Camera.main.worldToCameraMatrix);
-
-            //Begin GL Draws
-
-            for (int i = 0; i < m_Triangles.Count; i++)
-            {
-                m_Triangles[i].Draw(m_TransformComponent.position);
-            }
-
-            //End GL Draws
-
-            GL.PopMatrix();
-        }
+        //public void OnRenderObject()
+        //{
+        //    CreateLineMaterial();
+        //    // Apply the line material
+        //    lineMaterial.SetPass(0);
+        //
+        //    GL.PushMatrix();
+        //    // Set transformation matrix for drawing to
+        //    // match our transform
+        //    GL.LoadIdentity();
+        //    GL.MultMatrix(Camera.main.worldToCameraMatrix);
+        //
+        //    //Begin GL Draws
+        //
+        //    for (int i = 0; i < m_Triangles.Count; i++)
+        //    {
+        //        m_Triangles[i].Draw(m_TransformComponent.position);
+        //    }
+        //
+        //    //End GL Draws
+        //
+        //    GL.PopMatrix();
+        //}
 
         private void RecursiveMakeBranches(TreeSkeletonNode root)
         {

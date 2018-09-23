@@ -153,8 +153,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558197a53b5ee6744a3d371470fb68ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
+    type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: -430587376
+  m_RngSeed: 2031329920
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!1 &301359225
@@ -282,8 +284,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558197a53b5ee6744a3d371470fb68ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
+    type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: 2109857333
+  m_RngSeed: -1155510623
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!1 &428476369
@@ -413,8 +417,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558197a53b5ee6744a3d371470fb68ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
+    type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: -2002777782
+  m_RngSeed: 1808667327
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!1 &886632664
@@ -522,8 +528,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558197a53b5ee6744a3d371470fb68ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
+    type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: 362186905
+  m_RngSeed: 104128908
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!1 &1863687826
@@ -631,8 +639,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558197a53b5ee6744a3d371470fb68ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
+    type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: -1869256975
+  m_RngSeed: 1649890408
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!1 &1927459967
@@ -675,8 +685,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558197a53b5ee6744a3d371470fb68ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
+    type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: -632321847
+  m_RngSeed: 1530616773
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!1 &2048139409
@@ -706,8 +718,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558197a53b5ee6744a3d371470fb68ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
+    type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: 867783458
+  m_RngSeed: -1057230345
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!4 &2048139411
