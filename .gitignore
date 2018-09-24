@@ -4,6 +4,7 @@
 *.suo
 *.sln
 *.csproj
-*/bin/Debug
-*/obj/Debug
-*/Library
+*/bin/Debug/*
+*/obj/Debug/*
+*/Library/*
+*/Builds/*
