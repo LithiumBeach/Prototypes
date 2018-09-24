@@ -9,7 +9,9 @@ namespace dd
 {
     public class GLTree : MonoBehaviour
     {
-        static Material lineMaterial;
+        static Material lineMaterial = null;
+
+        [Required]
         public Material m_VertexColorsMaterial;
 
         private List<MeshFilter> m_Triangles;
