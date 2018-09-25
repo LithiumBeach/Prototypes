@@ -10,17 +10,16 @@ namespace dd
     /// </summary>
     public class SunBehavior : MonoBehaviour
     {
-        public Gradient m_ColorOverDay;
+        //since we will most likely have everything self illuminated according toa gradient function over DayNightCycle's T, this won't matter.
+        //public Gradient m_ColorOverDay;
 
         //[Required]
-       public Light m_DirectionalLight = null;
+        [Tooltip("probably only going to be used for shadows.")]
+        public Light m_DirectionalLight = null;
 
+        //DayNightCycleManager should control this.
         [HideInInspector]
-        public float m_TimeScale = 1.0f;
-
-        [Tooltip("how fast will the sun rotate at timescale=1?")]
-        [Range(0f, 64f)]
-        public float m_BaseOrbitSpeed = 1f;
+        public float m_T;
 
         [Tooltip("orbit about this transform. if you're making a sun, for instance, you would want this to orbit about it'")]
         //[Sirenix.OdinInspector.OnInspectorGUI("OnInspectorGUI_m_Parent")]
@@ -57,13 +56,15 @@ namespace dd
         {
             //only update position of parent
             m_LocalParent.position = m_Parent.position;
-            m_LocalParent.transform.Rotate(m_RotationAxis, m_TimeScale * m_BaseOrbitSpeed * Time.deltaTime);
 
+            //update directional light facing. always face world origin.
             if (m_DirectionalLight != null)
             {
                 //maintain the directional light facing the world origin. it should be childed to this sun.
                 m_DirectionalLight.transform.LookAt(Vector3.zero, Vector3.up);
             }
+
+            m_LocalParent.localRotation = Quaternion.AngleAxis(Mathf.Lerp(0f, 360f, m_T), m_RotationAxis);
         }
 
     }
