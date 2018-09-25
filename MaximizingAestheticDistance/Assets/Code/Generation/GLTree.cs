@@ -9,7 +9,7 @@ namespace dd
 {
     public class GLTree : MonoBehaviour
     {
-        static Material lineMaterial = null;
+        //static Material lineMaterial = null;
 
         [Required]
         public Material m_VertexColorsMaterial;
@@ -19,6 +19,7 @@ namespace dd
         private TreeSkeleton m_TreeSkeleton;
 
         private Transform m_LeavesRoot = null;
+        private Transform m_BranchesRoot = null;
 
         [Required]
         public TreeSkeletonData m_SkeletonData;
@@ -35,15 +36,27 @@ namespace dd
 
         public void Start()
         {
-            m_TransformComponent = GetComponent<Transform>();
-
             m_Triangles = new List<MeshFilter>();
-            m_LeavesRoot = GameObject.Instantiate(new GameObject()).GetComponent<Transform>();
+            //CreateLineMaterial();
+            //cache transform component to avoid GetComponent<Transform> calls (implicitly called with MonoBehaviour.transform).
+            m_TransformComponent = transform;
+
+            //instance a root for all leaves (this tree)
+            m_LeavesRoot = new GameObject().GetComponent<Transform>();
             m_LeavesRoot.name = "leaves_root";
             m_LeavesRoot.SetParent(transform);
             m_LeavesRoot.transform.localPosition = Vector3.zero;
             m_LeavesRoot.transform.localRotation = Quaternion.identity;
             m_LeavesRoot.transform.localScale = Vector3.one;
+
+            //instance a root for all branches (this tree)
+            m_BranchesRoot = new GameObject().GetComponent<Transform>();
+            m_BranchesRoot.name = "branches_root";
+            m_BranchesRoot.SetParent(transform);
+            m_BranchesRoot.transform.localPosition = Vector3.zero;
+            m_BranchesRoot.transform.localRotation = Quaternion.identity;
+            m_BranchesRoot.transform.localScale = Vector3.one;
+
             GenerateSkeleton(Vector3.zero);
         }
 
@@ -101,15 +114,21 @@ namespace dd
             //Vector3 newNormal = newTri.normals[0];
             //newTri.SetNormals(new List<Vector3>{ newNormal, -newNormal });
 
-            GameObject newObject = GameObject.Instantiate(new GameObject());
-            newObject.transform.SetParent(m_LeavesRoot);
-            newObject.transform.localPosition = Vector3.zero;
-            newObject.transform.localRotation = Quaternion.identity;
-            newObject.transform.localScale = Vector3.one;
+            GameObject newObject = new GameObject();
+            Transform newTransform = newObject.transform;
+            newTransform.SetParent(m_LeavesRoot);
+            newTransform.localPosition = Vector3.zero;
+            newTransform.localRotation = Quaternion.identity;
+            newTransform.localScale = Vector3.one;
+            newTransform.name = "leaf_" + m_LeavesRoot.childCount;
             MeshFilter newMF = newObject.AddComponent<MeshFilter>();
             MeshRenderer newMR = newObject.AddComponent<MeshRenderer>();
             newMF.mesh = newTri;
             newMR.material = m_VertexColorsMaterial;
+            newMR.receiveShadows = true;
+            newMR.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+            newMR.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+            newMR.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
             return newMF;
         }
 
@@ -118,48 +137,23 @@ namespace dd
             return m_TreeSkeleton.m_Data.m_LeafGradient.Evaluate(pos.y / (m_TreeSkeleton.m_Root.m_Position.y + m_TreeSkeleton.Height));
         }
 
-        static void CreateLineMaterial()
-        {
-            if (!lineMaterial)
-            {
-                // Unity has a built-in shader that is useful for drawing
-                // simple colored things.
-                Shader shader = Shader.Find("Hidden/Internal-Colored");
-                lineMaterial = new Material(shader);
-                lineMaterial.hideFlags = HideFlags.HideAndDontSave;
-                // Turn on alpha blending
-                lineMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                lineMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                // Turn backface culling off
-                lineMaterial.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
-                // Turn off depth writes
-                lineMaterial.SetInt("_ZWrite", 0);
-            }
-        }
-
-        // Will be called after all regular rendering is done
-        //public void OnRenderObject()
+        //static void CreateLineMaterial()
         //{
-        //    CreateLineMaterial();
-        //    // Apply the line material
-        //    lineMaterial.SetPass(0);
-        //
-        //    GL.PushMatrix();
-        //    // Set transformation matrix for drawing to
-        //    // match our transform
-        //    GL.LoadIdentity();
-        //    GL.MultMatrix(Camera.main.worldToCameraMatrix);
-        //
-        //    //Begin GL Draws
-        //
-        //    for (int i = 0; i < m_Triangles.Count; i++)
+        //    if (!lineMaterial)
         //    {
-        //        m_Triangles[i].Draw(m_TransformComponent.position);
+        //        // Unity has a built-in shader that is useful for drawing
+        //        // simple colored things.
+        //        Shader shader = Shader.Find("Hidden/Internal-Colored");
+        //        lineMaterial = new Material(shader);
+        //        lineMaterial.hideFlags = HideFlags.HideAndDontSave;
+        //        // Turn on alpha blending
+        //        lineMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        //        lineMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        //        // Turn backface culling off
+        //        lineMaterial.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
+        //        // Turn off depth writes
+        //        lineMaterial.SetInt("_ZWrite", 0);
         //    }
-        //
-        //    //End GL Draws
-        //
-        //    GL.PopMatrix();
         //}
 
         private void RecursiveMakeBranches(TreeSkeletonNode root)
@@ -178,18 +172,15 @@ namespace dd
         {
             LineRenderer newBranch = GameObject.Instantiate(m_BranchPrefab.gameObject).GetComponent<LineRenderer>();
 
-            //@TODO:
-            //newBranch.startWidth = Mathf.Lerp(0.5f, 0.01f, m_BranchWidthOverLevelCurve.Evaluate(Mathf.Clamp(startNode.m_Level / m_TreeSkeleton.MaxLevels, .05f, 0.95f)));
-            //newBranch.endWidth = Mathf.Lerp(0.5f, 0.01f, m_BranchWidthOverLevelCurve.Evaluate(Mathf.Clamp(endNode.m_Level / m_TreeSkeleton.MaxLevels, .05f, 0.95f)));
+            //set branch width over tree height according to data defined width curve
             newBranch.startWidth = Mathf.Lerp(m_SkeletonData.m_MinMaxWidth.x,
                                               m_SkeletonData.m_MinMaxWidth.y,
                                               m_SkeletonData.m_WidthCurve.Evaluate((float)startNode.m_Level / (float)m_SkeletonData.m_MaxLevels));
             newBranch.endWidth = Mathf.Lerp(m_SkeletonData.m_MinMaxWidth.x,
                                             m_SkeletonData.m_MinMaxWidth.y,
                                             m_SkeletonData.m_WidthCurve.Evaluate((float)endNode.m_Level / (float)m_SkeletonData.m_MaxLevels));
-            //newBranch.startWidth = .025f;
-            //newBranch.endWidth = .025f;
 
+            //generate leaves
             if (endNode.m_Level >= (m_TreeSkeleton.m_Data.m_MaxLevels - m_TreeSkeleton.m_Data.m_LevelsFromMaxToSpawnLeaves))
             {
                 float rand01 = UnityEngine.Random.Range(0f, 1f);
@@ -205,13 +196,15 @@ namespace dd
 
             newBranch.SetPosition(0, startNode.m_Position + m_TransformComponent.position);// - littleStartOffset);
             newBranch.SetPosition(1, endNode.m_Position + m_TransformComponent.position);
-
+            //newBranch.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
             newBranch.startColor = startColor;
             newBranch.endColor = endColor;
+            //newBranch.material = lineMaterial;
             m_BranchRenderers.Add(newBranch);
 
             //child all branches to this. make sure UseWorldSpace is off in your linerenderer prefab.
-            newBranch.transform.parent = transform;
+            newBranch.transform.SetParent(m_BranchesRoot);
+            newBranch.name = "branch_" + transform.childCount;
         }
     }
 }

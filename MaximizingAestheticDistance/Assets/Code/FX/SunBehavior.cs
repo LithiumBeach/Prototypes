@@ -13,7 +13,7 @@ namespace dd
         public Gradient m_ColorOverDay;
 
         //[Required]
-        //public Light m_DirectionalLight = null;
+       public Light m_DirectionalLight = null;
 
         [HideInInspector]
         public float m_TimeScale = 1.0f;
@@ -45,7 +45,7 @@ namespace dd
             m_RotationAxis = transform.up;
 
             //create local parent to follow the position of m_Parent
-            m_LocalParent = Instantiate(new GameObject()).GetComponent<Transform>();
+            m_LocalParent = new GameObject().GetComponent<Transform>();
             m_LocalParent.localPosition = Vector3.zero;
             m_LocalParent.name = transform.name + "_root";
 
@@ -58,6 +58,12 @@ namespace dd
             //only update position of parent
             m_LocalParent.position = m_Parent.position;
             m_LocalParent.transform.Rotate(m_RotationAxis, m_TimeScale * m_BaseOrbitSpeed * Time.deltaTime);
+
+            if (m_DirectionalLight != null)
+            {
+                //maintain the directional light facing the world origin. it should be childed to this sun.
+                m_DirectionalLight.transform.LookAt(Vector3.zero, Vector3.up);
+            }
         }
 
     }
