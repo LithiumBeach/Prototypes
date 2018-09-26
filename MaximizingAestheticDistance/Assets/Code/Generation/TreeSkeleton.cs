@@ -42,7 +42,7 @@ namespace dd
             m_Root = new TreeSkeletonNode();
             m_Root.m_Position = Vector3.zero;
             m_Root.m_Level = 0;
-            m_Root.m_Color = m_Data.m_BranchColorGradient.Evaluate(0);
+            m_Root.m_Color = m_Data.m_BranchColorGradient.GetGradientAt(0).Evaluate(0);
 
 
             //calculate our final height
@@ -59,7 +59,7 @@ namespace dd
                                             firstForkHeight,
                                             UnityEngine.Random.Range(-.25f, .25f)); //slight z offset
             //set to appropriate gradient color
-            firstForkNode.m_Color = m_Data.m_BranchColorGradient.Evaluate(firstForkHeight / m_TotalHeight);
+            firstForkNode.m_Color = m_Data.m_BranchColorGradient.GetGradientAt(0).Evaluate(firstForkHeight / m_TotalHeight);
             firstForkNode.m_Level = 1;
 
             //maintain n-tree structure
@@ -101,7 +101,7 @@ namespace dd
                     level) * randLength;
 
                 //set to appropriate gradient color
-                nextNode.m_Color = m_Data.m_BranchColorGradient.Evaluate(Mathf.Clamp01(nextNode.m_Position.y / m_TotalHeight));
+                nextNode.m_Color = m_Data.m_BranchColorGradient.GetGradientAt(0).Evaluate(Mathf.Clamp01(nextNode.m_Position.y / m_TotalHeight));
                 nextNode.m_Level = level;
 
                 //it's going to go a max of one branch higher than the passed in max height. tell nobody.

@@ -12,8 +12,8 @@ namespace util
         {
             get
             {
-                m_Instance = (T)FindObjectOfType(typeof(T));
-
+                //m_Instance = (T)FindObjectOfType(typeof(T));
+                m_Instance = FindObjectOfType<T>();
                 if (m_Instance == null)
                 {
                     Debug.Log("Create me in SingletonBehaviorManager");

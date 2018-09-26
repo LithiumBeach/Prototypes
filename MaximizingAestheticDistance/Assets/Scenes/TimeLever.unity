@@ -228,7 +228,7 @@ MonoBehaviour:
   m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
     type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: 528570521
+  m_RngSeed: 1636528470
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!4 &955740611
@@ -318,7 +318,7 @@ MonoBehaviour:
   m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
     type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: 230733494
+  m_RngSeed: 1993761913
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!4 &1116534970
@@ -364,7 +364,7 @@ MonoBehaviour:
   m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
     type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: 441659531
+  m_RngSeed: 1086855966
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!4 &1133263521
@@ -410,7 +410,7 @@ MonoBehaviour:
   m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
     type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: 1919407942
+  m_RngSeed: -672747101
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!4 &1550070858
@@ -611,7 +611,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DirectionalLight: {fileID: 2119651025}
-  m_T: 0
   m_Parent: {fileID: 0}
 --- !u!1 &1930232074
 GameObject:
@@ -647,6 +646,7 @@ Transform:
   - {fileID: 1133263521}
   - {fileID: 955740611}
   - {fileID: 1550330733}
+  - {fileID: 2127370588}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -709,7 +709,7 @@ MonoBehaviour:
   m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
     type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: -407430141
+  m_RngSeed: 1834843080
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!4 &2030591558
@@ -755,7 +755,7 @@ MonoBehaviour:
   m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
     type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: 1867146053
+  m_RngSeed: 686636982
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!4 &2112138948
@@ -815,7 +815,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967039
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -866,7 +866,7 @@ MonoBehaviour:
   m_VertexColorsMaterial: {fileID: 2100000, guid: 7c0d50390887b4b47941ecd457a41c23,
     type: 2}
   m_SkeletonData: {fileID: 11400000, guid: 78f2bebd42de8ab45a82c1d588bfeb41, type: 2}
-  m_RngSeed: 1822343503
+  m_RngSeed: -1468149410
   m_BranchPrefab: {fileID: 120684899078461332, guid: 770085cc47f298c4298d9f31cb5836e8,
     type: 2}
 --- !u!4 &2124325320
@@ -897,7 +897,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &2127370587
 Light:
   m_ObjectHideFlags: 0
@@ -944,6 +944,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_Father: {fileID: 1930232075}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: -122.337, y: 0, z: 0}

@@ -28,16 +28,15 @@ namespace dd
         [Tooltip("how many consecutive forks is the absolute maximum you want to allow? (how deep does the tree go)")]
         public int m_MaxLevels;
 
-        [Tooltip("trunk/branch color gradient over some defined function")]
-        public Gradient m_BranchColorGradient;
-        //@TODO: add an enum var to choose which function this gradient is run through
-
         [Tooltip("at each fork, push each new branch down it's root branch just a little bit. can never exceed previous branch length. multiplies with *current* branch length.")]
         [MinMaxSlider(0f, 6f, true)]
         public Vector2 m_MinMaxWidth = new Vector2(0.025f, 0.025f);
 
         [Tooltip("define a function to control width over t (node depth), between max/min width")]
         public AnimationCurve m_WidthCurve;
+
+        [Tooltip("trunk/branch color gradient over some defined function")]
+        public GradientsOverTData m_BranchColorGradient;
 
         [Header("Leaves")]
         //[MinMaxSlider(1, 20, true)]
@@ -55,6 +54,6 @@ namespace dd
         [Range(.1f, 6f)]
         public float m_LeafClusterRadius = .5f;
 
-        public Gradient m_LeafGradient;
+        public GradientsOverTData m_LeafGradient;
     }
 }

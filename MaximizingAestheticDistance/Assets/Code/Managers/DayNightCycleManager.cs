@@ -19,20 +19,20 @@ namespace dd
         [SerializeField]
         [Range(.1f, 300)]
         [Tooltip("real seconds between t=0 and t=1 (full day-night cycle)")]
-        [OnValueChanged("Editor_OnSecondsPerCycleChanged")]
         private float m_SecondsPerCycle = 60f;
-        private void Editor_OnSecondsPerCycleChanged()
-        {
-            //stub
-        }
 
         private float m_T;
+        public float m_GlobalT { get { return m_T; } }
+
         //resets every m_SecondsPerCycle seconds
         private float m_CycleTimer;
+
+        private GLTree[] m_Trees;
 
         private void Awake()
         {
             ResetClock();
+            m_Trees = FindObjectsOfType<GLTree>();
         }
 
         private void ResetClock()
@@ -55,10 +55,7 @@ namespace dd
                 ResetClock();
             }
             m_T = Mathf.Lerp(0f, 1f, m_CycleTimer / m_SecondsPerCycle);
-            for (int i = 0; i < m_Suns.Length; i++)
-            {
-                m_Suns[i].m_T = m_T;
-            }
+            Debug.Log(m_T);
         }
     }
 }

@@ -17,10 +17,6 @@ namespace dd
         [Tooltip("probably only going to be used for shadows.")]
         public Light m_DirectionalLight = null;
 
-        //DayNightCycleManager should control this.
-        [HideInInspector]
-        public float m_T;
-
         [Tooltip("orbit about this transform. if you're making a sun, for instance, you would want this to orbit about it'")]
         //[Sirenix.OdinInspector.OnInspectorGUI("OnInspectorGUI_m_Parent")]
         public Transform m_Parent = null;
@@ -64,7 +60,7 @@ namespace dd
                 m_DirectionalLight.transform.LookAt(Vector3.zero, Vector3.up);
             }
 
-            m_LocalParent.localRotation = Quaternion.AngleAxis(Mathf.Lerp(0f, 360f, m_T), m_RotationAxis);
+            m_LocalParent.localRotation = Quaternion.AngleAxis(Mathf.Lerp(0f, 360f, SceneManager.Instance.DayNightCycleManagers[0].m_GlobalT), m_RotationAxis);
         }
 
     }
