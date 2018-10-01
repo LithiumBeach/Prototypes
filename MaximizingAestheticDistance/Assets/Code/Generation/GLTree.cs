@@ -30,9 +30,9 @@ namespace dd
             public BranchData(Mesh m, float[] _t) { mesh = m; t = _t; Debug.Assert(t.Length == 2); }
             public Mesh mesh;
 
-            //ie: relative height in leaves-space (yPos between min/max leaves yPos)
+            //ie: relative height in branch-space (yPos between min/max branches yPos)
             //vertices 0 and 1 (for a line)
-            public float[] t;//@TODO: we need to generate a mesh instead of using linerenderers
+            public float[] t;
         }
 
         //needs a Triangle structure. to store local height & mesh
@@ -50,9 +50,6 @@ namespace dd
         [Button("New RNG Seed", Sirenix.OdinInspector.ButtonSizes.Small)]
         public void OnNewRNGSeed() { m_RngSeed = UnityEngine.Random.Range(int.MinValue, int.MaxValue); }
         public int m_RngSeed;
-
-        [Required]
-        public LineRenderer m_BranchPrefab;
 
         //cache transform reference
         private Transform m_TransformComponent;
@@ -115,7 +112,7 @@ namespace dd
             m_TreeSkeleton = new TreeSkeleton();
             m_TreeSkeleton.Generate(m_SkeletonData, m_RngSeed);
 
-            m_BranchRenderers = new List<LineRenderer>();
+            m_Branches = new List<BranchData>();
             RecursiveMakeTree(m_TreeSkeleton.m_Root);
 
             //only here do we know the min/max y bounds of all the triangles in the tree.
@@ -236,20 +233,17 @@ namespace dd
             }
         }
 
-        private List<LineRenderer> m_BranchRenderers;
         private void MakeBranch(TreeSkeletonNode startNode, TreeSkeletonNode endNode, Color startColor, Color endColor)
         {
-            LineRenderer newBranch = GameObject.Instantiate(m_BranchPrefab.gameObject).GetComponent<LineRenderer>();
-
             //set branch width over tree height according to data defined width curve
-            newBranch.startWidth = Mathf.Lerp(m_SkeletonData.m_MinMaxWidth.x,
+            float startRadius = Mathf.Lerp(m_SkeletonData.m_MinMaxWidth.x,
                                               m_SkeletonData.m_MinMaxWidth.y,
                                               m_SkeletonData.m_WidthCurve.Evaluate((float)startNode.m_Level / (float)m_SkeletonData.m_MaxLevels));
-            newBranch.endWidth = Mathf.Lerp(m_SkeletonData.m_MinMaxWidth.x,
+            float endRadius = Mathf.Lerp(m_SkeletonData.m_MinMaxWidth.x,
                                             m_SkeletonData.m_MinMaxWidth.y,
                                             m_SkeletonData.m_WidthCurve.Evaluate((float)endNode.m_Level / (float)m_SkeletonData.m_MaxLevels));
 
-            //generate leaves
+            #region generate leaves
             if (endNode.m_Level >= (m_TreeSkeleton.m_Data.m_MaxLevels - m_TreeSkeleton.m_Data.m_LevelsFromMaxToSpawnLeaves))
             {
                 float rand01 = UnityEngine.Random.Range(0f, 1f);
@@ -262,18 +256,64 @@ namespace dd
                                                 m_TreeSkeleton.m_Data.m_MinMaxLeafSize);
                 }
             }
+            #endregion
 
-            newBranch.SetPosition(0, startNode.m_Position + m_TransformComponent.position);// - littleStartOffset);
-            newBranch.SetPosition(1, endNode.m_Position + m_TransformComponent.position);
-            //newBranch.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
-            newBranch.startColor = startColor;
-            newBranch.endColor = endColor;
-            //newBranch.material = lineMaterial;
-            m_BranchRenderers.Add(newBranch);
+            Vector3 startPosition = startNode.m_Position + m_TransformComponent.position;
+            Vector3 endPosition = endNode.m_Position + m_TransformComponent.position;
 
-            //child all branches to this. make sure UseWorldSpace is off in your linerenderer prefab.
-            newBranch.transform.SetParent(m_BranchesRoot);
-            newBranch.name = "branch_" + transform.childCount;
+            //TEMP
+            //if (startNode.m_Position == Vector3.zero)
+            //{
+            //    startNode.m_Position = new Vector3(0.01f, 0.01f, 0.01f);
+            //}
+            //if (endNode.m_Position == Vector3.zero)
+            //{
+            //    endNode.m_Position = new Vector3(0.01f, 0.01f, 0.01f);
+            //}
+
+            //construct cylinder mesh with appropriate positions
+            //Mesh newMesh = CylinderGenerator.GenerateTreeTrunk(
+            //    Vector3.Distance(startNode.m_Position, endNode.m_Position),
+            //    new float[] { endRadius, (startRadius + endRadius) * .5f, startRadius}, //cyclinders are generated top to bottom
+            //    //new float[] { .25f, .25f, .25f, .25f },
+            //    3,
+            //    2//,
+            //    //new Vector3[] { endNode.m_Position, startNode.m_Position });
+            //    );//new Vector3[] { endNode.m_Position, (endNode.m_Position + startNode.m_Position) * .5f, (endNode.m_Position + startNode.m_Position) * .5f, startNode.m_Position }); //@NOTE: kind of neat when they're backwards but you can set this in data to just be reversed widths (skinny->wide)
+
+            Mesh newMesh = CylinderGenerator.GenerateCylinderMesh(3, 0, Vector3.Distance(startNode.m_Position, endNode.m_Position), startRadius, endRadius);
+            //newMesh.CombineMeshes
+
+            //construct root GO and necessary components.
+            GameObject newObject = new GameObject();
+            Transform newTransform = newObject.transform;
+            newTransform.SetParent(m_BranchesRoot);
+
+            //i am shocked that this works. like. who needs to fuck with quaternions anyway.
+            newTransform.up = (startPosition - endPosition).normalized;
+            newTransform.localPosition = (startNode.m_Position + endNode.m_Position) * .5f;
+            //literally i zoned out and intuited this answer based on the fucked up thing that was happening without it. it's offsetting but along it's own axis.
+            newTransform.localPosition += (endNode.m_Position - startNode.m_Position).normalized * Vector3.Distance(startNode.m_Position, endNode.m_Position) * .5f;
+            newTransform.localScale = Vector3.one;
+            newTransform.name = "branch_" + m_LeavesRoot.childCount;
+            //newObject.layer = 8;
+
+            //@TODO: make this into prefab and instantiate m_NullMeshPrefab
+            MeshFilter newMF = newObject.AddComponent<MeshFilter>();
+            MeshRenderer newMR = newObject.AddComponent<MeshRenderer>();
+            newMF.mesh = newMesh;
+            newMR.material = m_VertexColorsMaterial;
+            newMR.receiveShadows = false;
+            newMR.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+            newMR.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+            newMR.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+
+
+
+
+
+
+            m_Branches.Add(null);
         }
     }
 }
