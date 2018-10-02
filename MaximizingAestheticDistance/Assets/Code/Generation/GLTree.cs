@@ -61,6 +61,7 @@ namespace dd
         public void Start()
         {
             m_Triangles = new List<LeafData>();
+            m_Branches = new List<BranchData>();
             //CreateLineMaterial();
 
             //cache transform component to avoid GetComponent<Transform> calls (implicitly called with MonoBehaviour.transform).
@@ -105,6 +106,27 @@ namespace dd
                 colors[2] = m_LeafGradient.Evaluate(m_Triangles[i].t[2]);
                 m_Triangles[i].mesh.colors32 = colors;
             }
+
+            int vertexCount;
+            for (int i = 0; i < m_Branches.Count; i++)
+            {
+                vertexCount = m_Branches[i].mesh.vertices.Length;
+                colors = new Color32[vertexCount];
+                for (int v = 0; v < vertexCount; v++)
+                {
+                    //cache this
+                    if (v < vertexCount*.5f)
+                    {
+                        colors[v] = m_BranchesGradient.Evaluate(m_Branches[i].t[0]);
+                    }
+                    else
+                    {
+                        colors[v] = m_BranchesGradient.Evaluate(m_Branches[i].t[1]);
+                    }
+                }
+
+                m_Branches[i].mesh.colors32 = colors;
+            }
         }
 
         private void GenerateSkeleton(Vector3 basePosition)
@@ -123,6 +145,14 @@ namespace dd
                 m_Triangles[i].t[1] = Mathf.InverseLerp(m_MinLeafY, m_MaxLeafY, m_Triangles[i].t[1]);
                 m_Triangles[i].t[2] = Mathf.InverseLerp(m_MinLeafY, m_MaxLeafY, m_Triangles[i].t[2]);
             }
+
+            //only here do we know the min/max y bounds of all the triangles in the tree.
+            for (int i = 0; i < m_Triangles.Count; ++i)
+            {
+                //this is where that leaf t comes back. we have already set these 3 t values to the world space y of each vertex of the leaf.
+                m_Branches[i].t[0] = Mathf.InverseLerp(m_MinBranchY, m_MaxBranchY, m_Triangles[i].t[0]);
+                m_Branches[i].t[1] = Mathf.InverseLerp(m_MinBranchY, m_MaxBranchY, m_Triangles[i].t[1]);
+            }
         }
 
         private void GenerateTrianglesInSphere(Vector3 position, float r, int numTriangles, Vector2 minMaxLeafRadius)
@@ -139,6 +169,9 @@ namespace dd
 
         private float m_MinLeafY = Mathf.Infinity;
         private float m_MaxLeafY = -Mathf.Infinity;
+        private float m_MinBranchY;
+        private float m_MaxBranchY;
+
         private LeafData MakeTriangle(Vector3 position, Vector3 forward, Vector3 up, float radius)
         {
             //since backface culling is off, the direction of right (vs left) shouldn't matter.
@@ -146,7 +179,7 @@ namespace dd
             Vector3[] newVerts = new Vector3[3];
             Color32[] newColors32 = new Color32[3];
 
-
+        //Find min/max leaf y for gradient. use mesh bounds for cylinders, and maybe these too, but idk i like it it's cute
             newVerts[0] = position + up * radius;
             //newColors32[0] = GetLeafGradientAt(newVerts[0]);
             if (m_MinLeafY > newVerts[0].y) { m_MinLeafY = newVerts[0].y; }
@@ -226,14 +259,14 @@ namespace dd
             for (int i = 0; i < root.m_NextNodes.Count; i++)
             {
                 //TODO:
-                MakeBranch(root, root.m_NextNodes[i], Color.white, Color.black);
+                m_Branches.Add(MakeBranch(root, root.m_NextNodes[i], Color.white, Color.black));
                 //m_TreeSkeleton.m_Data.m_BranchColorGradient.Evaluate(root.m_Position.y / (m_TreeSkeleton.m_Root.m_Position.y + m_TreeSkeleton.Height)),
                 //m_TreeSkeleton.m_Data.m_BranchColorGradient.Evaluate(root.m_NextNodes[i].m_Position.y / (m_TreeSkeleton.m_Root.m_Position.y + m_TreeSkeleton.Height)));
                 RecursiveMakeTree(root.m_NextNodes[i]);
             }
         }
 
-        private void MakeBranch(TreeSkeletonNode startNode, TreeSkeletonNode endNode, Color startColor, Color endColor)
+        private BranchData MakeBranch(TreeSkeletonNode startNode, TreeSkeletonNode endNode, Color startColor, Color endColor)
         {
             //set branch width over tree height according to data defined width curve
             float startRadius = Mathf.Lerp(m_SkeletonData.m_MinMaxWidth.x,
@@ -261,16 +294,7 @@ namespace dd
             Vector3 startPosition = startNode.m_Position + m_TransformComponent.position;
             Vector3 endPosition = endNode.m_Position + m_TransformComponent.position;
 
-            //TEMP
-            //if (startNode.m_Position == Vector3.zero)
-            //{
-            //    startNode.m_Position = new Vector3(0.01f, 0.01f, 0.01f);
-            //}
-            //if (endNode.m_Position == Vector3.zero)
-            //{
-            //    endNode.m_Position = new Vector3(0.01f, 0.01f, 0.01f);
-            //}
-
+            #region doesn't really work you should delete this garbage. it can stay in the mushroom/pagoda generator.
             //construct cylinder mesh with appropriate positions
             //Mesh newMesh = CylinderGenerator.GenerateTreeTrunk(
             //    Vector3.Distance(startNode.m_Position, endNode.m_Position),
@@ -280,6 +304,7 @@ namespace dd
             //    2//,
             //    //new Vector3[] { endNode.m_Position, startNode.m_Position });
             //    );//new Vector3[] { endNode.m_Position, (endNode.m_Position + startNode.m_Position) * .5f, (endNode.m_Position + startNode.m_Position) * .5f, startNode.m_Position }); //@NOTE: kind of neat when they're backwards but you can set this in data to just be reversed widths (skinny->wide)
+            #endregion
 
             Mesh newMesh = CylinderGenerator.GenerateCylinderMesh(3, 0, Vector3.Distance(startNode.m_Position, endNode.m_Position), startRadius, endRadius);
             //newMesh.CombineMeshes
@@ -308,12 +333,10 @@ namespace dd
             newMR.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
             newMR.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
 
+            //!! Important note on this: that y is not actually the t we will use for gradient blending yet.
+            //we'll use this y value later, when we know the min/max bounds of all the branches in this tree.
+            return new BranchData(newMesh, new float[] { newMR.bounds.min.y, newMR.bounds.max.y });
 
-
-
-
-
-            m_Branches.Add(null);
         }
     }
 }

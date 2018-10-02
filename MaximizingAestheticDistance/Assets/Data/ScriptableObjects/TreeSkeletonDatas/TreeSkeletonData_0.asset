@@ -39,7 +39,7 @@ MonoBehaviour:
   m_MinMaxHeight: {x: 8, y: 12}
   m_MinMaxTrunkHeightMultiplier: {x: 0.15, y: 0.3871345}
   m_MaxLevels: 6
-  m_MinMaxWidth: {x: 0.01, y: 1.3044477}
+  m_MinMaxWidth: {x: 0.01, y: 1.189922}
   m_WidthCurve:
     serializedVersion: 2
     m_Curve:
@@ -53,13 +53,31 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.02173913
     - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -0.36915055
-      outSlope: -0.36915055
+      time: 0.0094292015
+      value: 0.18459068
+      inSlope: -1.0072439
+      outSlope: -1.0072439
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.059006214
+      inWeight: 0.05082125
+      outWeight: 0.20482153
+    - serializedVersion: 3
+      time: 0.3314018
+      value: 0.044788476
+      inSlope: -0.22130062
+      outSlope: -0.22130062
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.077324465
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.08302016
+      outSlope: -0.08302016
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.086169235
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
