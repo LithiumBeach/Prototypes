@@ -72,16 +72,7 @@ namespace dd
             {
                 a = m_GradientGroups[m_GradientGroups.Count - 1];
                 b = m_GradientGroups[0];
-                //if t < the first m_T (smallest m_T)
-                //if (t > a.m_T)
-                //{
-                    return GradientHelper.Lerp(a.m_Gradient, b.m_Gradient, Mathf.InverseLerp(a.m_T, b.m_T + 1f, t < b.m_T ? t + 1f : t));
-                //}
-                //else
-                //{
-                //    return GradientHelper.Lerp(a.m_Gradient, b.m_Gradient, Mathf.InverseLerp(a.m_T, b.m_T, t));
-                //}
-
+                return GradientHelper.Lerp(a.m_Gradient, b.m_Gradient, Mathf.InverseLerp(a.m_T, b.m_T + 1f, t < b.m_T ? t + 1f : t));
             }
         }
 

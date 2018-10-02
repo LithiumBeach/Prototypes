@@ -82,7 +82,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_BranchColorGradient: {fileID: 11400000, guid: 7193cd9be1018a7409a1d841d51a3025,
+  m_BranchColorGradient: {fileID: 11400000, guid: 1df0ac5ccd460d947930619a7c4ad205,
     type: 2}
   m_LeavesPerClusterMinMax: {x: 1, y: 6}
   m_ChanceOfCluster: 0.242

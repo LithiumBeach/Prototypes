@@ -31,6 +31,9 @@ namespace dd
 
         private void Awake()
         {
+
+            //@TODO: this is a garbage solution to a garbage problem.
+            SceneManager.Instance.DayNightCycleManagers.Add(this);
             ResetClock();
             m_Trees = FindObjectsOfType<GLTree>();
         }
@@ -55,7 +58,7 @@ namespace dd
                 ResetClock();
             }
             m_T = Mathf.Lerp(0f, 1f, m_CycleTimer / m_SecondsPerCycle);
-            Debug.Log(m_T);
+            //Debug.Log(m_T);
         }
     }
 }

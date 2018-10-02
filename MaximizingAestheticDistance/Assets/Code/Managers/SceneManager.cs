@@ -6,15 +6,23 @@ namespace dd
 {
     public class SceneManager : SingletonBehavior<SceneManager>
     {
-        private DayNightCycleManager[] m_DayNightCycleManagers;
-        public DayNightCycleManager[] DayNightCycleManagers
+        private List<DayNightCycleManager> m_DayNightCycleManagers = new List<DayNightCycleManager>();
+        public List<DayNightCycleManager> DayNightCycleManagers
         {
-            get{ return m_DayNightCycleManagers; }
+            get
+            {
+                if (m_DayNightCycleManagers == null)
+                {
+                    m_DayNightCycleManagers = new List<dd.DayNightCycleManager>(FindObjectsOfType<DayNightCycleManager>());
+                }
+                return m_DayNightCycleManagers;
+            }
         }
 
         protected override void OnAwake()
         {
-            m_DayNightCycleManagers = GameObject.FindObjectsOfType<DayNightCycleManager>();
+            //DayNightCycleManagers = FindObjectsOfType<DayNightCycleManager>();
+            //Debug.Assert(DayNightCycleManagers.Length > 0);
         }
     }
 }

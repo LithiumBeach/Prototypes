@@ -92,40 +92,41 @@ namespace dd
 
         private void Update()
         {
-            float globalT = dd.SceneManager.Instance.DayNightCycleManagers[0].m_GlobalT;
-            m_BranchesGradient = m_SkeletonData.m_BranchColorGradient.GetGradientAt(globalT);
+            float globalT = SceneManager.Instance.DayNightCycleManagers[0].m_GlobalT;
             m_LeafGradient = m_SkeletonData.m_LeafGradient.GetGradientAt(globalT);
+            m_BranchesGradient = m_SkeletonData.m_BranchColorGradient.GetGradientAt(globalT);
 
-            Color32[] colors;
+            Color32[] leafColors;
             //update all leaf colors with m_T
             for (int i = 0; i < m_Triangles.Count; i++)
             {
-                colors = new Color32[3];
-                colors[0] = m_LeafGradient.Evaluate(m_Triangles[i].t[0]);
-                colors[1] = m_LeafGradient.Evaluate(m_Triangles[i].t[1]);
-                colors[2] = m_LeafGradient.Evaluate(m_Triangles[i].t[2]);
-                m_Triangles[i].mesh.colors32 = colors;
+                leafColors = new Color32[3];
+                leafColors[0] = m_LeafGradient.Evaluate(m_Triangles[i].t[0]);
+                leafColors[1] = m_LeafGradient.Evaluate(m_Triangles[i].t[1]);
+                leafColors[2] = m_LeafGradient.Evaluate(m_Triangles[i].t[2]);
+                m_Triangles[i].mesh.colors32 = leafColors;
             }
 
+            Color32[] branchColors;
             int vertexCount;
             for (int i = 0; i < m_Branches.Count; i++)
             {
                 vertexCount = m_Branches[i].mesh.vertices.Length;
-                colors = new Color32[vertexCount];
+                branchColors = new Color32[vertexCount];
                 for (int v = 0; v < vertexCount; v++)
                 {
                     //cache this
                     if (v < vertexCount*.5f)
                     {
-                        colors[v] = m_BranchesGradient.Evaluate(m_Branches[i].t[0]);
+                        branchColors[v] = m_BranchesGradient.Evaluate(m_Branches[i].t[0]);
                     }
                     else
                     {
-                        colors[v] = m_BranchesGradient.Evaluate(m_Branches[i].t[1]);
+                        branchColors[v] = m_BranchesGradient.Evaluate(m_Branches[i].t[1]);
                     }
                 }
 
-                m_Branches[i].mesh.colors32 = colors;
+                m_Branches[i].mesh.colors32 = branchColors;
             }
         }
 
@@ -147,11 +148,11 @@ namespace dd
             }
 
             //only here do we know the min/max y bounds of all the triangles in the tree.
-            for (int i = 0; i < m_Triangles.Count; ++i)
+            for (int i = 0; i < m_Branches.Count; ++i)
             {
                 //this is where that leaf t comes back. we have already set these 3 t values to the world space y of each vertex of the leaf.
-                m_Branches[i].t[0] = Mathf.InverseLerp(m_MinBranchY, m_MaxBranchY, m_Triangles[i].t[0]);
-                m_Branches[i].t[1] = Mathf.InverseLerp(m_MinBranchY, m_MaxBranchY, m_Triangles[i].t[1]);
+                m_Branches[i].t[0] = Mathf.InverseLerp(m_MinBranchY, m_MaxBranchY, m_Branches[i].t[0]);
+                m_Branches[i].t[1] = Mathf.InverseLerp(m_MinBranchY, m_MaxBranchY, m_Branches[i].t[1]);
             }
         }
 
@@ -169,8 +170,8 @@ namespace dd
 
         private float m_MinLeafY = Mathf.Infinity;
         private float m_MaxLeafY = -Mathf.Infinity;
-        private float m_MinBranchY;
-        private float m_MaxBranchY;
+        private float m_MinBranchY = Mathf.Infinity;
+        private float m_MaxBranchY = -Mathf.Infinity;
 
         private LeafData MakeTriangle(Vector3 position, Vector3 forward, Vector3 up, float radius)
         {
@@ -333,9 +334,16 @@ namespace dd
             newMR.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
             newMR.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
 
+            float boundsMin = newMR.bounds.min.y;
+            float boundsMax = newMR.bounds.max.y;
+
+
+            if (m_MinBranchY > boundsMin) { m_MinBranchY = boundsMin; }
+            if (m_MaxBranchY < boundsMax) { m_MaxBranchY = boundsMax; }
+
             //!! Important note on this: that y is not actually the t we will use for gradient blending yet.
             //we'll use this y value later, when we know the min/max bounds of all the branches in this tree.
-            return new BranchData(newMesh, new float[] { newMR.bounds.min.y, newMR.bounds.max.y });
+            return new BranchData(newMesh, new float[] { boundsMin, boundsMax });
 
         }
     }
