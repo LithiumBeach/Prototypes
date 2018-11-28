@@ -88,5 +88,5 @@ MonoBehaviour:
   m_ChanceOfCluster: 0.242
   m_LevelsFromMaxToSpawnLeaves: 1
   m_MinMaxLeafSize: {x: 0.75, y: 1.25}
-  m_LeafClusterRadius: 0.89
+  m_LeafClusterRadius: 0.96
   m_LeafGradient: {fileID: 11400000, guid: 7193cd9be1018a7409a1d841d51a3025, type: 2}

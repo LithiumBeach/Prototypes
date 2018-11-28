@@ -10,5 +10,10 @@ namespace dd
     {
         [Required]
         public Transform m_Player;
+
+        private void Update()
+        {
+            
+        }
     }
 }

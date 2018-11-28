@@ -307,7 +307,7 @@ namespace dd
             //    );//new Vector3[] { endNode.m_Position, (endNode.m_Position + startNode.m_Position) * .5f, (endNode.m_Position + startNode.m_Position) * .5f, startNode.m_Position }); //@NOTE: kind of neat when they're backwards but you can set this in data to just be reversed widths (skinny->wide)
             #endregion
 
-            Mesh newMesh = CylinderGenerator.GenerateCylinderMesh(3, 0, Vector3.Distance(startNode.m_Position, endNode.m_Position), startRadius, endRadius);
+            Mesh newMesh = CylinderGenerator.GenerateCylinderMesh(4, 0, Vector3.Distance(startNode.m_Position, endNode.m_Position), startRadius, endRadius);
             //newMesh.CombineMeshes
 
             //construct root GO and necessary components.

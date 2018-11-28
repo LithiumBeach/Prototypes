@@ -21,6 +21,17 @@ namespace dd
         [Tooltip("real seconds between t=0 and t=1 (full day-night cycle)")]
         private float m_SecondsPerCycle = 60f;
 
+        [SerializeField]
+        private float m_MinSecondsPerCycle = 0.1f;
+        [SerializeField]
+        private float m_MaxSecondsPerCycle = 60.0f;
+
+        /// <param name="normalizedT">will be clamped to 0,1 range. 0 = m_MinSecondsPerCycle, 1 = m_MaxSecondsPerCycle</param>
+        public void SetTimescale(float normalizedT)
+        {
+            m_SecondsPerCycle = Mathf.Lerp(m_MinSecondsPerCycle, m_MaxSecondsPerCycle, Mathf.Clamp01(normalizedT));
+        }
+
         private float m_T;
         public float m_GlobalT { get { return m_T; } }
 
