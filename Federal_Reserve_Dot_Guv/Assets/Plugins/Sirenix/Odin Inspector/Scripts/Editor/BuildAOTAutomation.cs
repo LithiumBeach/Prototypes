@@ -14,7 +14,9 @@ namespace Sirenix.Serialization.Internal
 
 #endif
 
+#pragma warning disable CS0618 // Type or member is obsolete
     public class PreBuildAOTAutomation : IPreprocessBuild
+#pragma warning restore CS0618 // Type or member is obsolete
     {
         public int callbackOrder
         {
@@ -45,7 +47,9 @@ namespace Sirenix.Serialization.Internal
 #endif
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     public class PostBuildAOTAutomation : IPostprocessBuild
+#pragma warning restore CS0618 // Type or member is obsolete
     {
         public int callbackOrder
         {
