@@ -379,21 +379,21 @@
             <param name="condition">The condition.</param>
             <param name="prepend">The collection to prepend.</param>
         </member>
-        <member name="M:Sirenix.Utilities.LinqExtensions.Append``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0})">
+        <member name="M:Sirenix.Utilities.LinqExtensions.AppendWith``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0})">
             <summary>
             Add an item to the end of a collection.
             </summary>
             <param name="source">The collection.</param>
             <param name="append">Func to create the item to append.</param>
         </member>
-        <member name="M:Sirenix.Utilities.LinqExtensions.Append``1(System.Collections.Generic.IEnumerable{``0},``0)">
+        <member name="M:Sirenix.Utilities.LinqExtensions.AppendWith``1(System.Collections.Generic.IEnumerable{``0},``0)">
             <summary>
             Add an item to the end of a collection.
             </summary>
             <param name="source">The collection.</param>
             <param name="append">The item to append.</param>
         </member>
-        <member name="M:Sirenix.Utilities.LinqExtensions.Append``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+        <member name="M:Sirenix.Utilities.LinqExtensions.AppendWith``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
             Add a collection to the end of another collection.
             </summary>
@@ -490,48 +490,48 @@
             MemberInfo method extensions.
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.IsDefined``1(System.Reflection.MemberInfo,System.Boolean)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.IsDefined``1(System.Reflection.ICustomAttributeProvider,System.Boolean)">
             <summary>
             Returns true if the attribute whose type is specified by the generic argument is defined on this member
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.IsDefined``1(System.Reflection.MemberInfo)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.IsDefined``1(System.Reflection.ICustomAttributeProvider)">
             <summary>
             Returns true if the attribute whose type is specified by the generic argument is defined on this member
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttribute``1(System.Reflection.MemberInfo,System.Boolean)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttribute``1(System.Reflection.ICustomAttributeProvider,System.Boolean)">
             <summary>
             Returns the first found custom attribute of type T on this member
             Returns null if none was found
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttribute``1(System.Reflection.MemberInfo)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttribute``1(System.Reflection.ICustomAttributeProvider)">
             <summary>
             Returns the first found non-inherited custom attribute of type T on this member
             Returns null if none was found
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes``1(System.Reflection.MemberInfo)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes``1(System.Reflection.ICustomAttributeProvider)">
             <summary>
             Gets all attributes of the specified generic type.
             </summary>
             <param name="member">The member.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes``1(System.Reflection.MemberInfo,System.Boolean)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes``1(System.Reflection.ICustomAttributeProvider,System.Boolean)">
             <summary>
             Gets all attributes of the specified generic type.
             </summary>
             <param name="member">The member.</param>
             <param name="inherit">If true, specifies to also search the ancestors of element for custom attributes.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes(System.Reflection.MemberInfo)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes(System.Reflection.ICustomAttributeProvider)">
             <summary>
             Gets all attribute instances defined on a MemeberInfo.
             </summary>
             <param name="member">The member.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes(System.Reflection.MemberInfo,System.Boolean)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes(System.Reflection.ICustomAttributeProvider,System.Boolean)">
             <summary>
             Gets all attribute instances on a MemberInfo.
             </summary>
@@ -617,7 +617,7 @@
         </member>
         <member name="T:Sirenix.Utilities.Operator">
             <summary>
-            Determents the type of operator.
+            Determines the type of operator.
             </summary>
             <seealso cref="T:Sirenix.Utilities.TypeExtensions" />
         </member>
@@ -641,6 +641,16 @@
             The - operator.
             </summary>
         </member>
+        <member name="F:Sirenix.Utilities.Operator.Multiply">
+            <summary>
+            The * operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.Division">
+            <summary>
+            The / operator.
+            </summary>
+        </member>
         <member name="F:Sirenix.Utilities.Operator.LessThan">
             <summary>
             The &lt; operator.
@@ -661,9 +671,64 @@
             The &gt;= operator.
             </summary>
         </member>
+        <member name="F:Sirenix.Utilities.Operator.Modulus">
+            <summary>
+            The % operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.RightShift">
+            <summary>
+            The &gt;&gt; operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.LeftShift">
+            <summary>
+            The &lt;&lt; operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.BitwiseAnd">
+            <summary>
+            The &amp; operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.BitwiseOr">
+            <summary>
+            The | operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.ExclusiveOr">
+            <summary>
+            The ^ operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.BitwiseComplement">
+            <summary>
+            The ~ operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.LogicalAnd">
+            <summary>
+            The &amp;&amp; operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.LogicalOr">
+            <summary>
+            The || operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.LogicalNot">
+            <summary>
+            The ! operator.
+            </summary>
+        </member>
         <member name="T:Sirenix.Utilities.PathUtilities">
             <summary>
             DirectoryInfo method extensions.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.PathUtilities.GetDirectoryName(System.String)">
+            <summary>
+            Gets the name of the directory. Always returns forward slash seperators as opposed to Path.GetDirectoryName().
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.PathUtilities.HasSubDirectory(System.IO.DirectoryInfo,System.IO.DirectoryInfo)">
@@ -702,6 +767,11 @@
             <param name="absolutePath">The path to make relative to the parent path.</param>
             <param name="relativePath">A relative path from parent path to path. <c>null</c> if no relative path could be made.</param>
             <returns>A value indicating if the method succeeded in making a relative path.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.PathUtilities.Combine(System.String,System.String)">
+            <summary>
+            Combines two paths, and replaces all backslases with forward slash.
+            </summary>
         </member>
         <member name="T:Sirenix.Utilities.PropertyInfoExtensions">
             <summary>
@@ -849,6 +919,11 @@
             </summary>
             <param name="rect">The original Rect.</param>
             <param name="width">The desired width of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignRight(UnityEngine.Rect,System.Single,System.Boolean)">
+            <summary>
+            Returns a Rect, with the specified width, that has been aligned to the right of the original Rect.
+            </summary>
         </member>
         <member name="M:Sirenix.Utilities.RectExtensions.AlignTop(UnityEngine.Rect,System.Single)">
             <summary>
@@ -1297,58 +1372,9 @@
              3. .NET's own <see cref="P:System.Collections.Generic.EqualityComparer`1.Default"/>
              </summary>
              <remarks>
-             <para>Note that in the special case of the type <see cref="T:UnityEngine.Quaternion"/>, a special equality comparer is returned that checks Quaternion's "q1 == q2", and then also checks whether all the Quaternion components are equal.</para>
+             <para>Note that in the special case of the type <see cref="T:UnityEngine.Quaternion"/>, a special equality comparer is returned that only checks whether all the Quaternion components are equal.</para>
              <para>This is because, by default, Quaternion's equality operator is broken when operating on invalid quaternions; "default(Quaternion) == default(Quaternion)" evaluates to false, and this causes a multitude of problems.</para>
              </remarks>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute``1(System.Reflection.MemberInfo)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified in the generic argument.
-            </summary>
-            <typeparam name="T">The attribute type.</typeparam>
-            <param name="memberInfo">The MemberInfo.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute``1(System.Reflection.MemberInfo,System.Boolean)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified in the generic argument.
-            </summary>
-            <typeparam name="T">The attribute type.</typeparam>
-            <param name="memberInfo">The MemberInfo.</param>
-            <param name="inherit">If true, specifies to also search the ancestors of element for custom attributes.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute``1(System.Reflection.MemberInfo,``0@)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified in the generic argument.
-            </summary>
-            <typeparam name="T">The attribute type.</typeparam>
-            <param name="memberInfo">The MemberInfo.</param>
-            <param name="attribute">The attribute instance.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute``1(System.Reflection.MemberInfo,System.Boolean,``0@)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified in the generic argument.
-            </summary>
-            <typeparam name="T">The attribute type.</typeparam>
-            <param name="memberInfo">The MemberInfo.</param>
-            <param name="attribute">The attribute instance.</param>
-            <param name="inherit">If true, specifies to also search the ancestors of element for custom attributes.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute(System.Reflection.MemberInfo,System.Type,System.Boolean)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified.
-            </summary>
-            <param name="memberInfo">The MemberInfo.</param>
-            <param name="customAttributeType">Type of the custom attribute.</param>
-            <param name="inherit">If true, specifies to also search the ancestors of element for custom attributes.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute(System.Reflection.MemberInfo,System.Type,System.Boolean,System.Attribute@)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified.
-            </summary>
-            <param name="memberInfo">The MemberInfo.</param>
-            <param name="customAttributeType">Type of the custom attribute.</param>
-            <param name="inherit">If true, specifies to also search the ancestors of element for custom attributes.</param>
-            <param name="attribute">The attribute instance.</param>
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.GetAttribute``1(System.Type,System.Boolean)">
             <summary>
@@ -1363,6 +1389,14 @@
             </summary>
             <param name="type">The type.</param>
             <param name="to">To.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.ImplementsOpenGenericType(System.Type,System.Type)">
+            <summary>
+            Determines whether a type implements an open generic interface or class such as IList&lt;&gt; or List&lt;&gt;.
+            </summary>
+            <param name="candidateType">Type of the candidate.</param>
+            <param name="openGenericType">Type of the open generic type.</param>
+            <returns></returns>
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.ImplementsOpenGenericInterface(System.Type,System.Type)">
             <summary>
@@ -1379,6 +1413,13 @@
             </summary>
             <param name="candidateType">Type of the candidate.</param>
             <param name="openGenericType">Type of the open generic interface.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.GetArgumentsOfInheritedOpenGenericType(System.Type,System.Type)">
+            <summary>
+            Gets the generic arguments of an inherited open generic class or interface.
+            </summary>
+            <param name="candidateType">Type of the candidate.</param>
+            <param name="openGenericType">The open generic type to get the arguments of.</param>
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.GetArgumentsOfInheritedOpenGenericClass(System.Type,System.Type)">
             <summary>
@@ -1572,14 +1613,33 @@
             <para>Checks whether an array of types satisfy the constraints of a given generic type definition.</para>
             <para>If this method returns true, the given parameters can be safely used with <see cref="M:System.Type.MakeGenericType(System.Type[])"/> with the given generic type definition.</para>
             </summary>
-            <param name="genericTypeDefinition">The generic type definition to check.</param>
+            <param name="genericType">The generic type definition to check.</param>
             <param name="parameters">The parameters to check validity for.</param>
             <exception cref="T:System.ArgumentNullException">
-            genericTypeDefinition is null
+            genericType is null
             or
             types is null
             </exception>
-            <exception cref="T:System.ArgumentException">The genericTypeDefinition parameter must be a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">The genericType parameter must be a generic type definition.</exception>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.AreGenericConstraintsSatisfiedBy(System.Reflection.MethodBase,System.Type[])">
+            <summary>
+            <para>Checks whether an array of types satisfy the constraints of a given generic method definition.</para>
+            <para>If this method returns true, the given parameters can be safely used with <see cref="M:System.Reflection.MethodInfo.MakeGenericMethod(System.Type[])"/> with the given generic method definition.</para>
+            </summary>
+            <param name="genericType">The generic method definition to check.</param>
+            <param name="parameters">The parameters to check validity for.</param>
+            <exception cref="T:System.ArgumentNullException">
+            genericType is null
+            or
+            types is null
+            </exception>
+            <exception cref="T:System.ArgumentException">The genericMethod parameter must be a generic method definition.</exception>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.GenericParameterIsFulfilledBy(System.Type,System.Type,System.Collections.Generic.Dictionary{System.Type,System.Type},System.Collections.Generic.HashSet{System.Type})">
+            <summary>
+            Before calling this method we must ALWAYS hold a lock on the GenericConstraintsSatisfaction_LOCK object, as that is an implicit assumption it works with.
+            </summary>
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.GetGenericConstraintsString(System.Type,System.Boolean)">
             <summary>
@@ -1613,6 +1673,13 @@
             Gets the enum bitmask in a ulong.
             </summary>
             <exception cref="T:System.ArgumentException">enumType</exception>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.IsCSharpKeyword(System.String)">
+            <summary>
+            Gets a value indicating if the string is a reserved C# keyword.
+            </summary>
+            <param name="identifier">The identifier to check.</param>
+            <returns><c>true</c> if the string is a C# keyword. Otherwise <c>false</c>.</returns>
         </member>
         <member name="T:Sirenix.Utilities.UnityExtensions">
             <summary>
@@ -1741,15 +1808,24 @@
             A utility class for finding types in various asssembly.
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.Reload">
+        <member name="F:Sirenix.Utilities.AssemblyUtilities.ASSEMBLY_LOAD_QUEUE_LOCK">
             <summary>
-            Re-scans the entire AppDomain.
+            Lock for the assembly load queue
             </summary>
-            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="F:Sirenix.Utilities.AssemblyUtilities.MAIN_LOCK">
+            <summary>
+            Lock for everything but the assembly load queue, IsDynamic cache, and the initialized and initializing fields
+            </summary>
         </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.#cctor">
             <summary>
             Initializes the <see cref="T:Sirenix.Utilities.AssemblyUtilities"/> class.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.AssemblyUtilities.Reload">
+            <summary>
+            Re-scans the entire AppDomain.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.GetAllAssemblies">
@@ -1813,7 +1889,6 @@
             </summary>
             <param name="assembly">The assembly.</param>
             <returns>The full directory path in which a given assembly is located, or <c>Null</c> if no file path was found.</returns>
-            <exception cref="T:System.NullReferenceException"><paramref name="assembly"/> is Null.</exception>
         </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.GetTypes(Sirenix.Utilities.AssemblyTypeFlags)">
             <summary>
@@ -4167,31 +4242,6 @@
         <member name="M:Sirenix.Utilities.ReferenceEqualityComparer`1.GetHashCode(`0)">
             <summary>
             Returns the result of the object's own GetHashCode method.
-            </summary>
-        </member>
-        <member name="T:TodoAttribute">
-            <summary>
-            Internal...
-            </summary>
-        </member>
-        <member name="F:TodoAttribute.Assignee">
-            <summary>
-            Internal...
-            </summary>
-        </member>
-        <member name="F:TodoAttribute.TodoMessage">
-            <summary>
-            Internal...
-            </summary>
-        </member>
-        <member name="M:TodoAttribute.#ctor(System.String)">
-            <summary>
-            Internal...
-            </summary>
-        </member>
-        <member name="M:TodoAttribute.#ctor(System.String,System.String)">
-            <summary>
-            Internal...
             </summary>
         </member>
     </members>
