@@ -15,7 +15,11 @@ namespace lb
 
         private void Update()
         {
-            Debug.Log(currentDate.PrintDate(LBDate.EDateFormat.DD_MM_YYYY));
+            //Debug.Log(currentDate.PrintDate(LBDate.EDateFormat.DD_MM_YYYY));
+
+
+
+
             currentDate.NextDay();
         }
     }
