@@ -1,0 +1,15 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "f:\\files\\dev\\current\\prototypes\\learnue5\\ueforunitydevs\\intermediate\\build\\win64\\unrealeditor\\inc\\ueforunitydevs\\testactorcomponent.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "f:\\files\\dev\\current\\prototypes\\learnue5\\ueforunitydevs\\intermediate\\build\\win64\\ueforunitydevseditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "f:\\files\\dev\\current\\prototypes\\learnue5\\ueforunitydevs\\intermediate\\build\\win64\\unrealeditor\\development\\ueforunitydevs\\definitions.ueforunitydevs.h",
+            "f:\\files\\dev\\current\\prototypes\\learnue5\\ueforunitydevs\\source\\ueforunitydevs\\testactorcomponent.h",
+            "f:\\files\\dev\\current\\prototypes\\learnue5\\ueforunitydevs\\intermediate\\build\\win64\\unrealeditor\\inc\\ueforunitydevs\\testactorcomponent.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

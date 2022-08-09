@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "UEforUnityDevs",
+			"Path": "F:\\Files\\Dev\\Current\\prototypes\\LearnUE5\\UEforUnityDevs\\Source\\UEforUnityDevs.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "UEforUnityDevsEditor",
+			"Path": "F:\\Files\\Dev\\Current\\prototypes\\LearnUE5\\UEforUnityDevs\\Source\\UEforUnityDevsEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

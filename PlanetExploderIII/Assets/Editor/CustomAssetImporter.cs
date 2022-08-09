@@ -11,7 +11,7 @@ public class CustomAssetImporter : AssetPostprocessor
         importer.importAnimation = false;
         importer.importCameras = false;
         importer.importLights = false;
-        importer.importMaterials = false;
+        //importer.importMaterials = false;
         importer.animationType = ModelImporterAnimationType.None;
     }
 }

@@ -3,10 +3,12 @@
 --- !u!687078895 &4343727234628468602
 SpriteAtlas:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: eyes_02_spriteAtlas1
   m_EditorData:
+    serializedVersion: 2
     textureSettings:
       serializedVersion: 2
       anisoLevel: 1
@@ -18,18 +20,34 @@ SpriteAtlas:
       readable: 0
       crunchedCompression: 0
       sRGB: 1
-    platformSettings: []
-    packingParameters:
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
       serializedVersion: 2
       padding: 2
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 0
       enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
     - {fileID: 2800000, guid: 95d5e5da4667e264284f69e277e89316, type: 3}
     bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300014, guid: 95d5e5da4667e264284f69e277e89316, type: 3}
@@ -159,5 +177,6 @@ SpriteAtlas:
   - eyes_02_spritesheet-1_5
   - eyes_02_spritesheet-1_6
   - eyes_02_spritesheet-1_60
+  m_RenderDataMap: {}
   m_Tag: eyes_02_spriteAtlas1
   m_IsVariant: 0

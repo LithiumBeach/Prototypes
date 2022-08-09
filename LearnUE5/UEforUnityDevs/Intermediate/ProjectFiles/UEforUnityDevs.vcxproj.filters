@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\UEforUnityDevs.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\UEforUnityDevs.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\UEforUnityDevsEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\UEforUnityDevs">
+      <UniqueIdentifier>{4ACBE2A9-0E0A-35CE-A349-E02B35704C81}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\UEforUnityDevs\TestActorComponent.cpp">
+      <Filter>Source\UEforUnityDevs</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\UEforUnityDevs\TestActorComponent.h">
+      <Filter>Source\UEforUnityDevs</Filter>
+    </ClInclude>
+    <None Include="..\..\Source\UEforUnityDevs\UEforUnityDevs.Build.cs">
+      <Filter>Source\UEforUnityDevs</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\UEforUnityDevs\UEforUnityDevs.cpp">
+      <Filter>Source\UEforUnityDevs</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\UEforUnityDevs\UEforUnityDevs.h">
+      <Filter>Source\UEforUnityDevs</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\UEforUnityDevs\UEforUnityDevsGameModeBase.cpp">
+      <Filter>Source\UEforUnityDevs</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\UEforUnityDevs\UEforUnityDevsGameModeBase.h">
+      <Filter>Source\UEforUnityDevs</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

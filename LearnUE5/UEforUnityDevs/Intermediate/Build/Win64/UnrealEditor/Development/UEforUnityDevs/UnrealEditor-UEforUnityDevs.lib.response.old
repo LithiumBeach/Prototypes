@@ -1,0 +1,15 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-UEforUnityDevs.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"F:\Files\Dev\Current\prototypes\LearnUE5\UEforUnityDevs\Intermediate\Build\Win64\UEforUnityDevsEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"F:\Files\Dev\Current\prototypes\LearnUE5\UEforUnityDevs\Intermediate\Build\Win64\UnrealEditor\Development\UEforUnityDevs\UEforUnityDevs.cpp.obj"
+"F:\Files\Dev\Current\prototypes\LearnUE5\UEforUnityDevs\Intermediate\Build\Win64\UnrealEditor\Development\UEforUnityDevs\UEforUnityDevsGameModeBase.cpp.obj"
+"F:\Files\Dev\Current\prototypes\LearnUE5\UEforUnityDevs\Intermediate\Build\Win64\UnrealEditor\Development\UEforUnityDevs\UEforUnityDevs.init.gen.cpp.obj"
+"F:\Files\Dev\Current\prototypes\LearnUE5\UEforUnityDevs\Intermediate\Build\Win64\UnrealEditor\Development\UEforUnityDevs\UEforUnityDevsGameModeBase.gen.cpp.obj"
+"F:\Files\Dev\Current\prototypes\LearnUE5\UEforUnityDevs\Intermediate\Build\Win64\UnrealEditor\Development\UEforUnityDevs\Default.rc2.res"
+/OUT:"F:\Files\Dev\Current\prototypes\LearnUE5\UEforUnityDevs\Intermediate\Build\Win64\UnrealEditor\Development\UEforUnityDevs\UnrealEditor-UEforUnityDevs.lib"

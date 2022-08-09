@@ -21,9 +21,9 @@ namespace dd
         {
             m_Renderer = GetComponent<SpriteRenderer>();
             m_AtlasArray = new Sprite[297];
-            //int numSprites0 = m_Atlas0.GetSprites(m_AtlasArray);
+            int numSprites0 = m_Atlas0.GetSprites(m_AtlasArray);
             Sprite[] atlasArrayTemp = new Sprite[63];
-            //int numSprites1 = m_Atlas1.GetSprites(atlasArrayTemp);
+            int numSprites1 = m_Atlas1.GetSprites(atlasArrayTemp);
 
             Array.Sort(m_AtlasArray, new EyeCompare());
             Array.Sort(atlasArrayTemp, new EyeCompare());

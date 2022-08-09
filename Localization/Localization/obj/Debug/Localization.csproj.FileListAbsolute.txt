@@ -1,0 +1,15 @@
+H:\Files\Repositories\prototypes\Localization\Localization\bin\Debug\Localization.exe.config
+H:\Files\Repositories\prototypes\Localization\Localization\bin\Debug\Localization.exe
+H:\Files\Repositories\prototypes\Localization\Localization\bin\Debug\Localization.pdb
+H:\Files\Repositories\prototypes\Localization\Localization\obj\Debug\Localization.csprojResolveAssemblyReference.cache
+H:\Files\Repositories\prototypes\Localization\Localization\obj\Debug\Localization.Properties.Resources.resources
+H:\Files\Repositories\prototypes\Localization\Localization\obj\Debug\Localization.csproj.GenerateResource.Cache
+H:\Files\Repositories\prototypes\Localization\Localization\obj\Debug\Localization.exe
+H:\Files\Repositories\prototypes\Localization\Localization\obj\Debug\Localization.pdb
+H:\Files\Repositories\prototypes\Localization\Localization\obj\Debug\Localization.Form1.resources
+H:\Files\Repositories\prototypes\Localization\Localization\bin\Debug\Newtonsoft.Json.dll
+H:\Files\Repositories\prototypes\Localization\Localization\bin\Debug\Newtonsoft.Json.xml
+H:\Files\Repositories\prototypes\Localization\Localization\bin\Debug\Microsoft.WindowsAPICodePack.dll
+H:\Files\Repositories\prototypes\Localization\Localization\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+H:\Files\Repositories\prototypes\Localization\Localization\bin\Debug\Microsoft.WindowsAPICodePack.pdb
+H:\Files\Repositories\prototypes\Localization\Localization\bin\Debug\Microsoft.WindowsAPICodePack.Shell.pdb

@@ -1,0 +1,4 @@
+﻿  Using bundled DotNet SDK
+  Log file: C:\Users\Nick\AppData\Local\UnrealBuildTool\Log.txt
+UnrealBuildTool : error : Unable to build while Live Coding is active. Exit the editor and game, or press Ctrl+Alt+F11 if iterating on code in the editor or game
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.MakeFile.Targets(45,5): error MSB3073: The command ""E:\Program Files\Epic Games\UE_5.0\Engine\Build\BatchFiles\Build.bat" UEforUnityDevsEditor Win64 Development -Project="F:\Files\Dev\Current\prototypes\LearnUE5\UEforUnityDevs\UEforUnityDevs.uproject" -WaitMutex -FromMsBuild" exited with code 6.

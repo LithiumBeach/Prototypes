@@ -1,7 +1,9 @@
 sceneSetups:
-- path: Assets/_Scenes/Scene0.unity
-  isLoaded: 1
-  isActive: 1
 - path: Assets/_Scenes/HUD.unity
   isLoaded: 1
   isActive: 0
+  isSubScene: 0
+- path: Assets/_Scenes/Scene0.unity
+  isLoaded: 1
+  isActive: 1
+  isSubScene: 0

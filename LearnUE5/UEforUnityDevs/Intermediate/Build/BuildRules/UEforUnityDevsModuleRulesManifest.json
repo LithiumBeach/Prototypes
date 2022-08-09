@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"F:\\Files\\Dev\\Current\\prototypes\\LearnUE5\\UEforUnityDevs\\Source\\UEforUnityDevs\\UEforUnityDevs.Build.cs",
+		"F:\\Files\\Dev\\Current\\prototypes\\LearnUE5\\UEforUnityDevs\\Source\\UEforUnityDevs.Target.cs",
+		"F:\\Files\\Dev\\Current\\prototypes\\LearnUE5\\UEforUnityDevs\\Source\\UEforUnityDevsEditor.Target.cs"
+	],
+	"EngineVersion": "5.0.3"
+}

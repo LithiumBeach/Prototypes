@@ -16,8 +16,6 @@ namespace dd
         private float m_TotalHeight;
         public float Height { get { return m_TotalHeight; } }
 
-        private UnityEngine.Random m_RNG;
-
         public int MaxLevels { get { return m_Data.m_MaxLevels; } }
 
 
