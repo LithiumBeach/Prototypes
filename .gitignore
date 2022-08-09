@@ -9,6 +9,7 @@ obj/Debug/
 Library/
 Builds/
 eyes/raw/
+Logs/
 
 # UE5 gitignore
 # Created by https://www.toptal.com/developers/gitignore/api/unrealengine
